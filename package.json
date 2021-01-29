@@ -19,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/01fazzy/DEMigrationSFMC/issues"
   },
-  "homepage": "https://github.com/01fazzy/DEMigrationSFMC#readme"
+  "homepage": "https://github.com/01fazzy/DEMigrationSFMC#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "exprss": "0.0.1-security",
+    "http": "0.0.1-security",
+    "path": "^0.12.7",
+    "querystring": "^0.2.0",
+    "request": "^2.88.2"
+  }
 }
