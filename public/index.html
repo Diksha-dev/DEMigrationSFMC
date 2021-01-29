@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>DE SFMC</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    
+
+
+
+</head>
+
+
+
+<body>
+    <div id="step1" class="step">
+
+        <form method='post' action='/stack'>
+            <div class="row no-gutters">
+                <div class="col no-gutters">
+                    <div class="leftSide">
+                        <h4>Source Credentials</h4><br><br><br><br>
+                        <label for="SourceClientID">Client ID:</label>
+                        <input Class="InputTags" value="" type="text" id="SourceClientID" name="SourceClientID"
+                            placeholder="Source Client ID"><br><br>
+
+                        <label for="SourceClientSecret">Client Secret:</label>
+                        <input Class="InputTags" value="" type="text" id="SourceClientSecret" name="SourceClientSecret"
+                            placeholder="Source Client Secret"><br><br>
+
+                        <label for="SourceAuthBaseURI">Auth Base URI:</label>
+                        <input class="InputTags" value="" type="text" id="SourceAuthBaseURI" name="SourceAuthBaseURI"
+                            placeholder="Source Authentication Base URI">
+                        <lable class="BaseUrl">/v2/token</lable><br><br>
+
+                        <label for="SourceMID">MID:</label>
+                        <input Class="InputTags" value="" type="text" id="SourceMID" name="SourceMID"
+                            placeholder="Source MID"><br><br>
+                    </div>
+                </div>
+
+                <div class="col no-gutters">
+                    <div class="rightSide">
+                        <h4>Destination Credentials</h4><br><br><br><br>
+                        <label for="DestinationClientID">Client ID:</label>
+                        <input Class="InputTags" value="" type="text" id="DestinationClientID"
+                            name="DestinationClientID" placeholder="Destination Client ID"><br><br>
+
+                        <label for="DestinationClientSecret">Client Secret:</label>
+                        <input Class="InputTags" value="" type="text" id="DestinationClientSecret"
+                            name="DestinationClientSecret" placeholder="Destination Client Secret"><br><br>
+
+                        <label for="DestinationAuthBaseURI">Auth Base URI:</label>
+                        <input class="InputTags" value="" type="text" id="DestinationAuthBaseURI"
+                            name="DestinationAuthBaseURI" placeholder="Destination Authentication Base URI">
+                        <lable class="BaseUrl">/v2/token</lable><br><br>
+
+                        <label for="DestinationMID">MID:</label>
+                        <input Class="InputTags" value="" type="text" id="DestinationMID" name="DestinationMID"
+                            placeholder="Destination MID"><br><br>
+                    </div>
+                </div>
+            </div>
+            <input class="Button" id="FirstNext" type="submit" name="FirstNext" value="Next">
+
+        </form>
+    </div>
+
+
+</body>
+
+</html>
