@@ -94,40 +94,25 @@
                 </div>
                 <div class="slds-card__body slds-card__body_inner">
 
+                    
 
-
-                    <div id="step1" class="step">
-
-                        <form method='post' action='/stack'>
-                            <div class="row no-gutters">
-                                <div class="col no-gutters">
-                                    
-                                        <h4>Source Credentials</h4><br><br><br><br>
-                                        <label for="SourceClientID">Client ID:</label>
-                                        <input Class="InputTags" value="" type="text" id="SourceClientID" name="SourceClientID"
-                                            placeholder="Source Client ID"><br><br>
-                
-                                        <label for="SourceClientSecret">Client Secret:</label>
-                                        <input Class="InputTags" value="" type="text" id="SourceClientSecret" name="SourceClientSecret"
-                                            placeholder="Source Client Secret"><br><br>
-                
-                                        <label for="SourceAuthBaseURI">Auth Base URI:</label>
-                                        <input class="InputTags" value="" type="text" id="SourceAuthBaseURI" name="SourceAuthBaseURI"
-                                            placeholder="Source Authentication Base URI">
-                                        <lable class="BaseUrl">/v2/token</lable><br><br>
-                
-                                        <label for="SourceMID">MID:</label>
-                                        <input Class="InputTags" value="" type="text" id="SourceMID" name="SourceMID"
-                                            placeholder="Source MID"><br><br>
-                                    
-                                </div>
-                
-                                
-                            </div>
-                            <input class="Button" id="FirstNext" type="submit" name="FirstNext" value="Next">
-                
-                        </form>
+                    <div class="slds-form-element slds-has-error">
+                        <label class="slds-form-element__label" for="text-input-id-1">
+                            <abbr class="slds-required" title="required">* </abbr>Client Id</label>
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                            <svg class="slds-input__icon" aria-hidden="true">
+                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+                            </svg>
+                            <input type="text" id="text-input-id-1" required="" value="" name="SourceClientID" placeholder="Source Client Id" aria-describedby="error-message-unique-id" class="slds-input" aria-invalid="true" />
+                        </div>
+                        <div class="slds-form-element__help" id="error-message-unique-id">This field is required</div>
                     </div>
+
+
+                       
+
+                      
+
 
 
 
