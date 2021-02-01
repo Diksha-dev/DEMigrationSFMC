@@ -22,7 +22,7 @@ app.use(express.urlencoded({
   var DestinationAccessToken = '';
   var DestinationRestURL = ''
   
-  app.post('/stack', (req, res) => {
+  app.post('/Authenticate', (req, res) => {
     var SourceClientID = req.body.SourceClientID;
     var SourceClientSecret = req.body.SourceClientSecret;
     var SourceAuthBaseURI = req.body.SourceAuthBaseURI;
@@ -49,12 +49,7 @@ app.use(express.urlencoded({
     function(error, response, body){
       SourceAccessToken = body.access_token;
       SourceRestURL = body.rest_instance_url;
-      console.log("Source Access : "+body.access_token);
-      console.log("ResponseURL : "+ body.rest_instance_url);
-      console.log("body : "+ JSON.stringify(body));
-      if(body.error_description){
-        alert(body.error_description);
-      }
+      console.log("body : "+ JSON.stringify(body)); 
     });
   
   
@@ -72,12 +67,7 @@ app.use(express.urlencoded({
     function(error, response, body){
       DestinationAccessToken = body.access_token;
       DestinationRestURL = body.rest_instance_url;
-      console.log("Destination Access : "+body.access_token);
-      console.log("ResponseURL : "+ body.rest_instance_url);
       console.log("body : "+ JSON.stringify(body)); 
-      if(body.error_description){
-        alert(body.error_description);
-      }
     });
   
   
