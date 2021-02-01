@@ -51,7 +51,10 @@ app.use(express.urlencoded({
       SourceRestURL = body.rest_instance_url;
       console.log("Source Access : "+body.access_token);
       console.log("ResponseURL : "+ body.rest_instance_url);
-      console.log("body : "+ JSON.stringify(body)); 
+      console.log("body : "+ JSON.stringify(body));
+      if(body.error_description){
+        alert(body.error_description);
+      }
     });
   
   
@@ -72,6 +75,9 @@ app.use(express.urlencoded({
       console.log("Destination Access : "+body.access_token);
       console.log("ResponseURL : "+ body.rest_instance_url);
       console.log("body : "+ JSON.stringify(body)); 
+      if(body.error_description){
+        alert(body.error_description);
+      }
     });
   
   
