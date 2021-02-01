@@ -116,22 +116,22 @@ app.use(express.urlencoded({
                         '<span class="slds-form-element__label slds-assistive-text">select row1</span> ' + 
                       '</label> ' + 
                     '</td>' +
-                    '<th data-label="name" role="row"><a href="#" class="slds-truncate">' + Acme + '</a></th> ' +
-                        '<td data-label="external-key"><a href="#" class="slds-truncate"> ' + Acme + '</a></td> ' +
+                    '<th data-label="name" role="row"><a href="#" class="slds-truncate">' + 'Acme' + '</a></th> ' +
+                        '<td data-label="external-key"><a href="#" class="slds-truncate"> ' + 'Acme' + '</a></td> ' +
                         '<td data-label="description"> ' +
-                            '<span class="slds-truncate">' + 4/14/2015 + '</span>' +
+                            '<span class="slds-truncate">' + '4/14/2015' + '</span>' +
                         '</td>' +
                         '<td data-label="field-count">' +
-                            '<span class="slds-truncate">' + Prospecting + '</span>' +
+                            '<span class="slds-truncate">' + 'Prospecting' + '</span>' +
                         '</td>' +
                         '<td data-label="record-count">' +
-                            '<span class="slds-truncate">' + 20% + '</span>' +
+                            '<span class="slds-truncate">' + '20%' + '</span>' +
                         '</td>' + 
                         '<td data-label="sendable">' +
-                            '<span class="slds-truncate">' + $25k + '</span>' +
+                            '<span class="slds-truncate">' + '$25k' + '</span>' +
                         '</td>' + 
                         '<td data-label="testable">' + 
-                            '<span class="slds-truncate">' + ghc + '</span>' +
+                            '<span class="slds-truncate">' + 'ghc' + '</span>' +
                         '</td>' +
                     '</tr>';
     }
