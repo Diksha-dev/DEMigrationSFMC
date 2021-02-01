@@ -10,62 +10,12 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.14.1/styles/salesforce-lightning-design-system.min.css" />
 
-
+    <link rel="icon" href="https://developer.salesforce.com/resources2/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://developer.saleforce.com/resources2/favicon.ico" type="image/x-icon">
 
     <title>DE SFMC</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <style type="text/css">
-        body {
-            padding: 20px;
-            margin: 0;
-        }
-
-        #step1 {
-            display: block;
-        }
-
-        .leftSide .rightSide {
-            height: 100%;
-            width: 100%;
-        }
-
-        .leftSide {
-            border-right: 4px solid #4CAF50;
-        }
-
-        .rightSide {
-            padding-left: 20px;
-        }
-
-        .InputTags {
-            position: absolute;
-            left: 120px;
-            width: 450px;
-            border: 1px solid black;
-        }
-
-        .Button {
-            background-color: #4CAF50;
-            /* Green */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin-left: 613px;
-        }
-
-        .BaseUrl {
-            position: absolute;
-            left: 580px;
-        }
-    </style>
-
-
 
 </head>
 
@@ -73,175 +23,205 @@
 
 <body>
 
-    <div id="step1" class="step">
-    <form method='post' action='/stack'>
-    <div class="slds-grid slds-gutters">
-        <div class="slds-col">
-            <article class="slds-card">
-                <div class="slds-card__header slds-grid">
-                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
-                        <div class="slds-media__figure">
-                            <img class="slds-icon_container" src="https://i.stack.imgur.com/c263o.png"
-                                title="Source SFMC" width="30" height="30">
-                            <span class="slds-assistive-text">Source SFMC</span>
-                            </img>
+    <div>
+        <form method='post' action='/stack'>
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <article class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <img class="slds-icon_container" src="https://i.stack.imgur.com/c263o.png"
+                                        title="Source SFMC" width="30" height="30">
+                                    <span class="slds-assistive-text">Source SFMC</span>
+                                    </img>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
+                                            title="Source SFMC">
+                                            <span>Source SFMC</span>
+                                        </a>
+                                    </h2>
+                                </div>
+                            </header>
                         </div>
-                        <div class="slds-media__body">
-                            <h2 class="slds-card__header-title">
-                                <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
-                                    title="Source SFMC">
-                                    <span>Source SFMC</span>
-                                </a>
-                            </h2>
+
+                        <br /><br />
+
+
+                        <div class="slds-card__body slds-card__body_inner">
+
+
+
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">* </abbr>Client Id</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" id="text-input-id-1 SourceClientID" value=""
+                                        name="SourceClientID" placeholder="Source Client Id" required="true"
+                                        class="slds-input" />
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">* </abbr>Client Secret</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" id="text-input-id-1 SourceClientSecret" value=""
+                                        name="SourceClientSecret" placeholder="Source Client Secret" required="true"
+                                        class="slds-input" />
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">* </abbr>Auth Base URI</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" id="text-input-id-1 SourceAuthBaseURI" value=""
+                                        name="SourceAuthBaseURI"
+                                        placeholder="Source Auth Base URI (Do not include /v2/token)" required="true"
+                                        class="slds-input" />
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">* </abbr>MID</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" id="text-input-id-1 SourceMID" value="" name="SourceMID"
+                                        placeholder="Source MID" required="true" class="slds-input" />
+                                </div>
+                            </div>
+
+
+
+
+
+
                         </div>
-                    </header>
+                        <footer class="slds-card__footer">
+                        </footer>
+                    </article>
                 </div>
 
-                <br/><br/>
-
-                
-                <div class="slds-card__body slds-card__body_inner">
 
 
-                    
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">
-                                <abbr class="slds-required" title="required">* </abbr>Client Id</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="text-input-id-1 SourceClientID" value="" name="SourceClientID"
-                                    placeholder="Source Client Id" required="true" class="slds-input" />
-                            </div>
+
+
+
+
+
+
+
+                <div class="slds-col">
+                    <article class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <img class="slds-icon_container" src="https://i.stack.imgur.com/c263o.png"
+                                        title="Destination SFMC" width="30" height="30">
+                                    <span class="slds-assistive-text">Destination SFMC</span>
+                                    </img>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
+                                            title="Destination SFMC">
+                                            <span>Destination SFMC</span>
+                                        </a>
+                                    </h2>
+                                </div>
+                            </header>
                         </div>
 
-                        <br/>
+                        <br /><br />
 
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">
-                                <abbr class="slds-required" title="required">* </abbr>Client Secret</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="text-input-id-1 SourceClientSecret" value=""
-                                    name="SourceClientSecret" placeholder="Source Client Secret" required="true"
-                                    class="slds-input" />
+                        <div class="slds-card__body slds-card__body_inner">
+
+
+
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">* </abbr>Client Id</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" id="text-input-id-1 DestinationClientID" value=""
+                                        name="DestinationClientID" placeholder="Destination Client Id" required="true"
+                                        class="slds-input" />
+                                </div>
                             </div>
-                        </div>
 
-                        <br/>
+                            <br />
 
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">
-                                <abbr class="slds-required" title="required">* </abbr>Auth Base URI</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="text-input-id-1 SourceAuthBaseURI" value=""
-                                    name="SourceAuthBaseURI"
-                                    placeholder="Source Auth Base URI (Do not include /v2/token)" required="true"
-                                    class="slds-input" />
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">* </abbr>Client Secret</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" id="text-input-id-1 DestinationClientSecret" value=""
+                                        name="DestinationClientSecret" placeholder="Destination Client Secret"
+                                        required="true" class="slds-input" />
+                                </div>
                             </div>
-                        </div>
 
-                        <br/>
+                            <br />
 
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">
-                                <abbr class="slds-required" title="required">* </abbr>MID</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="text-input-id-1 SourceMID" value="" name="SourceMID"
-                                    placeholder="Source MID" required="true" class="slds-input" />
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">* </abbr>Auth Base URI</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" id="text-input-id-1 DestinationAuthBaseURI" value=""
+                                        name="DestinationAuthBaseURI"
+                                        placeholder="Destination Auth Base URI (Do not include /v2/token)"
+                                        required="true" class="slds-input" />
+                                </div>
                             </div>
+
+                            <br />
+
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="text-input-id-1">
+                                    <abbr class="slds-required" title="required">* </abbr>MID</label>
+                                <div class="slds-form-element__control">
+                                    <input type="text" id="text-input-id-1 DestinationMID" value=""
+                                        name="DestinationMID" placeholder="Destination MID" required="true"
+                                        class="slds-input" />
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         </div>
-                    
-
-
-
-
-
+                        <footer class="slds-card__footer">
+                        </footer>
+                    </article>
                 </div>
-                <footer class="slds-card__footer">
-                </footer>
-            </article>
-        </div>
 
+                <button class="slds-button slds-button_neutral" id="FirstNext" type="submit"
+                    name="FirstNext">Submit</button>
 
-
-
-
-
-
-
-
-
-        <div class="slds-col">
-            <article class="slds-card">
-                <div class="slds-card__header slds-grid">
-                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
-                        <div class="slds-media__figure">
-                            <img class="slds-icon_container" src="https://i.stack.imgur.com/c263o.png"
-                                title="Destination SFMC" width="30" height="30">
-                            <span class="slds-assistive-text">Destination SFMC</span>
-                            </img>
-                        </div>
-                        <div class="slds-media__body">
-                            <h2 class="slds-card__header-title">
-                                <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
-                                    title="Destination SFMC">
-                                    <span>Destination SFMC</span>
-                                </a>
-                            </h2>
-                        </div>
-                    </header>
-                </div>
-                
-                <br/><br/>
-
-                <div class="slds-card__body slds-card__body_inner">
-
-
-                    
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">
-                                <abbr class="slds-required" title="required">* </abbr>Client Id</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="text-input-id-1 DestinationClientID" value="" name="DestinationClientID"
-                                    placeholder="Destination Client Id" required="true" class="slds-input" />
-                            </div>
-                        </div>
-
-                        <br/>
-
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">
-                                <abbr class="slds-required" title="required">* </abbr>Client Secret</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="text-input-id-1 DestinationClientSecret" value=""
-                                    name="DestinationClientSecret" placeholder="Destination Client Secret" required="true"
-                                    class="slds-input" />
-                            </div>
-                        </div>
-
-                        <br/>
-
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">
-                                <abbr class="slds-required" title="required">* </abbr>Auth Base URI</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="text-input-id-1 DestinationAuthBaseURI" value=""
-                                    name="DestinationAuthBaseURI"
-                                    placeholder="Destination Auth Base URI (Do not include /v2/token)" required="true"
-                                    class="slds-input" />
-                            </div>
-                        </div>
-
-                        <br/>
-
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">
-                                <abbr class="slds-required" title="required">* </abbr>MID</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="text-input-id-1 DestinationMID" value="" name="DestinationMID"
-                                    placeholder="Destination MID" required="true" class="slds-input" />
-                            </div>
-                        </div>
-                        
-                    
+        </form>
+    </div>
 
 
 
@@ -258,36 +238,9 @@
 
 
 
-                </div>
-                <footer class="slds-card__footer">
-                </footer>
-            </article>
-        </div>
-        <div class="slds-grid slds-gutters">
-        <button class="slds-button slds-button_neutral" id="FirstNext" type="submit"
-                            name="FirstNext">Submit</button>
-        </div>
-    </form>
-</div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-        
 
 
 </body>
