@@ -1,24 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Heroku Second Page</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <meta http-equiv="x-ua-compatible" content="ie=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" type="text/css" href="/assets/styles/salesforce-lightning-design-system.css" />
-    </head>
-    <body>
-        Hello, You are on second page.
-        <form method='post' action='/stack1'>
-            <label for="test">test:</label>
-            <input  type="text" name="test" placeholder="test"><br><br>
 
-            <input class="Button" id="SecondNext" type="submit" name="SecondNext" value="Next">
-        </form>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.14.1/styles/salesforce-lightning-design-system.min.css" />
+    <link rel="icon" href="https://developer.salesforce.com/resources2/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://developer.saleforce.com/resources2/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>DE SFMC</title>
+</head>
 
-        
+<body>
 
 
-    </body>
+    <div class="slds-grid slds-wrap">
+
+        <div class="slds-col slds-size_3-of-12">
+            <article class="slds-card">
+                <div class="slds-card__header slds-grid slds-align_absolute-center">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__figure">
+                            <img class="slds-icon_container"
+                                src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sf-marketingcloud-logo.png"
+                                title="Source SFMC" width="170" height="170">
+                            <span class="slds-assistive-text">Source SFMC</span>
+                            </img>
+                        </div>
+                    </header>
+                </div>
+                <br />
+                <div class="slds-card__body slds-card__body_inner slds-align_absolute-center">
+                    <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-left slds-is-open"
+                        aria-hidden="false">
+                        <div class="slds-panel__header">
+                            <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate"
+                                title="Panel Header">
+                                Contents
+                            </h2>
+                        </div>
+
+                        <div class="slds-panel__body slds-align_absolute-center">
+                            <div class="demo-only" style="width:320px">
+                                <nav class="slds-nav-vertical slds-nav-vertical_compact" aria-label="Sub page">
+                                    <div class="slds-nav-vertical__section">
+                                        <ul aria-describedby="entity-header">
+                                            <li class="slds-nav-vertical__item slds-is-active">
+                                                <a href="#" class="slds-nav-vertical__action" aria-current="true">
+                                                    Data Extention
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="slds-col slds-size_9-of-12">
+            <table class="slds-table slds-table--bordered">
+                <thead>
+                    <tr class="slds-text-heading--label">
+                        <th class="slds-cell-shrink" scope="col">
+                            <label class="slds-checkbox" for="select-all">
+                                <input name="checkbox" type="checkbox" id="select-all" />
+                                <span class="slds-checkbox--faux"></span>
+                                <span class="slds-form-element__label slds-assistive-text">select all</span>
+                            </label>
+                        </th>
+                        <th class="slds-is-sortable" scope="col">
+                            <span class="slds-truncate">Name</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate">External Key</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate">Description</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate">Field Count</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate">Record Count</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate">Sendable</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate">Testable</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="DEBody">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+</body>
+
 </html>
