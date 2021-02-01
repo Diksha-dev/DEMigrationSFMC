@@ -2,10 +2,10 @@
   "name": "demigrationsfmc",
   "version": "1.0.0",
   "description": "DE Migration SFMC",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -21,10 +21,12 @@
   },
   "homepage": "https://github.com/01fazzy/DEMigrationSFMC#readme",
   "dependencies": {
+    "@salesforce-ux/design-system": "^2.14.1",
     "express": "^4.17.1",
     "exprss": "0.0.1-security",
     "http": "0.0.1-security",
     "path": "^0.12.7",
+    "postcss": "^8.2.4",
     "querystring": "^0.2.0",
     "request": "^2.88.2"
   }
