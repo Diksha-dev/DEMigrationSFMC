@@ -73,7 +73,7 @@
 
 <body>
 
-
+    <div id="step1" class="step">
     <form method='post' action='/stack'>
     <div class="slds-grid slds-gutters">
         <div class="slds-col">
@@ -246,6 +246,7 @@
             </article>
         </div>
     </form>
+</div>
 
 
 
@@ -262,38 +263,9 @@
 
 
 
-    <div id="step1" class="step">
+    
 
-        <form method='post' action='/stack2'>
-            <div class="row no-gutters">
-
-
-                <div class="col no-gutters">
-                    <div class="rightSide">
-                        <h4>Destination Credentials</h4><br><br><br><br>
-                        <label for="DestinationClientID">Client ID:</label>
-                        <input Class="InputTags" value="" type="text" id="DestinationClientID"
-                            name="DestinationClientID" placeholder="Destination Client ID"><br><br>
-
-                        <label for="DestinationClientSecret">Client Secret:</label>
-                        <input Class="InputTags" value="" type="text" id="DestinationClientSecret"
-                            name="DestinationClientSecret" placeholder="Destination Client Secret"><br><br>
-
-                        <label for="DestinationAuthBaseURI">Auth Base URI:</label>
-                        <input class="InputTags" value="" type="text" id="DestinationAuthBaseURI"
-                            name="DestinationAuthBaseURI" placeholder="Destination Authentication Base URI">
-                        <lable class="BaseUrl">/v2/token</lable><br><br>
-
-                        <label for="DestinationMID">MID:</label>
-                        <input Class="InputTags" value="" type="text" id="DestinationMID" name="DestinationMID"
-                            placeholder="Destination MID"><br><br>
-                    </div>
-                </div>
-            </div>
-            <input class="Button" id="FirstNext" type="submit" name="FirstNext" value="Next">
-
-        </form>
-    </div>
+        
 
 
 </body>
