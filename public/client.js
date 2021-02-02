@@ -1,4 +1,5 @@
 function loadbutton() {
+    console.log('chal raha h');
 var tds = "", i;
 for (i = 1; i <= 6; i++) {
     tds = tds + '<tr class="slds-hint-parent"> ' +
