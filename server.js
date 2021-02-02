@@ -24,7 +24,7 @@ app.use(express.urlencoded({
   var DestinationRestURL = '';
   var DestinationSoapURL = '';
   
-  app.post('/Authenticate', async (req, res) => {
+  app.post('/Authenticate', (req, res) => {
     var SourceClientID = req.body.SourceClientID;
     var SourceClientSecret = req.body.SourceClientSecret;
     var SourceAuthBaseURI = req.body.SourceAuthBaseURI;
@@ -37,7 +37,7 @@ app.use(express.urlencoded({
   
     
   
-    await request.post({
+    request.post({
       headers: {'content-type' : 'application/json'},
       url: SourceAuthBaseURI + '/v2/token',
       body:{
@@ -56,7 +56,7 @@ app.use(express.urlencoded({
     });
   
   
-    await request.post({
+    request.post({
       headers: {'content-type' : 'application/json'},
       url: DestinationAuthBaseURI + '/v2/token',
       body:{
@@ -89,7 +89,7 @@ app.use(express.urlencoded({
                             <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\
                         </a:ReplyTo>\
                         <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\
-                        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\
+                        <fueloauth xmlns="http://exacttarget.com">' + 'eyJhbGciOiJIUzI1NiIsImtpZCI6IjEiLCJ2ZXIiOiIxIiwidHlwIjoiSldUIn0.eyJhY2Nlc3NfdG9rZW4iOiJZbU5aRVJJSW9MQkdRZ1hvNDdDTXJnRnciLCJjbGllbnRfaWQiOiI0ZXBobjBxd2pldWF5b3N1YjA3cDNibmkiLCJlaWQiOjExMDAwNTY5MCwic3RhY2tfa2V5IjoiUzExIiwicGxhdGZvcm1fdmVyc2lvbiI6MiwiY2xpZW50X3R5cGUiOiJTZXJ2ZXJUb1NlcnZlciJ9.WMjHRbLGutiWniUrlBOWuf0fWsD35KDuhWksE_y4KH0.qCIFHTo60jL9eSu_eS_SVLBrwC8W52y-vxOSyB_B6SGvhVIyM7ybOluvYHEQGlExHwrOYwgxPcG2R14nqAkSPI8KEPPdnyH0z4bTZ4b7raXBYKgV8oYYfUiQfOxddJFSnCTiBgldVIDo2pSBXtU7upm4ZUdg_UkI8ZKqTCI0llr1gcpiGaa' + '</fueloauth>\
                     </s:Header>\
                     <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\
                         <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\
@@ -112,7 +112,7 @@ app.use(express.urlencoded({
                   </s:Body>\
                 </s:Envelope>';
                 console.log('SourceAccessToken : ' + SourceAccessToken);
-    await request.post({
+    request.post({
       url: SourceSoapURL + 'Service.asmx',
       body: xmls
     }, 
