@@ -50,12 +50,9 @@ app.use(express.urlencoded({
     }, 
     function(error, response, body){
       SourceAccessToken = body.access_token;
-      SourceRestURL = body.rest_instance_url;
-      console.log("body : "+ JSON.stringify(body)); 
+      SourceRestURL = body.rest_instance_url; 
       SourceSoapURL = body.soap_instance_url;
-      console.log("SourceSoapURL : "+ JSON.stringify(SourceSoapURL)); 
-
-      
+      //console.log("body : "+ JSON.stringify(body));
     });
   
   
@@ -73,6 +70,7 @@ app.use(express.urlencoded({
     function(error, response, body){
       DestinationAccessToken = body.access_token;
       DestinationRestURL = body.rest_instance_url;
+      DestinationSoapURL = body.soap_instance_url;
       //console.log("body : "+ JSON.stringify(body)); 
     });
   
@@ -82,21 +80,43 @@ app.use(express.urlencoded({
 
 
     //List of Data Extension API Callout
+    let xmls='<?xml version="1.0" encoding="UTF-8"?>\
+                <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\
+                    <s:Header>\
+                        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\
+                        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\
+                        <a:ReplyTo>\
+                            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\
+                        </a:ReplyTo>\
+                        <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\
+                        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\
+                    </s:Header>\
+                    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\
+                        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\
+                            <RetrieveRequest>\
+                                <ObjectType>DataExtension</ObjectType>\
+                                <Properties>CustomerKey</Properties>\
+                                <Properties>Name</Properties>\
+                                <Properties>DataExtension.ObjectID</Properties>\
+                                <Properties>IsSendable</Properties>\
+                                <Properties>SendableSubscriberField.Name</Properties>\
+                                <Properties>SendableDataExtensionField.Name</Properties>\
+                                <Properties>CategoryID</Properties>\
+                                <Filter xsi:type="SimpleFilterPart">\
+                                    <Property>Name</Property>\
+                                    <SimpleOperator>equals</SimpleOperator>\
+                                    <Value>Filter Activity DE</Value>\
+                                </Filter>\
+                            </RetrieveRequest>\
+                      </RetrieveRequestMsg>\
+                  </s:Body>\
+                </s:Envelope>';
     request.post({
-      headers: {'content-type' : 'application/json'},
-      url: SourceAuthBaseURI + '/v2/token',
-      body:{
-            'client_id': SourceClientID, //pass Client ID
-            'client_secret': SourceClientSecret, //pass Client Secret
-            'grant_type': 'client_credentials',
-            'account_id':SourceMID
-      },
-      json: true
+      url: SourceSoapURL + 'Service.asmx',
+      body: xmls
     }, 
     function(error, response, body){
-      SourceAccessToken = body.access_token;
-      SourceRestURL = body.rest_instance_url;
-      //console.log("body : "+ JSON.stringify(body)); 
+      console.log("body : "+ JSON.stringify(body)); 
     });
 
 
