@@ -143,25 +143,17 @@ app.use(express.urlencoded({
   
         console.log("JSON.stringify(error)" + JSON.stringify(error));
       });
+    })
   
   
   
   
   
-  
-  
-  
-  })
-  
+});
   
   
   
   
-  });
-  
-  
-  
-  
-  app.listen(port, () => {
-     console.log('Example app is listening on port http://localhost:${port}');
-  });
+app.listen(port, () => {
+    console.log('Example app is listening on port http://localhost:${port}');
+});
