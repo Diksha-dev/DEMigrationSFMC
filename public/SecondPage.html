@@ -115,7 +115,8 @@
         await $.ajax
             ({
                 url: '/DEListShowAPI',
-                data: 'Client se data gya',
+                data: {
+                    'reqForDEList' : 'True'},
                 type: "POST",
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'

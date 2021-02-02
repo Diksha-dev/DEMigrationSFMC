@@ -150,8 +150,10 @@ app.use(express.urlencoded({
 
     
     app.post("/DEListShowAPI", async (req, res) => {
-      console.log('req.body : '+req.body);
       console.log('req.body : '+JSON.stringify(req.body));
+      if(req.body.reqForDEList = 'True'){
+        console.log('if : '+JSON.stringify(req.body.reqForDEList));
+      }
       await res.send('server se response aa gya');
     });
   
