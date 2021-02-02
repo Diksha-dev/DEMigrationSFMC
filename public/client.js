@@ -1,22 +1,24 @@
-app.post('/DEDataGet', (req, res) => {
-    console.log("req : " + req);
-    console.log("res : " + res);
-    request.post({
-      headers: {
-        'content-type' : 'application/json'
-      },
-      url: '/DEDataGet',
-      body:{
-        "property": "name"
-      },
-      json: true
-    }, 
-    function(error, response, body){
-      console.log("client body :" + JSON.stringify(body));
-      console.log("client response :" + JSON.stringify(response));
-      console.log("client error :" + JSON.stringify(error));
-    });
-  })
+console.log('<ctrl:var name="myVar" />');
+fetch('/DEDataGet', {
+headers: {
+    'content-type' : 'application/json'
+},
+url: '/DEDataGet',
+body:{
+    "property": "name"
+},
+json: true
+})
+.then(function(data) {
+console.log("client data :" + JSON.stringify(data));
+console.log("client data :" + data);
+})
+.catch(function(error) {
+console.log("client error :" + JSON.stringify(error));
+console.log("client error :" + error);
+});
+
+
 
 
 

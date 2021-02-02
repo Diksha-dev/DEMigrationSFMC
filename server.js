@@ -103,7 +103,7 @@ app.use(express.urlencoded({
     }))
 
 
-
+    var myVar = "Hello";
 
     app.post('/DEDataGet', (req, res) => {
       console.log('req : '+req);
