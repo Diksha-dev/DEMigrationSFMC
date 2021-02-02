@@ -79,61 +79,6 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-//List of Data Extension API Callout
-      let xmls = '<?xml version="1.0" encoding="UTF-8"?>\
-                    <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\
-                        <s:Header>\
-                            <a:Action s:mustUnderstand="1">Retrieve</a:Action>\
-                            <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\
-                            <a:ReplyTo>\
-                                <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\
-                            </a:ReplyTo>\
-                            <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\
-                            <fueloauth xmlns="http://exacttarget.com">'+ 'eyJhbGciOiJIUzI1NiIsImtpZCI6IjEiLCJ2ZXIiOiIxIiwidHlwIjoiSldUIn0.eyJhY2Nlc3NfdG9rZW4iOiJZOWxxQkFSM2dKWVVBWWdyTWozT29iakEiLCJjbGllbnRfaWQiOiI0ZXBobjBxd2pldWF5b3N1YjA3cDNibmkiLCJlaWQiOjExMDAwNTY5MCwic3RhY2tfa2V5IjoiUzExIiwicGxhdGZvcm1fdmVyc2lvbiI6MiwiY2xpZW50X3R5cGUiOiJTZXJ2ZXJUb1NlcnZlciJ9.ELDRWfMSv-LLtJRJe3bZexewB7AJKir0JNJuP3eF95w.p7kDZhBWrs97D8-YQFXg7x7Upnf6CD9_-CgKzoWIbbUQYY6jZiSPE7Gn0fKvJZ27YYH0ZeDao555hG7nS99J86IZiN_HPIj6RZLFUzdMz9KKT20EkwfVNb7wKeK1p8fRXd5Plp2-9CX4-SBNFE9nLbWbXftyRV-bRFMg1xKmRJ3L8_ZY_Tk' +'</fueloauth>\
-                        </s:Header>\
-                        <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\
-                            <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\
-                                <RetrieveRequest>\
-                                    <ObjectType>DataExtension</ObjectType>\
-                                    <Properties>CustomerKey</Properties>\
-                                    <Properties>Name</Properties>\
-                                    <Properties>DataExtension.ObjectID</Properties>\
-                                    <Properties>IsSendable</Properties>\
-                                    <Properties>SendableSubscriberField.Name</Properties>\
-                                    <Properties>SendableDataExtensionField.Name</Properties>\
-                                    <Properties>CategoryID</Properties>\
-                                    <Filter xsi:type="SimpleFilterPart">\
-                                        <Property>Name</Property>\
-                                        <SimpleOperator>equals</SimpleOperator>\
-                                        <Value>Filter Activity DE</Value>\
-                                    </Filter>\
-                                </RetrieveRequest>\
-                          </RetrieveRequestMsg>\
-                      </s:Body>\
-                    </s:Envelope>';
-
-      console.log('url in de list : ' + SourceSoapURL + 'Service.asmx');
-      console.log('SourceAccessToken in de list : ' + SourceAccessToken);
-      request.post({
-        url: 'https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx',
-        body: xmls
-      },
-      function (error, response, body) {
-        console.log("body : " + body);
-        console.log("error : " + error);
-      });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -162,49 +107,55 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForDEList = 'True') {
       console.log('if : ' + JSON.stringify(req.body.reqForDEList));
 
-      //List of Data Extension API Callout
-      let xmls = '<?xml version="1.0" encoding="UTF-8"?>\
-                    <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\
-                        <s:Header>\
-                            <a:Action s:mustUnderstand="1">Retrieve</a:Action>\
-                            <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\
-                            <a:ReplyTo>\
-                                <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\
-                            </a:ReplyTo>\
-                            <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\
-                            <fueloauth xmlns="http://exacttarget.com">'+ SourceAccessToken +'</fueloauth>\
-                        </s:Header>\
-                        <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\
-                            <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\
-                                <RetrieveRequest>\
-                                    <ObjectType>DataExtension</ObjectType>\
-                                    <Properties>CustomerKey</Properties>\
-                                    <Properties>Name</Properties>\
-                                    <Properties>DataExtension.ObjectID</Properties>\
-                                    <Properties>IsSendable</Properties>\
-                                    <Properties>SendableSubscriberField.Name</Properties>\
-                                    <Properties>SendableDataExtensionField.Name</Properties>\
-                                    <Properties>CategoryID</Properties>\
-                                    <Filter xsi:type="SimpleFilterPart">\
-                                        <Property>Name</Property>\
-                                        <SimpleOperator>equals</SimpleOperator>\
-                                        <Value>Filter Activity DE</Value>\
-                                    </Filter>\
-                                </RetrieveRequest>\
-                          </RetrieveRequestMsg>\
-                      </s:Body>\
-                    </s:Envelope>';
 
-      console.log('url in de list : ' + SourceSoapURL + 'Service.asmx');
-      console.log('SourceAccessToken in de list : ' + SourceAccessToken);
-      request.post({
-        url: SourceSoapURL + 'Service.asmx',
-        body: xmls
-      },
-      function (error, response, body) {
-        console.log("body : " + body);
-        console.log("error : " + error);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      var options = {
+        'method': 'POST',
+        'url': 'https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx',
+        'headers': {
+          'Content-Type': 'text/xml',
+          'SoapAction': 'Retrieve',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6IjEiLCJ2ZXIiOiIxIiwidHlwIjoiSldUIn0.eyJhY2Nlc3NfdG9rZW4iOiJZVlZMQU5GcmNqMUo3Mzd1NDRUeHNYUXUiLCJjbGllbnRfaWQiOiI0ZXBobjBxd2pldWF5b3N1YjA3cDNibmkiLCJlaWQiOjExMDAwNTY5MCwic3RhY2tfa2V5IjoiUzExIiwicGxhdGZvcm1fdmVyc2lvbiI6MiwiY2xpZW50X3R5cGUiOiJTZXJ2ZXJUb1NlcnZlciJ9.1k0hI7qnfa8F6WSBPLQO0u0of9OdqAlWIm3gExnXOu4.DDI1lVCYQ2FiWzQpP6ozMaivGq9eBrRwyC7i0UP9OJRrFY-8T1WAuc0QO-UNJQ_vGC5Jc3XaiQV-xcwhtXEdZSKfvioaduFSL2DhTsvPYqIe8rkVs8UekIuKPoqIXgRb8tbCbWfl1KFN9kMU-Ds6rmIqAsK4CLFcgC2ekDhXytBchVz0DPU'
+        },
+        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">eyJhbGciOiJIUzI1NiIsImtpZCI6IjEiLCJ2ZXIiOiIxIiwidHlwIjoiSldUIn0.eyJhY2Nlc3NfdG9rZW4iOiJZWThKeW5KcUY4bHozWW4xWjdPM05WajEiLCJjbGllbnRfaWQiOiI0ZXBobjBxd2pldWF5b3N1YjA3cDNibmkiLCJlaWQiOjExMDAwNTY5MCwic3RhY2tfa2V5IjoiUzExIiwicGxhdGZvcm1fdmVyc2lvbiI6MiwiY2xpZW50X3R5cGUiOiJTZXJ2ZXJUb1NlcnZlciJ9.3Jyrwmvl0Wx7xe2W7J7LnKvn0U4ZtpLxglalcWkvgtc.SZHwWZUJwV4j2XdI8t0yuAsj3r1TSNg9xhYaiL5ZB8u-WvJ4-ucWh9I96fl6Cxjle5tcTRpQZwG4spJ_7zmfytKriZfrur0jDFbqFV7ewrr9NQwj_bqwbfLwv0hUl5iZnh8nz4GA-sHdOUDDZlGi2vDXgbksfM0X-xuk-vp1znW-UXc_tvM</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtension</ObjectType>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>DataExtension.ObjectID</Properties>\r\n                <Properties>IsSendable</Properties>\r\n                <Properties>SendableSubscriberField.Name</Properties>\r\n                <Properties>SendableDataExtensionField.Name</Properties>\r\n                <Properties>CategoryID</Properties>\r\n                \r\n        \r\n                <Filter xsi:type="SimpleFilterPart">\r\n                    <Property>Name</Property>\r\n                    <SimpleOperator>equals</SimpleOperator>\r\n                    <Value>Filter Activity DE</Value>\r\n                </Filter>\r\n        \r\n             \r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
+
+      };
+      request(options, function (error, response) {
+        if (error) throw new Error(error);
+        console.log(response.body);
       });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
     }
     await res.send('body');
   });
