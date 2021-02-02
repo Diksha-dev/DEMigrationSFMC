@@ -105,86 +105,22 @@ app.use(express.urlencoded({
 
 
     
-    app.post('/DEListShow', async (req, res) => {
-      
-
-
-
-      console.log('DEListShow()');
-        await $.ajax
-        ({
-            url: 'https://mc6vgk-sxj9p08pqwxqz9hw9-4my.auth.marketingcloudapis.com//v2/token',
-            data: {
-                'client_id': '4ephn0qwjeuayosub07p3bni', //pass Client ID
-                'client_secret': 'DDmRBOtpNfUuxzM4D6osXxSd', //pass Client Secret
-                'grant_type': 'client_credentials',
-                'account_id':'514003871'
-            },
-            type: "POST",
-            headers: {
-                'Content-type': 'application/x-www-form-urlencoded'
-            }
-        })
-        .then(function(data) {
-            console.log("data : "+ JSON.stringify(data)); 
-        })
-        .catch(function(error) {
-            console.log("error : "+ JSON.stringify(error)); 
-        });
-        console.log('DEListShow()');
-  
-
-
-
-
-
-
-
-
-      request.post({
-        headers: {
-          'Authorization' : "Bearer " + SourceAccessToken,
-          'content-type' : 'application/json'
-        },
-        url: SourceRestURL + '/asset/v1/content/assets/query',
-        body:{
-          "query": {
-            "property": "name",
-            "simpleOperator": "like",
-            "value": "Health Photo.jpg"
-          },
-          "fields": [
-            "id",
-            "name",
-            "enterpriseId",
-            "memberId",
-            "thumbnail",
-            "category",
-            "content",
-            "data",
-            "fileProperties"
-          ]
-        },
-        json: true
-      }, 
-      function(error, response, body){
-        console.log("JSON.stringify(body)" + JSON.stringify(body));
-        
-        console.log("JSON.stringify(response)" + JSON.stringify(response));
-  
-        console.log("JSON.stringify(error)" + JSON.stringify(error));
-      });
+    app.post('/DEListShow', (req, res) => {
+      console.log('DEListShow');
     })
   
   
   
+
+
+
+
+
   
   
+
+
 });
-  
-  
-  
-  
 app.listen(port, () => {
     console.log('Example app is listening on port http://localhost:${port}');
 });
