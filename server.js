@@ -135,6 +135,7 @@ app.use(express.urlencoded({
                         '</td>' +
                     '</tr>';
     }
+    
     document.getElementById("DEBody").innerHTML = tds;
 
 
