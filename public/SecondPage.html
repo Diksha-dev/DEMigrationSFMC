@@ -19,7 +19,7 @@
 
 <body>
 
-
+    <form method='post' action='/DEListShow'>
     <div class="slds-grid slds-wrap">
 
         <div class="slds-col slds-size_3-of-12">
@@ -52,7 +52,7 @@
                                     <div class="slds-nav-vertical__section">
                                         <ul aria-describedby="entity-header">
                                             <li class="slds-nav-vertical__item slds-is-active">
-                                                <a href="#" method='post' action='/DEListShow' class="slds-nav-vertical__action" aria-current="true">
+                                                <a href="#" class="slds-nav-vertical__action" aria-current="true">
                                                     Data Extention
                                                 </a>
                                             </li>
@@ -102,6 +102,8 @@
                 <tbody id="DEBody">
                     
                 </tbody>
+                <button class="slds-button slds-button_brand slds-align_absolute-center" id="FirstNext" type="submit"
+                    name="FirstNext">Submit</button>
             </table>
         </div>
     </div>
@@ -109,7 +111,7 @@
 
 
 
-
+</form>
 </body>
 <script>
     var tds = "", i;
