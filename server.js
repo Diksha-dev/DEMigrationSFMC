@@ -139,9 +139,11 @@ app.post('/Authenticate', (req, res) => {
                           </RetrieveRequestMsg>\
                       </s:Body>\
                     </s:Envelope>';
+      var url= SourceSoapURL + 'Service.asmx';
+      console.log('url in de list : ' + url);
       console.log('SourceAccessToken in de list : ' + SourceAccessToken);
       request.post({
-        url: SourceSoapURL + 'Service.asmx',
+        url: url,
         body: xmls
       },
         function (error, response, body) {
@@ -149,7 +151,7 @@ app.post('/Authenticate', (req, res) => {
           console.log("error : " + error);
         });
     }
-    await res.send('body');
+    await res.send(body);
   });
 
 
