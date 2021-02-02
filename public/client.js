@@ -1,3 +1,4 @@
+function loadbutton() {
 fetch("/DEDataGet", {  
                     method: "POST",
                     headers: {
@@ -63,3 +64,4 @@ for (i = 0; i < tds.length; ++i) {
     console.log("tds : " + JSON.stringify(tds[i].innerHTML));
 }
 
+}
