@@ -150,9 +150,10 @@ app.use(express.urlencoded({
 
 
     
-    app.post('/DEListShow', (req, res) => {
-      console.log('DEListShow');
-    })
+    app.post("/DEListShowAPI", async (req, res) => {
+      console.log(req.body);
+      await res.send('aa gya response aa gya');
+    });
   
   
   

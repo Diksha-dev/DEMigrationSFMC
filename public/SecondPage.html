@@ -7,19 +7,23 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.14.1/styles/salesforce-lightning-design-system.min.css" />
     <link rel="icon" href="https://developer.salesforce.com/resources2/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://developer.saleforce.com/resources2/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>DE SFMC</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.js" ></script> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.13.7/styles/salesforce-lightning-design-system.min.css" integrity="sha512-UV/bdfkf/vUvwZ6/aVq8zas293BNyu43i68QdurkfUmSjGRiCxKISDe29R6VPB3YKfeA/lCjGyfXLBIzlpTg5A==" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.13.7/styles/salesforce-lightning-design-system.min.css"
+        integrity="sha512-UV/bdfkf/vUvwZ6/aVq8zas293BNyu43i68QdurkfUmSjGRiCxKISDe29R6VPB3YKfeA/lCjGyfXLBIzlpTg5A=="
+        crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 
 </head>
 
 <body>
 
-    <form method='post' action='/DEListShow'>
+
     <div class="slds-grid slds-wrap">
 
         <div class="slds-col slds-size_3-of-12">
@@ -52,7 +56,8 @@
                                     <div class="slds-nav-vertical__section">
                                         <ul aria-describedby="entity-header">
                                             <li class="slds-nav-vertical__item slds-is-active">
-                                                <button class="slds-button slds-button_brand slds-align_absolute-center" onclick="DEListShow()">DE Extension</button>
+                                                <button class="slds-button slds-button_brand slds-align_absolute-center"
+                                                    onclick="DEListShow()">DE Extension</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -98,57 +103,67 @@
                     </tr>
                 </thead>
                 <tbody id="DEBody">
-                    
+
                 </tbody>
             </table>
         </div>
     </div>
 
-
-
-
-</form>
 </body>
 <script>
-    function DEListShow(){
-        console.log('DEListShow');
+    async function DEListShow() {
+        await $.ajax
+            ({
+                url: '/DEListShowAPI',
+                data: 1,
+                type: "POST",
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                success: function (data) {
+                    console.log('data : ' + data);
+                }
+            })
     }
+
+
     var tds = "", i;
     for (i = 1; i <= 6; i++) {
-    tds = tds + '<tr class="slds-hint-parent"> ' +
-        '<td class="slds-row-select"> ' +
-        '<label class="slds-checkbox" for="select-row1"> ' +
-        '<input name="select-row1" type="checkbox" id="select-row1" /> ' +
-        '<span class="slds-checkbox--faux"></span> ' +
-        '<span class="slds-form-element__label slds-assistive-text">select row1</span> ' +
-        '</label> ' +
-        '</td>' +
-        '<th data-label="name" role="row"><a href="#" class="slds-truncate">' + 'Acme' + '</a></th> ' +
-        '<td data-label="external-key"><a href="#" class="slds-truncate"> ' + 'Acme' + '</a></td> ' +
-        '<td data-label="description"> ' +
-        '<span class="slds-truncate">' + '4/14/2015' + '</span>' +
-        '</td>' +
-        '<td data-label="field-count">' +
-        '<span class="slds-truncate">' + 'Prospecting' + '</span>' +
-        '</td>' +
-        '<td data-label="record-count">' +
-        '<span class="slds-truncate">' + '20%' + '</span>' +
-        '</td>' +
-        '<td data-label="sendable">' +
-        '<span class="slds-truncate">' + '$25k' + '</span>' +
-        '</td>' +
-        '<td data-label="testable">' +
-        '<span class="slds-truncate">' + 'ghc' + '</span>' +
-        '</td>' +
-        '</tr>';
-}
-document.getElementById('DEBody').innerHTML = tds;
+        tds = tds + '<tr class="slds-hint-parent"> ' +
+            '<td class="slds-row-select"> ' +
+            '<label class="slds-checkbox" for="select-row1"> ' +
+            '<input name="select-row1" type="checkbox" id="select-row1" /> ' +
+            '<span class="slds-checkbox--faux"></span> ' +
+            '<span class="slds-form-element__label slds-assistive-text">select row1</span> ' +
+            '</label> ' +
+            '</td>' +
+            '<th data-label="name" role="row"><a href="#" class="slds-truncate">' + 'Acme' + '</a></th> ' +
+            '<td data-label="external-key"><a href="#" class="slds-truncate"> ' + 'Acme' + '</a></td> ' +
+            '<td data-label="description"> ' +
+            '<span class="slds-truncate">' + '4/14/2015' + '</span>' +
+            '</td>' +
+            '<td data-label="field-count">' +
+            '<span class="slds-truncate">' + 'Prospecting' + '</span>' +
+            '</td>' +
+            '<td data-label="record-count">' +
+            '<span class="slds-truncate">' + '20%' + '</span>' +
+            '</td>' +
+            '<td data-label="sendable">' +
+            '<span class="slds-truncate">' + '$25k' + '</span>' +
+            '</td>' +
+            '<td data-label="testable">' +
+            '<span class="slds-truncate">' + 'ghc' + '</span>' +
+            '</td>' +
+            '</tr>';
+    }
+    document.getElementById('DEBody').innerHTML = tds;
 
 
 
-var tds = document.querySelectorAll('#DEBody tbody td'), i;
-for (i = 0; i < tds.length; ++i) {
-    console.log("tds : " + JSON.stringify(tds[i].innerHTML));
-}
+    var tds = document.querySelectorAll('#DEBody tbody td'), i;
+    for (i = 0; i < tds.length; ++i) {
+        console.log("tds : " + JSON.stringify(tds[i].innerHTML));
+    }
 </script>
+
 </html>
