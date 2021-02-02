@@ -37,7 +37,7 @@ app.use(express.urlencoded({
   
     
   
-    request.post({
+    await request.post({
       headers: {'content-type' : 'application/json'},
       url: SourceAuthBaseURI + '/v2/token',
       body:{
