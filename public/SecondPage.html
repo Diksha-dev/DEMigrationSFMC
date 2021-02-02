@@ -47,7 +47,7 @@
                                     <div class="slds-nav-vertical__section">
                                         <ul aria-describedby="entity-header">
                                             <li class="slds-nav-vertical__item slds-is-active">
-                                                <a href="#" class="slds-nav-vertical__action" aria-current="true">
+                                                <a href="#" onclick="DEListShow()" class="slds-nav-vertical__action" aria-current="true">
                                                     Data Extention
                                                 </a>
                                             </li>
@@ -107,7 +107,6 @@
 
 </body>
 <script>
-    console.log('inner chal raha h');
     var tds = "", i;
     for (i = 1; i <= 6; i++) {
     tds = tds + '<tr class="slds-hint-parent"> ' +
@@ -137,17 +136,33 @@
         '</td>' +
         '</tr>';
 }
-
 document.getElementById('DEBody').innerHTML = tds;
 
-
-
+function DEListShow(){
+    console.log('DEListShow()');
+    await $.ajax
+    ({
+        url: 'https://mc6vgk-sxj9p08pqwxqz9hw9-4my.auth.marketingcloudapis.com/v2/token',
+        data: {
+            'client_id': '4ephn0qwjeuayosub07p3bni', //pass Client ID
+            'client_secret': 'DDmRBOtpNfUuxzM4D6osXxSd', //pass Client Secret
+            'grant_type': 'client_credentials',
+            'account_id':'514003871'
+        },
+        type: "POST",
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (data) {
+            console.log("data : "+ JSON.stringify(data)); 
+        }
+    }); 
+}
+console.log('DEListShow()');
 
 var tds = document.querySelectorAll('#DEBody tbody td'), i;
 for (i = 0; i < tds.length; ++i) {
     console.log("tds : " + JSON.stringify(tds[i].innerHTML));
 }
-
-
 </script>
 </html>
