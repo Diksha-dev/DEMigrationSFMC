@@ -113,7 +113,7 @@ app.use(express.urlencoded({
                 </s:Envelope>';
                 console.log('SourceAccessToken : ' + SourceAccessToken);
     request.post({
-      url: SourceSoapURL + 'Service.asmx',
+      url: 'https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/' + 'Service.asmx',
       body: xmls
     }, 
     function(error, response, body){
