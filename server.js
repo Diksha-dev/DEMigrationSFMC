@@ -119,6 +119,12 @@ app.use(express.urlencoded({
     function(error, response, body){
       console.log("JSON body : "+ JSON.stringify(body));
       console.log("body : "+ body); 
+
+      console.log("JSON response : "+ JSON.stringify(response));
+      console.log("response : "+ response); 
+
+      console.log("JSON error : "+ JSON.stringify(error));
+      console.log("error : "+ error); 
     });
 
 
