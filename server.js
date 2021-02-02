@@ -49,7 +49,7 @@ app.use(express.urlencoded({
     function(error, response, body){
       SourceAccessToken = body.access_token;
       SourceRestURL = body.rest_instance_url;
-      console.log("body : "+ JSON.stringify(body)); 
+      //console.log("body : "+ JSON.stringify(body)); 
     });
   
   
@@ -67,7 +67,7 @@ app.use(express.urlencoded({
     function(error, response, body){
       DestinationAccessToken = body.access_token;
       DestinationRestURL = body.rest_instance_url;
-      console.log("body : "+ JSON.stringify(body)); 
+      //console.log("body : "+ JSON.stringify(body)); 
     });
   
   
@@ -103,7 +103,7 @@ app.use(express.urlencoded({
     }))
 
 
-    var myVar = "Hello";
+    
 
     app.post('/DEDataGet', (req, res) => {
       console.log('req : '+req);

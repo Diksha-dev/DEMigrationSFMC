@@ -1,22 +1,20 @@
-console.log('<ctrl:var name="myVar" />');
-fetch('/DEDataGet', {
-headers: {
-    'content-type' : 'application/json'
-},
-url: '/DEDataGet',
-body:{
-    "property": "name"
-},
-json: true
-})
-.then(function(data) {
-console.log("client data :" + JSON.stringify(data));
-console.log("client data :" + data);
-})
-.catch(function(error) {
-console.log("client error :" + JSON.stringify(error));
-console.log("client error :" + error);
-});
+fetch("/DEDataGet", {  
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        Name: 'fileName',
+                    })
+                })
+                .then(function(res) {
+                    console.log("client res :" + JSON.stringify(res));
+                    console.log("client res :" + res);
+                })
+                .catch(function(err) {
+                    console.log("client err :" + JSON.stringify(err));
+                    console.log("client err :" + err);
+                });
 
 
 
