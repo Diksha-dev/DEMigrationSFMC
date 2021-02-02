@@ -105,11 +105,11 @@ app.use(express.urlencoded({
 
 
     
-    app.post('/DEListShow', (req, res) => {
+    app.post('/DEListShow', async (req, res) => {
       
 
 
-      
+
       console.log('DEListShow()');
         await $.ajax
         ({
