@@ -117,7 +117,7 @@ app.post('/Authenticate', (req, res) => {
                                 <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\
                             </a:ReplyTo>\
                             <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\
-                            <fueloauth xmlns="http://exacttarget.com">' + 'eyJhbGciOiJIUzI1NiIsImtpZCI6IjEiLCJ2ZXIiOiIxIiwidHlwIjoiSldUIn0.eyJhY2Nlc3NfdG9rZW4iOiJZemtYZDRmM3MwRFBjejk2WDdTZ21qMmMiLCJjbGllbnRfaWQiOiI0ZXBobjBxd2pldWF5b3N1YjA3cDNibmkiLCJlaWQiOjExMDAwNTY5MCwic3RhY2tfa2V5IjoiUzExIiwicGxhdGZvcm1fdmVyc2lvbiI6MiwiY2xpZW50X3R5cGUiOiJTZXJ2ZXJUb1NlcnZlciJ9.Ose4clJnlCqhkmGm_v8EoXNWBNs7_y8IaDsKaAUxIzw.YWbxngGvR5R7myGwSfXnM6MtsLVU-0jTHozo_A84PSLbZzNmTohQ3t6m37-N64Nrv7lrSvrQLGUeHX90x0qFQl7_1eHCgeUa3NLWrRyIRjMIfTxVzfInCjrNSDEJ2xeUIJ1hjhaiqD7UUG4o-X5JltZMbEkNMHVr18qn9DmzEQC6Qo1-Jrg' + '</fueloauth>\
+                            <fueloauth xmlns="http://exacttarget.com">'+ SourceAccessToken +'</fueloauth>\
                         </s:Header>\
                         <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\
                             <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\
@@ -139,11 +139,11 @@ app.post('/Authenticate', (req, res) => {
                           </RetrieveRequestMsg>\
                       </s:Body>\
                     </s:Envelope>';
-      var url= 'https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx';
-      console.log('url in de list : ' + url);
+
+      console.log('url in de list : ' + SourceSoapURL + 'Service.asmx');
       console.log('SourceAccessToken in de list : ' + SourceAccessToken);
       request.post({
-        url: url,
+        url: SourceSoapURL + 'Service.asmx',
         body: xmls
       },
         function (error, response, body) {
