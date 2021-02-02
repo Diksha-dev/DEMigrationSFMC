@@ -117,8 +117,7 @@ app.use(express.urlencoded({
       body: xmls
     }, 
     function(error, response, body){
-      console.log("body : "+ body); 
-      console.log("response : "+ response); 
+      console.log("body : "+ body);
       console.log("error : "+ error); 
     });
 
@@ -151,8 +150,9 @@ app.use(express.urlencoded({
 
     
     app.post("/DEListShowAPI", async (req, res) => {
-      console.log(req.body);
-      await res.send('aa gya response aa gya');
+      console.log('req.body : '+req.body);
+      console.log('req.body : '+JSON.stringify(req.body));
+      await res.send('server se response aa gya');
     });
   
   
