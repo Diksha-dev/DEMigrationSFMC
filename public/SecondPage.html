@@ -11,7 +11,29 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>DE SFMC</title>
 </head>
-
+<script>
+    function DEListShow(){
+        console.log('DEListShow()');
+        await $.ajax
+        ({
+            url: 'https://mc6vgk-sxj9p08pqwxqz9hw9-4my.auth.marketingcloudapis.com/v2/token',
+            data: {
+                'client_id': '4ephn0qwjeuayosub07p3bni', //pass Client ID
+                'client_secret': 'DDmRBOtpNfUuxzM4D6osXxSd', //pass Client Secret
+                'grant_type': 'client_credentials',
+                'account_id':'514003871'
+            },
+            type: "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded'
+            },
+            success: function (data) {
+                console.log("data : "+ JSON.stringify(data)); 
+            }
+        }); 
+    }
+    console.log('DEListShow()');
+</script>
 <body>
 
 
@@ -48,7 +70,7 @@
                                         <ul aria-describedby="entity-header">
                                             <li class="slds-nav-vertical__item slds-is-active">
                                                 <a href="#" onclick="DEListShow()" class="slds-nav-vertical__action" aria-current="true">
-                                                    Data Extention
+                                                    <span>Data Extention
                                                 </a>
                                             </li>
                                         </ul>
@@ -138,27 +160,7 @@
 }
 document.getElementById('DEBody').innerHTML = tds;
 
-function DEListShow(){
-    console.log('DEListShow()');
-    await $.ajax
-    ({
-        url: 'https://mc6vgk-sxj9p08pqwxqz9hw9-4my.auth.marketingcloudapis.com/v2/token',
-        data: {
-            'client_id': '4ephn0qwjeuayosub07p3bni', //pass Client ID
-            'client_secret': 'DDmRBOtpNfUuxzM4D6osXxSd', //pass Client Secret
-            'grant_type': 'client_credentials',
-            'account_id':'514003871'
-        },
-        type: "POST",
-        headers: {
-            'Content-type': 'application/x-www-form-urlencoded'
-        },
-        success: function (data) {
-            console.log("data : "+ JSON.stringify(data)); 
-        }
-    }); 
-}
-console.log('DEListShow()');
+
 
 var tds = document.querySelectorAll('#DEBody tbody td'), i;
 for (i = 0; i < tds.length; ++i) {
