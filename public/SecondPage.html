@@ -52,9 +52,7 @@
                                     <div class="slds-nav-vertical__section">
                                         <ul aria-describedby="entity-header">
                                             <li class="slds-nav-vertical__item slds-is-active">
-                                                <a href="#" class="slds-nav-vertical__action" aria-current="true">
-                                                    Data Extention
-                                                </a>
+                                                <button class="slds-button slds-button_brand slds-align_absolute-center" onclick="DEListShow()">DE Extension</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -112,6 +110,9 @@
 </form>
 </body>
 <script>
+    function DEListShow(){
+        console.log('DEListShow');
+    }
     var tds = "", i;
     for (i = 1; i <= 6; i++) {
     tds = tds + '<tr class="slds-hint-parent"> ' +
