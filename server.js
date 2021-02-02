@@ -56,7 +56,7 @@ app.use(express.urlencoded({
     });
   
   
-    request.post({
+    await request.post({
       headers: {'content-type' : 'application/json'},
       url: DestinationAuthBaseURI + '/v2/token',
       body:{
