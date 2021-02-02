@@ -19,8 +19,10 @@ app.use(express.urlencoded({
   
   var SourceAccessToken = '';
   var SourceRestURL = '';
+  var SourceSoapURL = '';
   var DestinationAccessToken = '';
-  var DestinationRestURL = ''
+  var DestinationRestURL = '';
+  var DestinationSoapURL = '';
   
   app.post('/Authenticate', (req, res) => {
     var SourceClientID = req.body.SourceClientID;
@@ -49,7 +51,11 @@ app.use(express.urlencoded({
     function(error, response, body){
       SourceAccessToken = body.access_token;
       SourceRestURL = body.rest_instance_url;
-      //console.log("body : "+ JSON.stringify(body)); 
+      console.log("body : "+ JSON.stringify(body)); 
+      SourceSoapURL = body.soap_instance_url;
+      console.log("SourceSoapURL : "+ JSON.stringify(SourceSoapURL)); 
+
+      
     });
   
   
@@ -75,7 +81,23 @@ app.use(express.urlencoded({
 
 
 
-
+    //List of Data Extension API Callout
+    request.post({
+      headers: {'content-type' : 'application/json'},
+      url: SourceAuthBaseURI + '/v2/token',
+      body:{
+            'client_id': SourceClientID, //pass Client ID
+            'client_secret': SourceClientSecret, //pass Client Secret
+            'grant_type': 'client_credentials',
+            'account_id':SourceMID
+      },
+      json: true
+    }, 
+    function(error, response, body){
+      SourceAccessToken = body.access_token;
+      SourceRestURL = body.rest_instance_url;
+      //console.log("body : "+ JSON.stringify(body)); 
+    });
 
 
 
