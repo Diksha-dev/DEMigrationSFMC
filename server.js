@@ -111,12 +111,14 @@ app.use(express.urlencoded({
                       </RetrieveRequestMsg>\
                   </s:Body>\
                 </s:Envelope>';
+                console.log('SourceAccessToken : ' + SourceAccessToken);
     await request.post({
       url: SourceSoapURL + 'Service.asmx',
       body: xmls
     }, 
     function(error, response, body){
-      console.log("body : "+ JSON.stringify(body)); 
+      console.log("JSON body : "+ JSON.stringify(body));
+      console.log("body : "+ body); 
     });
 
 
