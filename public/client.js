@@ -1,29 +1,4 @@
 function loadbutton() {
-fetch("/DEDataGet", {  
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        Name: 'fileName',
-                    })
-                })
-                .then(function(res) {
-                    console.log("client res :" + JSON.stringify(res));
-                    console.log("client res :" + res);
-                })
-                .catch(function(err) {
-                    console.log("client err :" + JSON.stringify(err));
-                    console.log("client err :" + err);
-                });
-
-
-
-
-
-
-
-
 var tds = "", i;
 for (i = 1; i <= 6; i++) {
     tds = tds + '<tr class="slds-hint-parent"> ' +

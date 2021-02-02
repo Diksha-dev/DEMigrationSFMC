@@ -103,33 +103,6 @@ app.use(express.urlencoded({
     }))
 
 
-    
-
-    app.post('/DEDataGet', (req, res) => {
-      console.log('req : '+req);
-      console.log('res : '+res);
-      request.post({
-        headers: {
-          'content-type' : 'application/json'
-        },
-        url: '/DEDataGet',
-        body:{
-          "property": "name"
-        },
-        json: true
-      }, 
-      function(error, response, body){
-        console.log("server body :" + JSON.stringify(body));
-        console.log("server response :" + JSON.stringify(response));
-        console.log("server error :" + JSON.stringify(error));
-      });
-    })
-    
-    
-
-
-
-
 
 
     app.post('/stack1', (req, res) => {
