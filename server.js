@@ -24,7 +24,7 @@ app.use(express.urlencoded({
   var DestinationRestURL = '';
   var DestinationSoapURL = '';
   
-  app.post('/Authenticate', (req, res) => {
+  app.post('/Authenticate', async (req, res) => {
     var SourceClientID = req.body.SourceClientID;
     var SourceClientSecret = req.body.SourceClientSecret;
     var SourceAuthBaseURI = req.body.SourceAuthBaseURI;
@@ -111,7 +111,7 @@ app.use(express.urlencoded({
                       </RetrieveRequestMsg>\
                   </s:Body>\
                 </s:Envelope>';
-    request.post({
+    await request.post({
       url: SourceSoapURL + 'Service.asmx',
       body: xmls
     }, 
