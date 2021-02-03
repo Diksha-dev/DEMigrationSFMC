@@ -125,7 +125,7 @@
                 success: function (data) {
                     //console.log('data : ' + JSON.stringify(data));
                     SourceListDEResult = data;
-                    var tds = "", i;
+                    var tds = "";
                     for (var key in SourceListDEResult) {
                         console.log('key : ' + SourceListDEResult[key].Name);
                         console.log('key : ' + SourceListDEResult[key].CustomerKey);
@@ -143,16 +143,16 @@
                             '<th data-label="name" role="row">' + SourceListDEResult[key].Name + '</th> ' +
                             '<td data-label="external-key"> ' + SourceListDEResult[key].CustomerKey + '</td> ' +
                             '<td data-label="description"> ' +
-                            '<span class="slds-truncate">' + SourceListDEResult[key].IsSendable + '</span>' +
+                            '<span class="slds-truncate">' + SourceListDEResult[key].Description + '</span>' +
                             '</td>' +
                             '<td data-label="field-count">' +
-                            '<span class="slds-truncate">' + SourceListDEResult[key].CategoryID + '</span>' +
+                            '<span class="slds-truncate">' + 'kuch bhi' + '</span>' +
                             '</td>' +
                             '<td data-label="record-count">' +
                             '<span class="slds-truncate">' + '20%' + '</span>' +
                             '</td>' +
                             '<td data-label="sendable">' +
-                            '<span class="slds-truncate">' + '$25k' + '</span>' +
+                            '<span class="slds-truncate">' + SourceListDEResult[key].IsSendable + '</span>' +
                             '</td>' +
                             '<td data-label="testable">' +
                             '<span class="slds-truncate">' + 'ghc' + '</span>' +
