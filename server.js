@@ -203,6 +203,7 @@ app.post('/Authenticate', (req, res) => {
       
     }
     SourceListDEResult = JSON.stringify(SourceListDEResult);
+    console.log('sbse last : '+SourceListDEResult);
     await res.send(SourceListDEResult);
   });
 
