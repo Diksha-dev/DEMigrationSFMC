@@ -140,8 +140,8 @@ app.post('/Authenticate', (req, res) => {
     request(ListDEOption, function (error, response) {
       if (error) throw new Error(error);
       SourceListDEResult = xmlParser.toJson(response.body);
+      SourceListDEResult = JSON.parse(SourceListDEResult);
       console.log('DE List :'+SourceListDEResult);
-      //SourceListDEResult = SourceListDEResult;
 
       var obj = {"a": 1, "b": 2};
       for (var key in SourceListDEResult) {
@@ -173,6 +173,7 @@ app.post('/Authenticate', (req, res) => {
       if (error) throw new Error(error);
       //console.log('DE Field :'+xmlParser.toJson(response.body));
       SourceDEFieldsResult  = xmlParser.toJson(response.body);
+      SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
     });
   }
 
@@ -194,7 +195,7 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForDEList = 'True') {
 
       await getSourceListOfDE();
-      await getSourceDEFields();
+      //await getSourceDEFields();
       
       
       
