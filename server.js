@@ -140,13 +140,10 @@ app.post('/Authenticate', (req, res) => {
     request(ListDEOption, function (error, response) {
       if (error) throw new Error(error);
       SourceListDEResult = response.body;
-      console.log('XML DE List :'+SourceListDEResult);
       SourceListDEResult = SourceListDEResult.replace(/:/g, "");
-      console.log(': replaced XML DE List :'+SourceListDEResult);
       SourceListDEResult = xmlParser.toJson(SourceListDEResult);
-      console.log('JSON DE List :'+SourceListDEResult);
       SourceListDEResult = JSON.parse(SourceListDEResult);
-      console.log('Parsed DE List :'+SourceListDEResult);
+      console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results));
 
       var obj = {"a": 1, "b": 2};
       for (var key in SourceListDEResult) {
