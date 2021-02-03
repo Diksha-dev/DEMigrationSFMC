@@ -129,7 +129,7 @@
                     for (var key in SourceListDEResult) {
                         console.log('key : ' + SourceListDEResult[key].Description);
                         console.log('key : ' + JSON.stringify(SourceListDEResult[key].Description));
-                        if(SourceListDEResult[key].Description == null || SourceListDEResult[key].Description == undefined || JSON.stringify(SourceListDEResult[key].Description) == '' || JSON.stringify(SourceListDEResult[key].Description) == {}) {
+                        if(SourceListDEResult[key].Description == null || SourceListDEResult[key].Description == undefined || JSON.stringify(SourceListDEResult[key].Description) == '' || JSON.stringify(SourceListDEResult[key].Description) == '{}') {
                             DEDes = '';
                         }
                         else{
