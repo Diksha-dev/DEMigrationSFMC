@@ -111,7 +111,7 @@
 
 </body>
 <script>
-    var DEList;
+    var SourceListDEResult;
     async function DEListShow() {
         await $.ajax
             ({
@@ -124,7 +124,7 @@
                 },
                 success: function (data) {
                     console.log('data : ' + JSON.stringify(data));
-                    DEList = JSON.parse(data);
+                    SourceListDEResult = data;
                 }
             })
     }
