@@ -144,7 +144,7 @@ app.post('/Authenticate', (req, res) => {
       SourceListDEResult = xmlParser.toJson(SourceListDEResult);
       SourceListDEResult = JSON.parse(SourceListDEResult);
       SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-      console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
+      //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
       for (var key in SourceListDEResult) {
         console.log('key : ' + SourceListDEResult[key].Name);
@@ -154,6 +154,7 @@ app.post('/Authenticate', (req, res) => {
         console.log('Next');
       }
     });
+    return SourceListDEResult;
   }
 
 
@@ -196,7 +197,7 @@ app.post('/Authenticate', (req, res) => {
 
     if (req.body.reqForDEList = 'True') {
 
-      await getSourceListOfDE();
+     SourceListDEResult = await getSourceListOfDE();
       //await getSourceDEFields();
       
       
