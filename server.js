@@ -197,14 +197,12 @@ app.post('/Authenticate', (req, res) => {
 
     if (req.body.reqForDEList = 'True') {
 
-    var a = await getSourceListOfDE();
+      var a = await getSourceListOfDE();
       //await getSourceDEFields();
-      
-      
-      
     }
+
     console.log('sbse last : '+a);
-    await res.send(a);
+    res.send(a);
   });
 
 
