@@ -131,11 +131,11 @@
                         console.log('key : ' + SourceListDEResult[key].CustomerKey);
                         console.log('key : ' + SourceListDEResult[key].IsSendable);
                         console.log('key : ' + SourceListDEResult[key].Description);
-                        if(JSON.stringify(SourceListDEResult[key].Description)) {
-                            DEDes = JSON.stringify(SourceListDEResult[key].Description);
+                        if(SourceListDEResult[key].Description == null || SourceListDEResult[key].Description == undefined) {
+                            DEDes = '';
                         }
                         else{
-                            DEDes = '';
+                            DEDes = SourceListDEResult[key].Description;
                         }
                         
                         console.log('Next');
