@@ -197,12 +197,29 @@ app.post('/Authenticate', (req, res) => {
 
     if (req.body.reqForDEList = 'True') {
 
-      var a = await getSourceListOfDE();
+      SourceListDEResult = await getSourceListOfDE();
       //await getSourceDEFields();
     }
 
-    console.log('sbse last : '+a);
-    res.send(a);
+
+
+
+
+
+
+
+
+    var x = setInterval(function(){
+      console.log('sbse last : '+ SourceListDEResult);
+      res.send(SourceListDEResult);
+      if(SourceListDEResult){
+        clearInterval(x);
+      }
+    }, 1000);
+      
+    
+
+
   });
 
 
