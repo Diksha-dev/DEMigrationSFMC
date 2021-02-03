@@ -168,7 +168,7 @@ app.post('/Authenticate', (req, res) => {
     };
     request(DEFieldOption, function (error, response) {
       if (error) throw new Error(error);
-      console.log('DE Field :'+xmlParser.toJson(response.body));
+      //console.log('DE Field :'+xmlParser.toJson(response.body));
       SourceDEFieldsResult  = xmlParser.toJson(response.body);
     });
   }
