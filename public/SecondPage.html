@@ -125,13 +125,13 @@
                 success: function (data) {
                     //console.log('data : ' + JSON.stringify(data));
                     SourceListDEResult = data;
-                    var tds = "";
+                    var tds = "",Des='';
                     for (var key in SourceListDEResult) {
                         console.log('key : ' + SourceListDEResult[key].Name);
                         console.log('key : ' + SourceListDEResult[key].CustomerKey);
                         console.log('key : ' + SourceListDEResult[key].IsSendable);
                         console.log('key : ' + SourceListDEResult[key].Description);
-                        if(SourceListDEResult[key].Description){
+                        if(SourceListDEResult[key].Description == null || SourceListDEResult[key].Description == undefined){
                             console.log(' if des ');
                         }else
                         {
