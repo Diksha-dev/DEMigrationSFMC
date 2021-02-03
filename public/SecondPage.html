@@ -131,7 +131,7 @@
                         console.log('key : ' + SourceListDEResult[key].CustomerKey);
                         console.log('key : ' + SourceListDEResult[key].IsSendable);
                         console.log('key : ' + SourceListDEResult[key].Description);
-                        if(SourceListDEResult[key].Description == null || SourceListDEResult[key].Description == undefined) {
+                        if(SourceListDEResult[key].Description == null || SourceListDEResult[key].Description == undefined || SourceListDEResult[key].Description == '') {
                             DEDes = '';
                         }
                         else{
