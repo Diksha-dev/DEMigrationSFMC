@@ -143,11 +143,11 @@ app.post('/Authenticate', (req, res) => {
       SourceListDEResult = SourceListDEResult.replace(/:/g, "");
       SourceListDEResult = xmlParser.toJson(SourceListDEResult);
       SourceListDEResult = JSON.parse(SourceListDEResult);
-      console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results));
+      SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+      console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
-      var obj = {"a": 1, "b": 2};
       for (var key in SourceListDEResult) {
-        console.log('key : ' + SourceListDEResult[key]);
+        console.log('key : ' + SourceListDEResult[key].Name);
         if (obj.hasOwnProperty(key)) {
         var val = obj[key];
         console.log('val : '+ val);
@@ -202,7 +202,7 @@ app.post('/Authenticate', (req, res) => {
       
       
     }
-    await res.send('body');
+    await res.send(SourceListDEResult);
   });
 
 
