@@ -148,8 +148,8 @@ app.post('/Authenticate', (req, res) => {
 
       for (var key in SourceListDEResult) {
         console.log('key : ' + SourceListDEResult[key].Name);
-        if (obj.hasOwnProperty(key)) {
-        var val = obj[key];
+        if (SourceListDEResult.hasOwnProperty(key)) {
+        var val = SourceListDEResult[key];
         console.log('val : '+ val);
         }
       }
