@@ -136,8 +136,12 @@
                             '<span class="slds-form-element__label slds-assistive-text">select row1</span> ' +
                             '</label> ' +
                             '</td>' +
-                            '<th data-label="name" role="row">' + SourceListDEResult[key].Name + '</th> ' +
-                            '<td data-label="external-key"> ' + SourceListDEResult[key].CustomerKey + '</td> ' +
+                            '<th data-label="name" role="row">' +
+                            '<span class="slds-truncate">' + SourceListDEResult[key].Name + '</span>' + 
+                            '</th> ' +
+                            '<td data-label="external-key"> ' +
+                            '<span class="slds-truncate">' + SourceListDEResult[key].CustomerKey + '</span>' +
+                            '</td> ' +
                             '<td data-label="description"> ' +
                             '<span class="slds-truncate">' + DEDes + '</span>' +
                             '</td>' +
