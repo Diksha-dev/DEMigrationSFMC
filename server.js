@@ -77,7 +77,7 @@ app.post('/Authenticate', (req, res) => {
         console.log("destination auth chala"); 
       });
   }
-  await authTokenForBothSFDC();
+  authTokenForBothSFDC();
 
 
 
@@ -108,7 +108,7 @@ app.post('/Authenticate', (req, res) => {
 
 
   app.post("/DEListShowAPI", async (req, res) => {
-    
+
     if (req.body.reqForDEList = 'True') {
       console.log('req.body : ' + JSON.stringify(req.body));
 
