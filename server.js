@@ -197,15 +197,15 @@ app.post('/Authenticate', (req, res) => {
 
     if (req.body.reqForDEList = 'True') {
 
-     SourceListDEResult = await getSourceListOfDE();
+    var a = await getSourceListOfDE();
       //await getSourceDEFields();
       
       
       
     }
-    SourceListDEResult = JSON.stringify(SourceListDEResult);
-    console.log('sbse last : '+SourceListDEResult);
-    await res.send(SourceListDEResult);
+    a = JSON.stringify(a);
+    console.log('sbse last : '+a);
+    await res.send(a);
   });
 
 
