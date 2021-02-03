@@ -89,16 +89,7 @@
                             <span class="slds-truncate">Description</span>
                         </th>
                         <th scope="col">
-                            <span class="slds-truncate">Field Count</span>
-                        </th>
-                        <th scope="col">
-                            <span class="slds-truncate">Record Count</span>
-                        </th>
-                        <th scope="col">
                             <span class="slds-truncate">Sendable</span>
-                        </th>
-                        <th scope="col">
-                            <span class="slds-truncate">Testable</span>
                         </th>
                     </tr>
                 </thead>
@@ -129,7 +120,7 @@
                     for (var key in SourceListDEResult) {
                         console.log('key : ' + SourceListDEResult[key].Description);
                         console.log('key : ' + JSON.stringify(SourceListDEResult[key].Description));
-                        if(SourceListDEResult[key].Description == null || SourceListDEResult[key].Description == undefined || JSON.stringify(SourceListDEResult[key].Description) == '' || JSON.stringify(SourceListDEResult[key].Description) == '{}') {
+                        if(JSON.stringify(SourceListDEResult[key].Description) == '{}') {
                             DEDes = '';
                         }
                         else{
@@ -150,17 +141,8 @@
                             '<td data-label="description"> ' +
                             '<span class="slds-truncate">' + DEDes + '</span>' +
                             '</td>' +
-                            '<td data-label="field-count">' +
-                            '<span class="slds-truncate">' + 'kuch bhi' + '</span>' +
-                            '</td>' +
-                            '<td data-label="record-count">' +
-                            '<span class="slds-truncate">' + '20%' + '</span>' +
-                            '</td>' +
                             '<td data-label="sendable">' +
                             '<span class="slds-truncate">' + SourceListDEResult[key].IsSendable + '</span>' +
-                            '</td>' +
-                            '<td data-label="testable">' +
-                            '<span class="slds-truncate">' + 'ghc' + '</span>' +
                             '</td>' +
                             '</tr>';
                     }
