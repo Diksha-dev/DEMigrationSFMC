@@ -131,7 +131,11 @@
                         console.log('key : ' + SourceListDEResult[key].CustomerKey);
                         console.log('key : ' + SourceListDEResult[key].IsSendable);
                         console.log('key : ' + SourceListDEResult[key].Description);
-                        if(!SourceListDEResult[key].Description){
+                        if(SourceListDEResult[key].Description){
+                            console.log(' if des ');
+                        }else
+                        {
+                            console.log('else des ');
                             SourceListDEResult[key].Description = '';
                         }
                         console.log('Next');
