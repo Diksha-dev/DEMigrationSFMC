@@ -36,8 +36,9 @@ app.post('/Authenticate', (req, res) => {
   var DestinationMID = req.body.DestinationMID;
 
 
-  function authTokenForBothSFDC(){
-    request.post({
+  async function authTokenForBothSFDC(){
+
+    await request.post({
       headers: { 'content-type': 'application/json' },
       url: SourceAuthBaseURI + '/v2/token',
       body: {
@@ -53,10 +54,11 @@ app.post('/Authenticate', (req, res) => {
         SourceRestURL = body.rest_instance_url;
         SourceSoapURL = body.soap_instance_url;
         //console.log("body : "+ JSON.stringify(body));
+        console.log("source auth chala"); 
       });
   
   
-    request.post({
+    await request.post({
       headers: { 'content-type': 'application/json' },
       url: DestinationAuthBaseURI + '/v2/token',
       body: {
@@ -72,10 +74,10 @@ app.post('/Authenticate', (req, res) => {
         DestinationRestURL = body.rest_instance_url;
         DestinationSoapURL = body.soap_instance_url;
         //console.log("body : "+ JSON.stringify(body));
-        console.log("auth chala"); 
+        console.log("destination auth chala"); 
       });
   }
-  authTokenForBothSFDC();
+  await authTokenForBothSFDC();
 
 
 
@@ -106,10 +108,9 @@ app.post('/Authenticate', (req, res) => {
 
 
   app.post("/DEListShowAPI", async (req, res) => {
-    console.log('req.body : ' + JSON.stringify(req.body));
+    
     if (req.body.reqForDEList = 'True') {
-      console.log('if : ' + JSON.stringify(req.body.reqForDEList));
-
+      console.log('req.body : ' + JSON.stringify(req.body));
 
       console.log('auth se pehle ');
       await authTokenForBothSFDC();
