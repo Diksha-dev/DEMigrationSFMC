@@ -148,10 +148,10 @@ app.post('/Authenticate', (req, res) => {
 
       for (var key in SourceListDEResult) {
         console.log('key : ' + SourceListDEResult[key].Name);
-        if (SourceListDEResult.hasOwnProperty(key)) {
-        var val = SourceListDEResult[key];
-        console.log('val : '+ val);
-        }
+        console.log('key : ' + SourceListDEResult[key].CustomerKey);
+        console.log('key : ' + SourceListDEResult[key].IsSendable);
+        console.log('key : ' + SourceListDEResult[key].CategoryID);
+        console.log('Next');
       }
     });
   }
@@ -202,6 +202,7 @@ app.post('/Authenticate', (req, res) => {
       
       
     }
+    SourceListDEResult = JSON.stringify(SourceListDEResult);
     await res.send(SourceListDEResult);
   });
 
