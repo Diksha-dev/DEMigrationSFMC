@@ -111,6 +111,7 @@
 
 </body>
 <script>
+    var DEList;
     async function DEListShow() {
         await $.ajax
             ({
@@ -123,13 +124,19 @@
                 },
                 success: function (data) {
                     console.log('data : ' + JSON.stringify(data));
+                    DEList = JSON.parse(data);
                 }
             })
     }
 
 
     var tds = "", i;
-    for (i = 1; i <= 6; i++) {
+    for (var key in SourceListDEResult) {
+        console.log('key : ' + SourceListDEResult[key].Name);
+        console.log('key : ' + SourceListDEResult[key].CustomerKey);
+        console.log('key : ' + SourceListDEResult[key].IsSendable);
+        console.log('key : ' + SourceListDEResult[key].CategoryID);
+        console.log('Next');
         tds = tds + '<tr class="slds-hint-parent"> ' +
             '<td class="slds-row-select"> ' +
             '<label class="slds-checkbox" for="select-row1"> ' +
@@ -138,13 +145,13 @@
             '<span class="slds-form-element__label slds-assistive-text">select row1</span> ' +
             '</label> ' +
             '</td>' +
-            '<th data-label="name" role="row"><a href="#" class="slds-truncate">' + 'Acme' + '</a></th> ' +
-            '<td data-label="external-key"><a href="#" class="slds-truncate"> ' + 'Acme' + '</a></td> ' +
+            '<th data-label="name" role="row"><a href="#" class="slds-truncate">' + SourceListDEResult[key].Name + '</a></th> ' +
+            '<td data-label="external-key"><a href="#" class="slds-truncate"> ' + SourceListDEResult[key].CustomerKey + '</a></td> ' +
             '<td data-label="description"> ' +
-            '<span class="slds-truncate">' + '4/14/2015' + '</span>' +
+            '<span class="slds-truncate">' + SourceListDEResult[key].IsSendable + '</span>' +
             '</td>' +
             '<td data-label="field-count">' +
-            '<span class="slds-truncate">' + 'Prospecting' + '</span>' +
+            '<span class="slds-truncate">' + SourceListDEResult[key].CategoryID + '</span>' +
             '</td>' +
             '<td data-label="record-count">' +
             '<span class="slds-truncate">' + '20%' + '</span>' +
