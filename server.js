@@ -124,8 +124,8 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-  async function getSourceListOfDE(){
-    await authTokenForBothSFDC();
+  function getSourceListOfDE(){
+    authTokenForBothSFDC();
     var ListDEOption = {
       'method': 'POST',
       'url': SourceSoapURL + 'Service.asmx',
@@ -142,7 +142,7 @@ app.post('/Authenticate', (req, res) => {
       console.log('DE List :'+xmlParser.toJson(response.body));
       SourceListDEResult = xmlParser.toJson(response.body);
       var obj = {a: 1, b: 2};
-      for (var key in SourceListDEResult) {
+      for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
         var val = obj[key];
         console.log('val : '+ val);
