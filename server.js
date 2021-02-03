@@ -154,7 +154,7 @@ app.post('/Authenticate', (req, res) => {
         console.log('Next');
       }
     });
-    return SourceListDEResult;
+    return JSON.stringify(SourceListDEResult);
   }
 
 
@@ -203,7 +203,6 @@ app.post('/Authenticate', (req, res) => {
       
       
     }
-    a = JSON.stringify(a);
     console.log('sbse last : '+a);
     await res.send(a);
   });
