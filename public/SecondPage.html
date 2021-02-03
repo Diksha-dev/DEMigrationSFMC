@@ -123,7 +123,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                 success: function (data) {
-                    console.log('data : ' + JSON.stringify(data));
+                    //console.log('data : ' + JSON.stringify(data));
                     SourceListDEResult = data;
                 }
             })
@@ -131,6 +131,11 @@
 
 
     var tds = "", i;
+    var x = setInterval(function(){
+        if(SourceListDEResult){
+          clearInterval(x);
+        }
+      }, 1000);
     for (var key in SourceListDEResult) {
         console.log('key : ' + SourceListDEResult[key].Name);
         console.log('key : ' + SourceListDEResult[key].CustomerKey);
