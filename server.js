@@ -140,7 +140,7 @@ app.post('/Authenticate', (req, res) => {
     request(ListDEOption, function (error, response) {
       if (error) throw new Error(error);
       SourceListDEResult = xmlParser.toJson(response.body);
-      SourceListDEResult = SourceListDEResult.replace(":", "");
+      SourceListDEResult = SourceListDEResult.replace(/:/g, "");
       console.log('DE List :'+SourceListDEResult);
       SourceListDEResult = JSON.parse(SourceListDEResult);
       console.log('DE List :'+SourceListDEResult);
