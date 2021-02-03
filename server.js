@@ -5,6 +5,7 @@ var http = require('http');
 const port = process.env.PORT || 3000
 var request = require('request');
 const { stringify } = require("querystring");
+let xmlParser = require('xml2json');
 
 app.get("*", (req, res) => {
   const FirstPage = path.join(__dirname, 'public', 'index.html');
@@ -130,6 +131,7 @@ app.post('/Authenticate', (req, res) => {
       request(options, function (error, response) {
         if (error) throw new Error(error);
         console.log(response.body);
+        console.log('JSON output', xmlParser.toJson(response.body));
       });
 
 
