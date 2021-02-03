@@ -142,7 +142,7 @@ app.post('/Authenticate', (req, res) => {
       console.log('DE List :'+xmlParser.toJson(response.body));
       SourceListDEResult = xmlParser.toJson(response.body);
       var obj = {a: 1, b: 2};
-      for (var key in obj) {
+      for (var key in SourceListDEResult) {
         console.log('key : ' + key);
         if (obj.hasOwnProperty(key)) {
         var val = obj[key];
