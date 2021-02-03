@@ -125,19 +125,19 @@
                 success: function (data) {
                     //console.log('data : ' + JSON.stringify(data));
                     SourceListDEResult = data;
-                    var tds = "",Des='';
+                    var tds = "",DEDes='';
                     for (var key in SourceListDEResult) {
                         console.log('key : ' + SourceListDEResult[key].Name);
                         console.log('key : ' + SourceListDEResult[key].CustomerKey);
                         console.log('key : ' + SourceListDEResult[key].IsSendable);
                         console.log('key : ' + SourceListDEResult[key].Description);
-                        if(SourceListDEResult[key].Description == null || SourceListDEResult[key].Description == undefined){
-                            console.log(' if des ');
-                        }else
-                        {
-                            console.log('else des ');
-                            SourceListDEResult[key].Description = '';
+                        if(JSON.stringify(SourceListDEResult[key].Description)) {
+                            DEDes = JSON.stringify(SourceListDEResult[key].Description);
                         }
+                        else{
+                            DEDes = '';
+                        }
+                        
                         console.log('Next');
                         tds = tds + '<tr class="slds-hint-parent"> ' +
                             '<td class="slds-row-select"> ' +
@@ -150,7 +150,7 @@
                             '<th data-label="name" role="row">' + SourceListDEResult[key].Name + '</th> ' +
                             '<td data-label="external-key"> ' + SourceListDEResult[key].CustomerKey + '</td> ' +
                             '<td data-label="description"> ' +
-                            '<span class="slds-truncate">' + SourceListDEResult[key].Description + '</span>' +
+                            '<span class="slds-truncate">' + DEDes + '</span>' +
                             '</td>' +
                             '<td data-label="field-count">' +
                             '<span class="slds-truncate">' + 'kuch bhi' + '</span>' +
