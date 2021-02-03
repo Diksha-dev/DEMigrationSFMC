@@ -71,7 +71,8 @@ app.post('/Authenticate', (req, res) => {
         DestinationAccessToken = body.access_token;
         DestinationRestURL = body.rest_instance_url;
         DestinationSoapURL = body.soap_instance_url;
-        //console.log("body : "+ JSON.stringify(body)); 
+        //console.log("body : "+ JSON.stringify(body));
+        console.log("auth chala"); 
       });
   }
   authTokenForBothSFDC();
@@ -111,9 +112,9 @@ app.post('/Authenticate', (req, res) => {
 
 
       console.log('auth se pehle ');
-      authTokenForBothSFDC();
+      await authTokenForBothSFDC();
       console.log('auth k baad ');
-      
+
       var options = {
         'method': 'POST',
         'url': SourceSoapURL + 'Service.asmx',
@@ -122,7 +123,7 @@ app.post('/Authenticate', (req, res) => {
           'SoapAction': 'Retrieve',
           'Authorization': 'Bearer ' + SourceAccessToken
         },
-        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">eyJhbGciOiJIUzI1NiIsImtpZCI6IjEiLCJ2ZXIiOiIxIiwidHlwIjoiSldUIn0.eyJhY2Nlc3NfdG9rZW4iOiJZWThKeW5KcUY4bHozWW4xWjdPM05WajEiLCJjbGllbnRfaWQiOiI0ZXBobjBxd2pldWF5b3N1YjA3cDNibmkiLCJlaWQiOjExMDAwNTY5MCwic3RhY2tfa2V5IjoiUzExIiwicGxhdGZvcm1fdmVyc2lvbiI6MiwiY2xpZW50X3R5cGUiOiJTZXJ2ZXJUb1NlcnZlciJ9.3Jyrwmvl0Wx7xe2W7J7LnKvn0U4ZtpLxglalcWkvgtc.SZHwWZUJwV4j2XdI8t0yuAsj3r1TSNg9xhYaiL5ZB8u-WvJ4-ucWh9I96fl6Cxjle5tcTRpQZwG4spJ_7zmfytKriZfrur0jDFbqFV7ewrr9NQwj_bqwbfLwv0hUl5iZnh8nz4GA-sHdOUDDZlGi2vDXgbksfM0X-xuk-vp1znW-UXc_tvM</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtension</ObjectType>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>DataExtension.ObjectID</Properties>\r\n                <Properties>IsSendable</Properties>\r\n                <Properties>SendableSubscriberField.Name</Properties>\r\n                <Properties>SendableDataExtensionField.Name</Properties>\r\n                <Properties>CategoryID</Properties>\r\n                \r\n        \r\n                <Filter xsi:type="SimpleFilterPart">\r\n                    <Property>Name</Property>\r\n                    <SimpleOperator>equals</SimpleOperator>\r\n                    <Value>Filter Activity DE</Value>\r\n                </Filter>\r\n        \r\n             \r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
+        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">'+ SourceAccessToken +'</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtension</ObjectType>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>DataExtension.ObjectID</Properties>\r\n                <Properties>IsSendable</Properties>\r\n                <Properties>SendableSubscriberField.Name</Properties>\r\n                <Properties>SendableDataExtensionField.Name</Properties>\r\n                <Properties>CategoryID</Properties>\r\n                \r\n        \r\n                <Filter xsi:type="SimpleFilterPart">\r\n                    <Property>Name</Property>\r\n                    <SimpleOperator>equals</SimpleOperator>\r\n                    <Value>Filter Activity DE</Value>\r\n                </Filter>\r\n        \r\n             \r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
 
       };
       request(options, function (error, response) {
