@@ -188,7 +188,10 @@ app.post('/Authenticate', (req, res) => {
 
       for (var key in SourceDEFieldsResult) {
         console.log('keysachhi : '+ key);
-        console.log('key : ' + JSON.stringify(SourceDEFieldsResult[key].Results));
+        if(key == 'Results'){
+          console.log('key : ' + JSON.stringify(key.Name));
+        }
+        
         //console.log('key : ' + SourceDEFieldsResult[key].Results.CustomerKey);
         //console.log('key : ' + SourceDEFieldsResult[key].Results.IsRequired);
         //console.log('key : ' + SourceDEFieldsResult[key].Results.IsPrimaryKey);
