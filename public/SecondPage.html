@@ -131,7 +131,7 @@
                         tds = tds + '<tr class="slds-hint-parent"> ' +
                             '<td class="slds-row-select"> ' +
                             '<label class="slds-checkbox"> ' +
-                            '<input type="checkbox" onchange="GetSelectedRows()"/> ' +
+                            '<input type="checkbox" onchange="GetSelectedRows()" id='+SourceListDEResult[key].CustomerKey+'/> ' +
                             '<span class="slds-checkbox--faux"></span> ' +
                             '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
                             '</label> ' +
@@ -158,24 +158,27 @@
 
 
     function GetSelectedRows() {
-
+        /*
         var rows = document.getElementsByTagName("tbody")[0].rows;
         for (var i = 0; i < rows.length; i++) {
             var td = rows[i].getElementsByTagName("td")[i].innerHTML;
             console.log(td)
         }
+        */
 
-        /*var grid = document.getElementById("DEDataTableId");
-        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var grid = document.getElementById("DEDataTableId");
+        var checkBoxes = grid.getElementsByTagName("input");
         var message;
         for (var i = 0; i < checkBoxes.length; i++) {
-            if (checkBoxes[i].checked) {
+            if (checkBoxes[i].checked == true) {
                 //var row = document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML
                 //var row = checkBoxes[i].parentNode.parentNode;
-                message = document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
+               // message = document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
+                var i=checkBoxes[i].id;
+                console.log(i);
             }
         }
-        console.log(message);*/
+        //console.log(message);*/
     }
 
 
