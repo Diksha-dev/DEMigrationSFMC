@@ -233,7 +233,8 @@ app.post('/Authenticate', (req, res) => {
   app.post("/SelectedDEList", async (req, res) => {
     
     if (req.body.reqForSelectedDEList) {
-      console.log('reqForSelectedDEList : '+ reqForSelectedDEList);
+      console.log('reqForSelectedDEList : '+ req.body.reqForSelectedDEList);
+
       //SourceListDEResult = await getSourceListOfDE();
       //await getSourceDEFields();
     }
