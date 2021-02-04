@@ -189,7 +189,7 @@ app.post('/Authenticate', (req, res) => {
       for (var key in SourceDEFieldsResult) {
         console.log('keysachhi : '+ key);
         if(key == 'Results'){
-          key.Results.forEach(function(item) {
+          key.forEach(function(item) {
             console.log(item.Name);
           });
         }
