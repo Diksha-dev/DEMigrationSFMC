@@ -182,12 +182,14 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = SourceDEFieldsResult.replace(/:/g, "");
       SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
-      SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg;
+      SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
       console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
       for (var key in SourceDEFieldsResult) {
         console.log('keysachhi : '+ key);
+        console.log('keyvalue  '+SourceDEFieldsResult[key]);
+        console.log('keyvalue2  '+SourceDEFieldsResult[key].Name);
         if(key == 'Results')
         {
           /*var result=SourceDEFieldsResult[key];
