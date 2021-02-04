@@ -184,17 +184,111 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
       SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-      console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
-
+      //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
+      var DEFieldMap={};
       for (var key in SourceDEFieldsResult) {
-        console.log('keyvalue  '+SourceDEFieldsResult[key].Name);
-        console.log('keyvalue  '+SourceDEFieldsResult[key].CustomerKey);
-        console.log('keyvalue  '+SourceDEFieldsResult[key].IsRequired);
-        console.log('keyvalue  '+SourceDEFieldsResult[key].IsPrimaryKey);
-        console.log('keyvalue  '+SourceDEFieldsResult[key].DataExtension.CustomerKey);
-        console.log('keyvalue  '+SourceDEFieldsResult[key].FieldType);
-        console.log('Next');
+        //console.log('keyvalue  '+SourceDEFieldsResult[key].Name);
+        //console.log('keyvalue  '+SourceDEFieldsResult[key].CustomerKey);
+        //console.log('keyvalue  '+SourceDEFieldsResult[key].IsRequired);
+        //console.log('keyvalue  '+SourceDEFieldsResult[key].IsPrimaryKey);
+        //console.log('keyvalue  '+SourceDEFieldsResult[key].DataExtension.CustomerKey);
+        //console.log('keyvalue  '+SourceDEFieldsResult[key].FieldType);
+        //console.log('Next');
+        if(DEFieldMap.has(SourceDEFieldsResult[key].DataExtension.CustomerKey)){
+          DEFieldMap.set(SourceDEFieldsResult[key].DataExtension.CustomerKey, 
+          {
+            Name : SourceDEFieldsResult[key].Name ,
+            isRequired : SourceDEFieldsResult[key].IsRequired ,
+            isPrimaryKey : SourceDEFieldsResult[key].IsPrimaryKey ,
+            fieldType : SourceDEFieldsResult[key].FieldType
+          })
+        }
+        else{
+          DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey] = {
+            Name : SourceDEFieldsResult[key].Name ,
+            isRequired : SourceDEFieldsResult[key].IsRequired ,
+            isPrimaryKey : SourceDEFieldsResult[key].IsPrimaryKey ,
+            fieldType : SourceDEFieldsResult[key].FieldType
+          };
+        } 
       }
+      console.log('DEFieldMap : '+ DEFieldMap);
+
+
+      
+
+
+
+
+      var DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
+                          '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+                              '<s:Header>' +
+                                  '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+                                  '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
+                                  '<a:ReplyTo>' +
+                                      '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
+                                  '</a:ReplyTo>' +
+                                  '<a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>' +
+                                  <fueloauth xmlns="http://exacttarget.com">'+ DestinationAccessToken +'</fueloauth>
+                              '</s:Header>' +
+                              '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+                                  '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+                                      '<RetrieveRequest>' +
+                                          '<ObjectType>DataExtensionField</ObjectType>' +
+                                          '<Properties>Client.ID</Properties>' +
+                                          '<Properties>CreatedDate</Properties>' +
+                                          '<Properties>CustomerKey</Properties>' +
+                                          '<Properties>DataExtension.CustomerKey</Properties>' +
+                                          '<Properties>DefaultValue</Properties>' +
+                                          '<Properties>FieldType</Properties>' +
+                                          '<Properties>IsPrimaryKey</Properties>' +
+                                          '<Properties>IsRequired</Properties>' +
+                                          '<Properties>MaxLength</Properties>' +
+                                          '<Properties>ModifiedDate</Properties>' +
+                                          '<Properties>Name</Properties>' +
+                                          '<Properties>ObjectID</Properties>' +
+                                          '<Properties>Ordinal</Properties>' +
+                                          '<Properties>Scale</Properties>' +
+                                          '<Filter xsi:type="SimpleFilterPart">' +
+                                              '<Property>DataExtension.CustomerKey</Property>' +
+                                              '<SimpleOperator>equals</SimpleOperator>' +
+                                              '<Value>221ACA75-1A13-432E-9408-05F80B5BE733</Value>' +
+                                          '</Filter>' +
+                                          '<QueryAllAccounts>true</QueryAllAccounts>' +
+                                          '<Retrieves />' +
+                                          '<Options>' +
+                                              '<SaveOptions />' +
+                                              '<IncludeObjects>true</IncludeObjects>' +
+                                          '</Options>' +
+                                      '</RetrieveRequest>' +
+                                '</RetrieveRequestMsg>' +
+                            '</s:Body>' +
+                          '</s:Envelope>';
+
+
+
+      var DEListForInsert = {
+        'method': 'POST',
+        'url': DestinationSoapURL + 'Service.asmx',
+        'headers': {
+          'Content-Type': 'text/xml',
+          'SoapAction': 'Create',
+          'Authorization': 'Bearer ' + DestinationAccessToken
+        },
+        body: DEListBody
+      
+      };
+      request(DEListForInsert, function (error, response) {
+        if (error) throw new Error(error);
+        console.log(response.body);
+      });
+
+
+
+
+
+
+
 
 
 
