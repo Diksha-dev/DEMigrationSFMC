@@ -188,9 +188,11 @@ app.post('/Authenticate', (req, res) => {
 
       for (var key in SourceDEFieldsResult) {
         console.log('keysachhi : '+ key);
-        if(key == 'Results'){
-          for (var i = 0; i < key.length; i++) {
-            console.log(key[i]);
+        if(key == 'Results')
+        {
+          var result=SourceDEFieldsResult[key];
+          for (var i in result) {
+            console.log(result[i].Name);
           };
         }
         
