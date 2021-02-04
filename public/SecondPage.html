@@ -173,7 +173,8 @@
             if (checkBoxes[i].checked == true) {
                 //var row = document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML
                 //var row = checkBoxes[i].parentNode.parentNode;
-               // message = document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
+                message = document.getElementById("DEDataTableId").rows[i].cells.item(1).innerHTML;
+                console.log("Message  "+message);
                 var i=checkBoxes[i].id;
                 console.log(i);
             }
