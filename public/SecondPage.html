@@ -129,8 +129,8 @@
                         }
                         tds = tds + '<tr class="slds-hint-parent"> ' +
                             '<td class="slds-row-select"> ' +
-                            '<label class="slds-checkbox" for="select-row'+i+'"> ' +
-                            '<input name="select-row'+i+'" type="checkbox" id="select-row'+i+'" /> ' +
+                            '<label class="slds-checkbox"> ' +
+                            '<input type="checkbox" onchange="GetSelectedRows()"/> ' +
                             '<span class="slds-checkbox--faux"></span> ' +
                             '<span class="slds-form-element__label slds-assistive-text">select row'+i+'</span> ' +
                             '</label> ' +
@@ -156,16 +156,22 @@
     }
 
 
-    $(document).ready(function(){
-        var data = new Object();
-        var table = $('#DEDataTableId').DataTable();
-     
-        $('#DEDataTableId').on('change', ':checkbox', function () {
-            console.log('select se pehle'+data);
-            data[table.row($(this).parents('tr').get(0)).index()] = this.checked;
-            console.log('select k baad'+data);
-        });
-     });
+    function GetSelectedRows() {
+        var grid = document.getElementById("DEDataTableId");
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var message = "Id Name                  Country\n";
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                var row = checkBoxes[i].parentNode.parentNode;
+                message += row.cells[1].innerHTML;
+                message += "   " + row.cells[2].innerHTML;
+                message += "   " + row.cells[3].innerHTML;
+                message += "   " + row.cells[4].innerHTML;
+                message += "\n";
+            }
+        }
+        alert(message);
+    }
 
 
     
