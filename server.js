@@ -187,23 +187,12 @@ app.post('/Authenticate', (req, res) => {
       console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
       for (var key in SourceDEFieldsResult) {
-        console.log('keysachhi : '+ key);
-        console.log('keyvalue  '+SourceDEFieldsResult[key]);
-        console.log('keyvalue2  '+SourceDEFieldsResult[key].Name);
-        if(key == 'Results')
-        {
-          /*var result=SourceDEFieldsResult[key];
-          for (var i in result) {
-            console.log(result[i].Name);
-          };*/
-        }
-        
-        //console.log('key : ' + SourceDEFieldsResult[key].Results.CustomerKey);
-        //console.log('key : ' + SourceDEFieldsResult[key].Results.IsRequired);
-        //console.log('key : ' + SourceDEFieldsResult[key].Results.IsPrimaryKey);
-        //console.log('key : ' + SourceDEFieldsResult[key].Results.MaxLength);
-        //console.log('key : ' + SourceDEFieldsResult[key].Results.DataExtension.CustomerKey);
-        //console.log('key : ' + SourceDEFieldsResult[key].Results.FieldType);
+        console.log('keyvalue  '+SourceDEFieldsResult[key].Name);
+        console.log('keyvalue  '+SourceDEFieldsResult[key].CustomerKey);
+        console.log('keyvalue  '+SourceDEFieldsResult[key].IsRequired);
+        console.log('keyvalue  '+SourceDEFieldsResult[key].IsPrimaryKey);
+        console.log('keyvalue  '+SourceDEFieldsResult[key].DataExtension.CustomerKey);
+        console.log('keyvalue  '+SourceDEFieldsResult[key].FieldType);
         console.log('Next');
       }
 
