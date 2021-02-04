@@ -159,16 +159,12 @@
     function GetSelectedRows() {
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("INPUT");
-        var message = "";
+        var message;
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked) {
                 //var row = document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML
                 //var row = checkBoxes[i].parentNode.parentNode;
-                message += document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
-                message += document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
-                message += document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
-                message += document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
-                message += "\n";
+                message = document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
             }
         }
         console.log(message);
