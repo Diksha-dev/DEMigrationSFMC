@@ -184,11 +184,11 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
       SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg;
 
-      console.log('SourceDEFieldsResult :' + SourceDEFieldsResult);
+      console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
       for (var key in SourceDEFieldsResult) {
         console.log('keysachhi : '+ key);
-        console.log('key : ' + SourceDEFieldsResult[key].Results);
+        console.log('key : ' + JSON.stringify(SourceDEFieldsResult[key].Results));
         //console.log('key : ' + SourceDEFieldsResult[key].Results.CustomerKey);
         //console.log('key : ' + SourceDEFieldsResult[key].Results.IsRequired);
         //console.log('key : ' + SourceDEFieldsResult[key].Results.IsPrimaryKey);
