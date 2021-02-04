@@ -162,11 +162,12 @@
         var message = "Id Name                  Country\n";
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked) {
-                var row = checkBoxes[i].parentNode.parentNode;
-                message += row.cells[1].innerHTML;
-                message += "   " + row.cells[2].innerHTML;
-                message += "   " + row.cells[3].innerHTML;
-                message += "   " + row.cells[4].innerHTML;
+                //var row = document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML
+                //var row = checkBoxes[i].parentNode.parentNode;
+                message += document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML;
+                message += "   " + document.getElementById("DEDataTableId").rows[i].cells[1].innerHTML;
+                message += "   " + document.getElementById("DEDataTableId").rows[i].cells[2].innerHTML;
+                message += "   " + document.getElementById("DEDataTableId").rows[i].cells[3].innerHTML;
                 message += "\n";
             }
         }
