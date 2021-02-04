@@ -18,6 +18,7 @@
         integrity="sha512-UV/bdfkf/vUvwZ6/aVq8zas293BNyu43i68QdurkfUmSjGRiCxKISDe29R6VPB3YKfeA/lCjGyfXLBIzlpTg5A=="
         crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" >
 
 </head>
 
@@ -69,7 +70,7 @@
             </article>
         </div>
         <div class="slds-col slds-size_9-of-12">
-            <table class="slds-table slds-table--bordered">
+            <table class="slds-table slds-table--bordered" id="DEDataTableId">
                 <thead>
                     <tr class="slds-text-heading--label">
                         <th class="slds-cell-shrink" scope="col">
@@ -152,6 +153,18 @@
                 }
             })
     }
+
+
+    $(document).ready(function(){
+        var data = new Object();
+        var table = $('#DEDataTableId').DataTable();
+     
+        $('#DEDataTableId').on('change', ':checkbox', function () {
+            console.log('select se pehle'+data);
+            data[table.row($(this).parents('tr').get(0)).index()] = this.checked;
+            console.log('select k baad'+data);
+        });
+     });
 
 
     
