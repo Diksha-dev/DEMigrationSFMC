@@ -194,7 +194,7 @@ app.post('/Authenticate', (req, res) => {
         //console.log('keyvalue  '+SourceDEFieldsResult[key].DataExtension.CustomerKey);
         //console.log('keyvalue  '+SourceDEFieldsResult[key].FieldType);
         //console.log('Next');
-        if(DEFieldMap.has(SourceDEFieldsResult[key].DataExtension.CustomerKey)){
+        if(DEFieldMap.keys().has(SourceDEFieldsResult[key].DataExtension.CustomerKey)){
           DEFieldMap.set(SourceDEFieldsResult[key].DataExtension.CustomerKey, 
           {
             Name : SourceDEFieldsResult[key].Name ,
