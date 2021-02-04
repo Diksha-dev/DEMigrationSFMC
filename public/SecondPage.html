@@ -18,10 +18,7 @@
         integrity="sha512-UV/bdfkf/vUvwZ6/aVq8zas293BNyu43i68QdurkfUmSjGRiCxKISDe29R6VPB3YKfeA/lCjGyfXLBIzlpTg5A=="
         crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"> </script>
-    <link href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" />
-    
+
 </head>
 
 <body>
@@ -111,7 +108,8 @@
             ({
                 url: '/DEListShowAPI',
                 data: {
-                    'reqForDEList' : 'True'},
+                    'reqForDEList': 'True'
+                },
                 type: "POST",
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
@@ -119,12 +117,12 @@
                 success: function (data) {
                     //console.log('data : ' + JSON.stringify(data));
                     SourceListDEResult = data;
-                    var tds = "",DEDes='',i=1;
+                    var tds = "", DEDes = '', i = 1;
                     for (var key in SourceListDEResult) {
-                        if(JSON.stringify(SourceListDEResult[key].Description) == '{}') {
+                        if (JSON.stringify(SourceListDEResult[key].Description) == '{}') {
                             DEDes = '';
                         }
-                        else{
+                        else {
                             DEDes = SourceListDEResult[key].Description;
                         }
                         tds = tds + '<tr class="slds-hint-parent"> ' +
@@ -132,11 +130,11 @@
                             '<label class="slds-checkbox"> ' +
                             '<input type="checkbox" onchange="GetSelectedRows()"/> ' +
                             '<span class="slds-checkbox--faux"></span> ' +
-                            '<span class="slds-form-element__label slds-assistive-text">select row'+i+'</span> ' +
+                            '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
                             '</label> ' +
                             '</td>' +
                             '<th data-label="name" role="row">' +
-                            '<span class="slds-truncate">' + SourceListDEResult[key].Name + '</span>' + 
+                            '<span class="slds-truncate">' + SourceListDEResult[key].Name + '</span>' +
                             '</th> ' +
                             '<td data-label="external-key"> ' +
                             '<span class="slds-truncate">' + SourceListDEResult[key].CustomerKey + '</span>' +
@@ -148,7 +146,7 @@
                             '<span class="slds-truncate">' + SourceListDEResult[key].IsSendable + '</span>' +
                             '</td>' +
                             '</tr>';
-                        i=i+1;
+                        i = i + 1;
                     }
                     document.getElementById('DEBody').innerHTML = tds;
                 }
@@ -157,7 +155,27 @@
 
 
     function GetSelectedRows() {
+        var body = document.getElementById("DEBody");
+        var rows = body.find('tr');
         var grid = document.getElementById("DEDataTableId");
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        console.log('checkBoxes : '+checkBoxes);
+
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                console.log('checkBoxes[i].checked : '+checkBoxes[i].checked);
+                var cols = $(rows[i]).find('td');
+                console.log('cols : '+cols);
+                for (var j = 0; cols.length; j++) {
+                    var col = cols[j];
+                    console.log('col : '+col);
+                    col.addClass(data[i][j]);
+                }
+            }
+        }
+
+
+        /*var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("INPUT");
         var message;
         for (var i = 0; i < checkBoxes.length; i++) {
@@ -170,11 +188,11 @@
                 var data = item.innerHTML;
             }
         }
-        console.log(data);
+        console.log(data);*/
     }
 
 
-    
+
 
 
 
