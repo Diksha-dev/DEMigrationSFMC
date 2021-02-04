@@ -161,7 +161,7 @@
 
         var rows = document.getElementsByTagName("tbody")[0].rows;
         for (var i = 0; i < rows.length; i++) {
-            var td = rows[i].getElementsByTagName("td")[i];
+            var td = rows[i].getElementsByTagName("td")[i].innerHTML;
             console.log(td)
         }
 
