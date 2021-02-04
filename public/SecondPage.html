@@ -62,6 +62,7 @@
                                                 <button class="slds-button slds-button_brand slds-align_absolute-center"
                                                     onclick="DEListShow()">DE Extension</button>
                                             </li>
+                                            &nbsp;
                                             <li class="slds-nav-vertical__item slds-is-active">
                                                 <button class="slds-button slds-button_brand slds-align_absolute-center"
                                                     onclick="SendDEIdsToServer()">Send</button>
@@ -135,7 +136,7 @@
                         tds = tds + '<tr class="slds-hint-parent"> ' +
                             '<td class="slds-row-select"> ' +
                             '<label class="slds-checkbox"> ' +
-                            '<input type="checkbox" onchange="GetSelectedRows()" id="'+SourceListDEResult[key].CustomerKey+'"/> ' +
+                            '<input type="checkbox" id="'+SourceListDEResult[key].CustomerKey+'"/> ' +
                             '<span class="slds-checkbox--faux"></span> ' +
                             '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
                             '</label> ' +
