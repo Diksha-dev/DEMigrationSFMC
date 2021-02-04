@@ -144,15 +144,16 @@ app.post('/Authenticate', (req, res) => {
       SourceListDEResult = xmlParser.toJson(SourceListDEResult);
       SourceListDEResult = JSON.parse(SourceListDEResult);
       SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-      //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
+      /*console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
       for (var key in SourceListDEResult) {
         console.log('key : ' + SourceListDEResult[key].Name);
         console.log('key : ' + SourceListDEResult[key].CustomerKey);
         console.log('key : ' + SourceListDEResult[key].IsSendable);
         console.log('key : ' + SourceListDEResult[key].Description);
         console.log('Next');
-      }
+      }*/
+
     });
     return JSON.stringify(SourceListDEResult);
   }
@@ -202,13 +203,6 @@ app.post('/Authenticate', (req, res) => {
     }
 
 
-
-
-
-
-
-
-
     var x = setInterval(function(){
       console.log('sbse last : '+ SourceListDEResult);
       res.send(SourceListDEResult);
@@ -216,6 +210,44 @@ app.post('/Authenticate', (req, res) => {
         clearInterval(x);
       }
     }, 1000);
+      
+    
+
+
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  app.post("/SelectedDEList", async (req, res) => {
+    
+    if (req.body.reqForSelectedDEList) {
+      console.log('reqForSelectedDEList : '+ reqForSelectedDEList);
+      //SourceListDEResult = await getSourceListOfDE();
+      //await getSourceDEFields();
+    }
+    res.send('reqForSelectedDEList');
+
+/*
+    var x = setInterval(function(){
+      console.log('sbse last : '+ SourceListDEResult);
+      res.send(SourceListDEResult);
+      if(SourceListDEResult){
+        clearInterval(x);
+      }
+    }, 1000);
+    */
       
     
 
