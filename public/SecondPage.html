@@ -164,10 +164,13 @@
             if (checkBoxes[i].checked) {
                 //var row = document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML
                 //var row = checkBoxes[i].parentNode.parentNode;
-                message = document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
+                message = document.getElementById("DEDataTableId").rows[i];
+                var cell = message.cells;
+                var item = cell.item(0);
+                var data = item.innerHTML;
             }
         }
-        console.log(message);
+        console.log(data);
     }
 
 
