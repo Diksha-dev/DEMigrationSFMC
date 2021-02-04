@@ -159,15 +159,15 @@
     function GetSelectedRows() {
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("INPUT");
-        var message = "Id Name                  Country\n";
+        var message = "";
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked) {
                 //var row = document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML
                 //var row = checkBoxes[i].parentNode.parentNode;
-                message += document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML;
-                message += "   " + document.getElementById("DEDataTableId").rows[i].cells[1].innerHTML;
-                message += "   " + document.getElementById("DEDataTableId").rows[i].cells[2].innerHTML;
-                message += "   " + document.getElementById("DEDataTableId").rows[i].cells[3].innerHTML;
+                message += document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
+                message += document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
+                message += document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
+                message += document.getElementById("DEDataTableId").rows[i].cells.item(0).innerHTML;
                 message += "\n";
             }
         }
