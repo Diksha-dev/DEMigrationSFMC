@@ -158,28 +158,15 @@
 
 
     function GetSelectedRows() {
-        /*
-        var rows = document.getElementsByTagName("tbody")[0].rows;
-        for (var i = 0; i < rows.length; i++) {
-            var td = rows[i].getElementsByTagName("td")[i].innerHTML;
-            console.log(td)
-        }
-        */
-
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("input");
-        var message;
+        var selectedDE = [];
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
-                //var row = document.getElementById("DEDataTableId").rows[i].cells[0].innerHTML
-                //var row = checkBoxes[i].parentNode.parentNode;
-                message = document.getElementById("DEDataTableId").rows[i].cells.item(1).innerHTML;
-                console.log("Message  "+message);
-                var i=checkBoxes[i].id;
-                console.log(i);
+                selectedDE.add(checkBoxes[i].id);
+                console.log(selectedDE);
             }
         }
-        //console.log(message);*/
     }
 
 
