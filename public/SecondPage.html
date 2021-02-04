@@ -116,24 +116,21 @@
                 success: function (data) {
                     //console.log('data : ' + JSON.stringify(data));
                     SourceListDEResult = data;
-                    var tds = "",DEDes='';
+                    var tds = "",DEDes='',i=1;
                     for (var key in SourceListDEResult) {
-                        console.log('key : ' + SourceListDEResult[key].Description);
-                        console.log('key : ' + JSON.stringify(SourceListDEResult[key].Description));
                         if(JSON.stringify(SourceListDEResult[key].Description) == '{}') {
                             DEDes = '';
                         }
                         else{
                             DEDes = SourceListDEResult[key].Description;
                         }
-                        
-                        console.log('Next');
+                        console.log('i'+i);
                         tds = tds + '<tr class="slds-hint-parent"> ' +
                             '<td class="slds-row-select"> ' +
-                            '<label class="slds-checkbox" for="select-row1"> ' +
-                            '<input name="select-row1" type="checkbox" id="select-row1" /> ' +
+                            '<label class="slds-checkbox" for="select-row'+i+'"> ' +
+                            '<input name="select-row'+i+'" type="checkbox" id="select-row'+i+'" /> ' +
                             '<span class="slds-checkbox--faux"></span> ' +
-                            '<span class="slds-form-element__label slds-assistive-text">select row1</span> ' +
+                            '<span class="slds-form-element__label slds-assistive-text">select row'+i+'</span> ' +
                             '</label> ' +
                             '</td>' +
                             '<th data-label="name" role="row">' +
@@ -149,6 +146,7 @@
                             '<span class="slds-truncate">' + SourceListDEResult[key].IsSendable + '</span>' +
                             '</td>' +
                             '</tr>';
+                        i=i+1;
                     }
                     document.getElementById('DEBody').innerHTML = tds;
                 }
