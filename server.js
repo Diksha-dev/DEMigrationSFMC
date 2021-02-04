@@ -190,10 +190,10 @@ app.post('/Authenticate', (req, res) => {
         console.log('keysachhi : '+ key);
         if(key == 'Results')
         {
-          var result=SourceDEFieldsResult[key];
+          /*var result=SourceDEFieldsResult[key];
           for (var i in result) {
             console.log(result[i].Name);
-          };
+          };*/
         }
         
         //console.log('key : ' + SourceDEFieldsResult[key].Results.CustomerKey);
