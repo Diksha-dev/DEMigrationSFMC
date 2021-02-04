@@ -229,7 +229,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
                                   '</a:ReplyTo>' +
                                   '<a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>' +
-                                  <fueloauth xmlns="http://exacttarget.com">'+ DestinationAccessToken +'</fueloauth>
+                                  '<fueloauth xmlns="http://exacttarget.com">'+ DestinationAccessToken +'</fueloauth>' +
                               '</s:Header>' +
                               '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
                                   '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
