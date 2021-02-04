@@ -184,14 +184,17 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
       SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg;
 
+      console.log('SourceDEFieldsResult :' + SourceDEFieldsResult);
+
       for (var key in SourceDEFieldsResult) {
-        console.log('key : ' + SourceDEFieldsResult[key].Results.Name);
-        console.log('key : ' + SourceDEFieldsResult[key].Results.CustomerKey);
-        console.log('key : ' + SourceDEFieldsResult[key].Results.IsRequired);
-        console.log('key : ' + SourceDEFieldsResult[key].Results.IsPrimaryKey);
-        console.log('key : ' + SourceDEFieldsResult[key].Results.MaxLength);
-        console.log('key : ' + SourceDEFieldsResult[key].Results.DataExtension.CustomerKey);
-        console.log('key : ' + SourceDEFieldsResult[key].Results.FieldType);
+        console.log('keysachhi : '+ key);
+        console.log('key : ' + SourceDEFieldsResult[key].Results);
+        //console.log('key : ' + SourceDEFieldsResult[key].Results.CustomerKey);
+        //console.log('key : ' + SourceDEFieldsResult[key].Results.IsRequired);
+        //console.log('key : ' + SourceDEFieldsResult[key].Results.IsPrimaryKey);
+        //console.log('key : ' + SourceDEFieldsResult[key].Results.MaxLength);
+        //console.log('key : ' + SourceDEFieldsResult[key].Results.DataExtension.CustomerKey);
+        //console.log('key : ' + SourceDEFieldsResult[key].Results.FieldType);
         console.log('Next');
       }
 
@@ -223,7 +226,7 @@ app.post('/Authenticate', (req, res) => {
 
 
     var x = setInterval(function(){
-      console.log('sbse last : '+ SourceListDEResult);
+      //console.log('sbse last : '+ SourceListDEResult);
       res.send(SourceListDEResult);
       if(SourceListDEResult){
         clearInterval(x);
