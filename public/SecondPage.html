@@ -158,11 +158,9 @@
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("input");
         var selectedDE = {};
-        var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
-                mapKeyTemp = document.getElementById("DEExtKey"+i).innerHTML;
-                selectedDE[mapKeyTemp] = {
+                selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
                     "DEName" : document.getElementById("DEName"+i).innerHTML,
                     "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
                     "DEDes" : document.getElementById("DEDes"+i).innerHTML,
