@@ -61,7 +61,6 @@ app.post('/Authenticate', (req, res) => {
         SourceRestURL = body.rest_instance_url;
         SourceSoapURL = body.soap_instance_url;
         //console.log("body : "+ JSON.stringify(body));
-        console.log("source auth chala"); 
       });
   
   
@@ -81,7 +80,6 @@ app.post('/Authenticate', (req, res) => {
         DestinationRestURL = body.rest_instance_url;
         DestinationSoapURL = body.soap_instance_url;
         //console.log("body : "+ JSON.stringify(body));
-        console.log("destination auth chala"); 
       });
   }
   authTokenForBothSFDC();
@@ -146,7 +144,6 @@ app.post('/Authenticate', (req, res) => {
       SourceListDEResult = xmlParser.toJson(SourceListDEResult);
       SourceListDEResult = JSON.parse(SourceListDEResult);
       SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-
       /*console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
       for (var key in SourceListDEResult) {
         console.log('key : ' + SourceListDEResult[key].Name);
@@ -155,7 +152,6 @@ app.post('/Authenticate', (req, res) => {
         console.log('key : ' + SourceListDEResult[key].Description);
         console.log('Next');
       }*/
-
     });
     return JSON.stringify(SourceListDEResult);
   }
@@ -183,19 +179,10 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
       SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-
       //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
-      
-      
+
       var DEFieldMap={};
       for (var key in SourceDEFieldsResult) {
-        //console.log('keyvalue  '+SourceDEFieldsResult[key].Name);
-        //console.log('keyvalue  '+SourceDEFieldsResult[key].CustomerKey);
-        //console.log('keyvalue  '+SourceDEFieldsResult[key].IsRequired);
-        //console.log('keyvalue  '+SourceDEFieldsResult[key].IsPrimaryKey);
-        //console.log('keyvalue  '+SourceDEFieldsResult[key].DataExtension.CustomerKey);
-        //console.log('keyvalue  '+SourceDEFieldsResult[key].FieldType);
-        //console.log('Next');
         if(SourceDEFieldsResult[key].DataExtension.CustomerKey in DEFieldMap) {
           DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey].push({
             "FieldName" : SourceDEFieldsResult[key].Name,
@@ -215,13 +202,10 @@ app.post('/Authenticate', (req, res) => {
       }
       //console.log('DEFieldMap : '+ JSON.stringify(DEFieldMap));
 
-
-      
       var DEListBody = '';
       for (var key in DEFieldMap) {
         if(key in selectedDEList) {
-          console.log('selectedDEList[key].DEExtKey Apna Loop: ' + selectedDEList[key].DEExtKey);
-
+          console.log('Apna Loop');
           DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
                             '<soapenv:Header>' +
@@ -240,6 +224,7 @@ app.post('/Authenticate', (req, res) => {
 
           for(var i = 0 ; i< DEFieldMap[key].length ; i++) {
             if(DEFieldMap[key][i].FieldFieldType == 'Number' || DEFieldMap[key][i].FieldFieldType == 'Date' || DEFieldMap[key][i].FieldFieldType == 'Boolean') {
+              console.log('NumberDateBoolean : ' + DEFieldMap[key][i].FieldFieldType);
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                         '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                         '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -249,7 +234,8 @@ app.post('/Authenticate', (req, res) => {
                                         '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '</Field>';
             }
-            else {
+            else if(DEFieldMap[key][i].FieldFieldType == 'EmailAddress'){
+              console.log('EmailAddress : ' + DEFieldMap[key][i].FieldFieldType);
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                         '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                         '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -260,7 +246,42 @@ app.post('/Authenticate', (req, res) => {
                                         '<MaxLength>254</MaxLength>' +
                                       '</Field>';
             }
-            
+            else if(DEFieldMap[key][i].FieldFieldType == 'Phone'){
+              console.log('Phone : ' + DEFieldMap[key][i].FieldFieldType);
+              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+                                        '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                        '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
+                                        '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
+                                        '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                        '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                        '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                        '<MaxLength>50</MaxLength>' +
+                                      '</Field>';
+            }
+            else if(DEFieldMap[key][i].FieldFieldType == 'Decimal'){
+              console.log('Decimal : ' + DEFieldMap[key][i].FieldFieldType);
+              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+                                        '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                        '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
+                                        '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
+                                        '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                        '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                        '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                        '<MaxLength>18</MaxLength>' +
+                                      '</Field>';
+            }
+            else if(DEFieldMap[key][i].FieldFieldType == 'Locale'){
+              console.log('Locale : ' + DEFieldMap[key][i].FieldFieldType);
+              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+                                        '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                        '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
+                                        '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
+                                        '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                        '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                        '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                        '<MaxLength>5</MaxLength>' +
+                                      '</Field>';
+            }
           }
 
           DEListBody = DEListBody + '</Fields>' +
