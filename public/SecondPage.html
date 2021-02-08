@@ -193,16 +193,29 @@
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
-                mapKeyTemp = document.getElementById("DEExtKey"+i).innerHTML;
-                selectedDE[mapKeyTemp] = {
-                    "DEName" : document.getElementById("DEName"+i).innerHTML,
-                    "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
-                    "DEDes" : document.getElementById("DEDes"+i).innerHTML,
-                    "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
-                    "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
-                    "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
-                    "DESendSubField" : "Subscriber Key",
-                };
+                if(document.getElementById("DESendSubField"+i).innerHTML == "_SubscriberKey" || document.getElementById("DESendSubField"+i).innerHTML == "Subscriber Key" || document.getElementById("DESendSubField"+i).innerHTML == "SubscriberKey") {
+                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
+                        "DEName" : document.getElementById("DEName"+i).innerHTML,
+                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
+                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
+                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
+                        "DESendSubField" : "Subscriber Key",
+                    };
+                }
+                else if(document.getElementById("DESendSubField"+i).innerHTML == "_SubscriberID" || document.getElementById("DESendSubField"+i).innerHTML == "Subscriber ID" || document.getElementById("DESendSubField"+i).innerHTML == "SubscriberID") {
+                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
+                        "DEName" : document.getElementById("DEName"+i).innerHTML,
+                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
+                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
+                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
+                        "DESendSubField" : "Subscriber ID",
+                    };
+                }
+                    
             }
         }
         console.log(selectedDE);

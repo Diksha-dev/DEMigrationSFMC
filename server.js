@@ -332,7 +332,7 @@ app.post('/Authenticate', (req, res) => {
                         '</soapenv:Envelope>';
         }
 
-        console.log('DEListBody : ' + DEListBody);
+        //console.log('DEListBody : ' + DEListBody);
         if(DEListBody != '') {
           var DEListOption = {
             'method': 'POST',
