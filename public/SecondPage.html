@@ -136,15 +136,15 @@
                         tds = tds + '<tr class="slds-hint-parent"> ' +
                             '<td class="slds-row-select"> ' +
                             '<label class="slds-checkbox"> ' +
-                            '<input type="checkbox" id="' + SourceListDEResult[key].CustomerKey + '" value="' + SourceListDEResult[key].Name,SourceListDEResult[key].CustomerKey,DEDes,SourceListDEResult[key].IsSendable + '"/> ' +
+                            '<input type="checkbox" id="'+ SourceListDEResult[key].CustomerKey +'"/> ' +
                             '<span class="slds-checkbox--faux"></span> ' +
                             '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
                             '</label> ' +
                             '</td>' +
-                            '<th data-label="name" role="row">' + SourceListDEResult[key].Name + '</th> ' +
-                            '<td data-label="external-key"> ' + SourceListDEResult[key].CustomerKey + '</td> ' +
-                            '<td data-label="description"> ' + DEDes + '</td>' +
-                            '<td data-label="sendable">' + SourceListDEResult[key].IsSendable + '</td>' +
+                            '<th data-label="name" role="row" id="DEName'+i+'">' + SourceListDEResult[key].Name + '</th> ' +
+                            '<td data-label="external-key" id="DEExtKey'+i+'"> ' + SourceListDEResult[key].CustomerKey + '</td> ' +
+                            '<td data-label="description" id="DEDes'+i+'"> ' + DEDes + '</td>' +
+                            '<td data-label="sendable" id="DEIsSend'+i+'">' + SourceListDEResult[key].IsSendable + '</td>' +
                             '</tr>';
                         i = i + 1;
                     }
@@ -160,7 +160,10 @@
         var selectedDE = [];
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
-                console.log(checkBoxes[i].value);
+                console.log('DEName'+i+' : '+ document.getElementById("DEName"+i).innerHTML);
+                console.log('DEExtKey'+i+' : '+ document.getElementById("DEExtKey"+i).innerHTML);
+                console.log('DEDes'+i+' : '+ document.getElementById("DEDes"+i).innerHTML);
+                console.log('DEIsSend'+i+' : '+ document.getElementById("DEIsSend"+i).innerHTML);
                 selectedDE.push(checkBoxes[i].id);
             }
         }
