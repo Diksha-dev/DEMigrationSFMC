@@ -291,7 +291,8 @@ app.post('/Authenticate', (req, res) => {
                         '</soapenv:Envelope>';
         }
 
-        if(DEListBody == '') {
+        console.log('DEListBody : ' + DEListBody);
+        if(DEListBody != '') {
           var DEListOption = {
             'method': 'POST',
             'url': DestinationSoapURL + 'Service.asmx',
