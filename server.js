@@ -197,7 +197,6 @@ app.post('/Authenticate', (req, res) => {
         //console.log('keyvalue  '+SourceDEFieldsResult[key].FieldType);
         //console.log('Next');
         if(SourceDEFieldsResult[key].DataExtension.CustomerKey in DEFieldMap) {
-          console.log('IfStart');
           DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey].push({
             "FieldName" : SourceDEFieldsResult[key].Name,
             "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
@@ -206,7 +205,6 @@ app.post('/Authenticate', (req, res) => {
           });
         }
         else {
-          console.log('ElseStart');
           DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey] = [{
             "FieldName" : SourceDEFieldsResult[key].Name,
             "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
@@ -218,12 +216,20 @@ app.post('/Authenticate', (req, res) => {
       console.log('DEFieldMap : '+ JSON.stringify(DEFieldMap));
 
 
-      /*
+      
       var DEListBody = '';
       for (var key in SourceDEFieldsResult) {
         
-        if(selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEExtKey"] == SourceDEFieldsResult[key].DataExtension.CustomerKey) {
+        if(selectedDEList[key]["DEExtKey"] == key) {
           
+          console.log('IfStart');
+          console.log('Field-DE-ExtKey : ' + key.DataExtension.CustomerKey);
+          console.log('Field-Name : ' + key.Name);
+          console.log('DE-ExtKey : ' + selectedDEList[key]["DEExtKey"] );
+          console.log('DE-Name : ' + selectedDEList[key]["DEName"] );
+          console.log('IfEnd');
+          
+          /*
           DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
                             '<soapenv:Header>' +
@@ -253,17 +259,13 @@ app.post('/Authenticate', (req, res) => {
                                 '</CreateRequest>' +
                             '</soapenv:Body>' +
                         '</soapenv:Envelope>';
+          */
           
           
           
           
           
-          console.log('IfStart');
-          console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
-          console.log('Field-Name : ' + SourceDEFieldsResult[key].Name);
-          console.log('DE-ExtKey : ' + selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEExtKey"] );
-          console.log('DE-Name : ' + selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEName"] );
-          console.log('IfEnd');
+          
           
         }
 
@@ -276,8 +278,8 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-      var request = require('request');
-      var DEListBody = {
+      /*
+      var DEListOption = {
         'method': 'POST',
         'url': DestinationSoapURL + 'Service.asmx',
         'headers': {
@@ -288,11 +290,12 @@ app.post('/Authenticate', (req, res) => {
         body: DEListBody
 
       };
-      request(DEListBody, function (error, response) {
+      request(DEListOption, function (error, response) {
         if (error) throw new Error(error);
         console.log(response.body);
       });
       */
+      
 
 
     });
