@@ -150,8 +150,8 @@ app.post('/Authenticate', (req, res) => {
         console.log('key : ' + SourceListDEResult[key].IsSendable);
         console.log('key : ' + SourceListDEResult[key].IsTestable);
         console.log('key : ' + SourceListDEResult[key].Description);
-        //console.log('key : ' + SourceListDEResult[key].SendableDataExtensionField.Name);
-        console.log('key : ' + SourceListDEResult[key].SendableSubscriberField.Name);
+        console.log('key : ' + SourceListDEResult[key]["SendableDataExtensionField"].Name);
+        console.log('key : ' + SourceListDEResult[key]["SendableSubscriberField"]["Name"]);
         console.log('Next');
       }
     });
