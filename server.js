@@ -282,6 +282,18 @@ app.post('/Authenticate', (req, res) => {
                                         '<MaxLength>5</MaxLength>' +
                                       '</Field>';
             }
+            else if(DEFieldMap[key][i].FieldFieldType == 'Text'){
+              console.log('Text : ' + DEFieldMap[key][i].FieldFieldType);
+              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+                                        '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                        '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
+                                        '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
+                                        '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                        '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                        '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                        '<MaxLength>50</MaxLength>' +
+                                      '</Field>';
+            }
           }
 
           DEListBody = DEListBody + '</Fields>' +
