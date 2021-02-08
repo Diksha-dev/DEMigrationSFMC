@@ -224,10 +224,10 @@ app.post('/Authenticate', (req, res) => {
         console.log('selectedDEList[key].DEExtKey : ' + selectedDEList[key].DEExtKey);
         
         //if(selectedDEList[key]["DEExtKey"] == key) {
-          if(key in selectedDEList[key].DEExtKey) {
+          if(key == selectedDEList[key].DEExtKey) {
             console.log('Key : Apna Loop');
           }
-          console.log('Key : ' + key);
+          /*console.log('Key : ' + key);
           console.log('IfStart');
           console.log('Field-DE-ExtKey : ' + DEFieldMap[key].FieldIsRequired);
           console.log('Field-Name : ' + DEFieldMap[key].FieldName);
@@ -236,7 +236,7 @@ app.post('/Authenticate', (req, res) => {
           console.log('DE-Name : ' + selectedDEList[key]["DEName"] );
           console.log('IfEnd');
           
-          /*
+          
           DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
                             '<soapenv:Header>' +
