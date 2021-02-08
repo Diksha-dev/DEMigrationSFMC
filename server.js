@@ -218,8 +218,8 @@ app.post('/Authenticate', (req, res) => {
                                         '<CustomerKey>'+ selectedDEList[key].DEExtKey + 'testFzl' +'</CustomerKey>' +
                                         '<Name>'+ selectedDEList[key].DEName + 'testFzl' +'</Name>' +
                                         '<Description>'+ selectedDEList[key].DEDes +'</Description>' +
-                                        '<IsSendable>'+ selectedDEList[key].DEIsSend +'</IsSendable>' +
-                                        '<IsTestable>'+ selectedDEList[key].DEIsSend +'</IsTestable>' +
+                                        '<IsSendable>'+ 'false' +'</IsSendable>' +
+                                        '<IsTestable>'+ 'false' +'</IsTestable>' +
                                         '<Fields>';
 
           for(var i = 0 ; i< DEFieldMap[key].length ; i++) {
