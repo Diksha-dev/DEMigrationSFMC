@@ -227,7 +227,8 @@ app.post('/Authenticate', (req, res) => {
 
       for (var key in SourceDEFieldsResult) {
         console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
-        console.log('DE-ExtKey : ' + selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]);
+        console.log('DE-ExtKey : ' + selectedDEList[0]);
+
         if(selectedDEList.includes(SourceDEFieldsResult[key].DataExtension.CustomerKey)) {
           console.log('IfStart');
           console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
@@ -372,7 +373,7 @@ app.post('/Authenticate', (req, res) => {
     
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
-      console.log('reqForSelectedDEList : '+ selectedDEList);
+      console.log('reqForSelectedDEList : '+ JSON.stringify(selectedDEList));
 
       //SourceListDEResult = await getSourceListOfDE();
       getSourceDEFields();
