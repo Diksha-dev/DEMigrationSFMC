@@ -225,21 +225,22 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-    for (var key in SourceDEFieldsResult) {
-      if(selectedDEList.includes(SourceDEFieldsResult[key].DataExtension.CustomerKey)) {
+      for (var key in SourceDEFieldsResult) {
         console.log('SourceDEFieldsResult[key].DataExtension.CustomerKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
-        console.log('SourceDEFieldsResult[key].Name : ' + SourceDEFieldsResult[key].Name);
-        console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey) : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey) );
-        console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey );
-        console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName );
-      
+        if(selectedDEList.includes(SourceDEFieldsResult[key].DataExtension.CustomerKey)) {
+          console.log('SourceDEFieldsResult[key].DataExtension.CustomerKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
+          console.log('SourceDEFieldsResult[key].Name : ' + SourceDEFieldsResult[key].Name);
+          console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey) : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey) );
+          console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey );
+          console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName );
+        
+        }
       }
-    }
       
 
 
 
-
+      /*
       var DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                           '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
                               '<s:Header>' +
@@ -302,6 +303,8 @@ app.post('/Authenticate', (req, res) => {
         if (error) throw new Error(error);
         console.log(response.body);
       });
+
+      */
 
 
 
@@ -375,7 +378,7 @@ app.post('/Authenticate', (req, res) => {
     }
     res.send('reqForSelectedDEList');
 
-/*
+    /*
     var x = setInterval(function(){
       console.log('sbse last : '+ SourceListDEResult);
       res.send(SourceListDEResult);
