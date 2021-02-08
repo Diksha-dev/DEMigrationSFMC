@@ -225,9 +225,16 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-     for (var key in SourceDEFieldsResult) {
-       //if() {}
-     }
+    for (var key in SourceDEFieldsResult) {
+      if(selectedDEList.includes(SourceDEFieldsResult[key].DataExtension.CustomerKey)) {
+        console.log('SourceDEFieldsResult[key].DataExtension.CustomerKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
+        console.log('SourceDEFieldsResult[key].Name : ' + SourceDEFieldsResult[key].Name);
+        console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey) : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey) );
+        console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey );
+        console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName );
+      
+      }
+    }
       
 
 
