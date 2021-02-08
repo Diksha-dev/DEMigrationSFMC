@@ -150,13 +150,24 @@ app.post('/Authenticate', (req, res) => {
         console.log('key : ' + SourceListDEResult[key].IsSendable);
         console.log('key : ' + SourceListDEResult[key].IsTestable);
         console.log('key : ' + SourceListDEResult[key].Description);
-        console.log('key : ' + SourceListDEResult[key].SendableDataExtensionField.Name);
-        console.log('key : ' + SourceListDEResult[key].SendableSubscriberField.Name);
+        //console.log('key : ' + SourceListDEResult[key].SendableDataExtensionField.Name);
+        //console.log('key : ' + SourceListDEResult[key].SendableSubscriberField.Name);
         console.log('Next');
       }*/
     });
     return JSON.stringify(SourceListDEResult);
   }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -190,7 +201,8 @@ app.post('/Authenticate', (req, res) => {
             "FieldName" : SourceDEFieldsResult[key].Name,
             "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
             "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
-            "FieldFieldType" : SourceDEFieldsResult[key].FieldType
+            "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
+            "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength
           });
         }
         else {
@@ -198,7 +210,8 @@ app.post('/Authenticate', (req, res) => {
             "FieldName" : SourceDEFieldsResult[key].Name,
             "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
             "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
-            "FieldFieldType" : SourceDEFieldsResult[key].FieldType
+            "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
+            "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength
           }];
         }
       }
@@ -221,8 +234,22 @@ app.post('/Authenticate', (req, res) => {
                                         '<Name>'+ selectedDEList[key].DEName + 'testFzl' +'</Name>' +
                                         '<Description>'+ selectedDEList[key].DEDes +'</Description>' +
                                         '<IsSendable>'+ selectedDEList[key].DEIsSend +'</IsSendable>' +
-                                        '<IsTestable>'+ selectedDEList[key].DEIsSend +'</IsTestable>' +
-                                        '<Fields>';
+                                        '<IsTestable>'+ selectedDEList[key].DEIsTest +'</IsTestable>';
+          if(selectedDEList[key].DEIsSend == 'true') {
+            DEListBody = DEListBody + '<SendableDataExtensionField>' +
+                                        '<PartnerKey xsi:nil="true"/>' +
+                                        '<ObjectID xsi:nil="true"/>' +
+                                        '<Name>'+ selectedDEList[key].DESendDEField +'</Name>' +
+                                      '</SendableDataExtensionField>' +
+                                      '<SendableSubscriberField>' +
+                                        '<Name>'+ selectedDEList[key].DESendSubField +'</Name>' +
+                                      '</SendableSubscriberField>' +
+                                    '<Fields>';
+          }
+          else {
+            DEListBody = DEListBody + '<Fields>';
+          }
+                                        
 
           for(var i = 0 ; i< DEFieldMap[key].length ; i++) {
             if(DEFieldMap[key][i].FieldFieldType == 'Number' || DEFieldMap[key][i].FieldFieldType == 'Date' || DEFieldMap[key][i].FieldFieldType == 'Boolean') {
@@ -269,7 +296,7 @@ app.post('/Authenticate', (req, res) => {
                                         '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
                                         '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                         '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
-                                        '<MaxLength>18</MaxLength>' +
+                                        '<MaxLength>'+ DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
                                       '</Field>';
             }
             else if(DEFieldMap[key][i].FieldFieldType == 'Locale'){
@@ -293,7 +320,7 @@ app.post('/Authenticate', (req, res) => {
                                         '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
                                         '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                         '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
-                                        '<MaxLength>50</MaxLength>' +
+                                        '<MaxLength>'+ DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
                                       '</Field>';
             }
           }
