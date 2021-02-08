@@ -184,7 +184,7 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
       SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-      console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
+      //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
       
       /*
       var DEFieldMap={};
@@ -226,14 +226,13 @@ app.post('/Authenticate', (req, res) => {
 
 
       for (var key in SourceDEFieldsResult) {
-        console.log('SourceDEFieldsResult[key].DataExtension.CustomerKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
         if(selectedDEList.includes(SourceDEFieldsResult[key].DataExtension.CustomerKey)) {
-          console.log('SourceDEFieldsResult[key].DataExtension.CustomerKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
-          console.log('SourceDEFieldsResult[key].Name : ' + SourceDEFieldsResult[key].Name);
-          console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey) : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey) );
-          console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey );
-          console.log('selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName );
-        
+          console.log('IfStart');
+          console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
+          console.log('Field-Name : ' + SourceDEFieldsResult[key].Name);
+          console.log('DE-ExtKey : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEExtKey );
+          console.log('DE-Name : ' + selectedDEList.get(SourceDEFieldsResult[key].DataExtension.CustomerKey).DEName );
+          console.log('IfEnd');
         }
       }
       
