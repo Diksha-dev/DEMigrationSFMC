@@ -219,7 +219,7 @@ app.post('/Authenticate', (req, res) => {
       
       var DEListBody = '';
       for (var key in SourceDEFieldsResult) {
-        
+        console.log('key : ' + key);
         if(selectedDEList[key]["DEExtKey"] == key) {
           
           console.log('IfStart');
