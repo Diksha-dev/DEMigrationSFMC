@@ -220,7 +220,8 @@ app.post('/Authenticate', (req, res) => {
       var DEListBody = '';
       for (var key in SourceDEFieldsResult) {
         if (SourceDEFieldsResult.hasOwnProperty(key)) {
-          console.log(JSON.stringify(SourceDEFieldsResult[key]));
+          console.log(key);
+          //console.log(JSON.stringify(SourceDEFieldsResult[key]));
         }
 
         /*
