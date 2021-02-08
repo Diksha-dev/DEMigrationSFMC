@@ -257,7 +257,7 @@ app.post('/Authenticate', (req, res) => {
                                         '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
                                         '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                         '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
-                                        '<MaxLength>25</MaxLength>' +
+                                        '<MaxLength>254</MaxLength>' +
                                       '</Field>';
             }
             
