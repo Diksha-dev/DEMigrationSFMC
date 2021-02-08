@@ -224,8 +224,8 @@ app.post('/Authenticate', (req, res) => {
         if(selectedDEList[key]["DEExtKey"] == key) {
           
           console.log('IfStart');
-          console.log('Field-DE-ExtKey : ' + DEFieldMap[key].DataExtension.CustomerKey);
-          console.log('Field-Name : ' + DEFieldMap[key].Name);
+          console.log('Field-DE-ExtKey : ' + DEFieldMap[key].FieldIsRequired);
+          console.log('Field-Name : ' + DEFieldMap[key].FieldName);
           console.log('DE-ExtKey : ' + selectedDEList[key]["DEExtKey"] );
           console.log('DE-Name : ' + selectedDEList[key]["DEName"] );
           console.log('IfEnd');
