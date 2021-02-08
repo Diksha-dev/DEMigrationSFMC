@@ -160,11 +160,13 @@
         var selectedDE = [];
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
-                console.log('DEName'+i+' : '+ document.getElementById("DEName"+i).innerHTML);
-                console.log('DEExtKey'+i+' : '+ document.getElementById("DEExtKey"+i).innerHTML);
-                console.log('DEDes'+i+' : '+ document.getElementById("DEDes"+i).innerHTML);
-                console.log('DEIsSend'+i+' : '+ document.getElementById("DEIsSend"+i).innerHTML);
-                selectedDE.push(checkBoxes[i].id);
+                selectedDE.push({
+                    id : checkBoxes[i].id, 
+                    DEName : document.getElementById("DEName"+i).innerHTML,
+                    DEExtKey : document.getElementById("DEExtKey"+i).innerHTML,
+                    DEDes : document.getElementById("DEDes"+i).innerHTML,
+                    DEIsSend : document.getElementById("DEIsSend"+i).innerHTML
+                });
             }
         }
         console.log(selectedDE);
