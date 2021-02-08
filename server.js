@@ -213,7 +213,7 @@ app.post('/Authenticate', (req, res) => {
           }];
         }
       }
-      console.log('DEFieldMap : '+ JSON.stringify(DEFieldMap));
+      //console.log('DEFieldMap : '+ JSON.stringify(DEFieldMap));
 
 
       
