@@ -218,15 +218,9 @@ app.post('/Authenticate', (req, res) => {
 
       
       var DEListBody = '';
-      //for (const [key, value] of Object.entries(map)){ console.log(keyimage);}
       for (var key in DEFieldMap) {
-        //if (SourceDEFieldsResult.hasOwnProperty(key)) {
-          console.log('key : ' + key);
-          console.log('DEFieldMap : ' + JSON.stringify(DEFieldMap[key]));
-          //console.log(JSON.stringify(SourceDEFieldsResult[key]));
-        //}
 
-        /*
+        
         if(selectedDEList[key]["DEExtKey"] == key) {
           
           console.log('IfStart');
@@ -236,7 +230,7 @@ app.post('/Authenticate', (req, res) => {
           console.log('DE-Name : ' + selectedDEList[key]["DEName"] );
           console.log('IfEnd');
           
-          
+          /*
           DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
                             '<soapenv:Header>' +
@@ -266,15 +260,16 @@ app.post('/Authenticate', (req, res) => {
                                 '</CreateRequest>' +
                             '</soapenv:Body>' +
                         '</soapenv:Envelope>';
+
+          
+        */  
           
           
           
           
           
           
-          
-          
-        }*/
+        }
 
       }
       
