@@ -219,13 +219,19 @@ app.post('/Authenticate', (req, res) => {
       
       var DEListBody = '';
       for (var key in DEFieldMap) {
-
+        console.log('Key : ' + key);
+        console.log('selectedDEList[key].DEExtKey : ' + JSON.stringify(selectedDEList[key]));
+        console.log('selectedDEList[key].DEExtKey : ' + selectedDEList[key].DEExtKey);
         
-        if(selectedDEList[key]["DEExtKey"] == key) {
-          
+        //if(selectedDEList[key]["DEExtKey"] == key) {
+          if(key in selectedDEList[key].DEExtKey) {
+            console.log('Key : Apna Loop');
+          }
+          console.log('Key : ' + key);
           console.log('IfStart');
           console.log('Field-DE-ExtKey : ' + DEFieldMap[key].FieldIsRequired);
           console.log('Field-Name : ' + DEFieldMap[key].FieldName);
+
           console.log('DE-ExtKey : ' + selectedDEList[key]["DEExtKey"] );
           console.log('DE-Name : ' + selectedDEList[key]["DEName"] );
           console.log('IfEnd');
@@ -269,7 +275,7 @@ app.post('/Authenticate', (req, res) => {
           
           
           
-        }
+        //}
 
       }
       
