@@ -239,7 +239,7 @@ app.post('/Authenticate', (req, res) => {
                                         '<IsSendable>'+ selectedDEList[key].DEIsSend +'</IsSendable>' +
                                         '<IsTestable>'+ selectedDEList[key].DEIsSend +'</IsTestable>' +
                                         '<Fields>';
-          for(var i = 0 ; i<= DEFieldMap[key].length ; i++) {
+          for(var i = 0 ; i< DEFieldMap[key].length ; i++) {
             console.log('DEFieldMap[key] : ' + DEFieldMap[key][i]);
             console.log('DEFieldMap[key] : ' + JSON.stringify(DEFieldMap[key][i]));
             console.log('DEFieldMap[key] : ' + DEFieldMap[key][i]["FieldName"]);
