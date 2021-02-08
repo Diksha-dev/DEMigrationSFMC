@@ -219,23 +219,10 @@ app.post('/Authenticate', (req, res) => {
       
       var DEListBody = '';
       for (var key in DEFieldMap) {
-        console.log('Key : ' + key);
-        
-        //if(selectedDEList[key]["DEExtKey"] == key) {
-          if(key in selectedDEList) {
-            console.log('selectedDEList[key] Apna Loop: ' + JSON.stringify(selectedDEList[key]));
-            console.log('selectedDEList[key].DEExtKey Apna Loop: ' + selectedDEList[key].DEExtKey);
-          }
-          /*console.log('Key : ' + key);
-          console.log('IfStart');
-          console.log('Field-DE-ExtKey : ' + DEFieldMap[key].FieldIsRequired);
+        if(key in selectedDEList) {
+          console.log('selectedDEList[key].DEExtKey Apna Loop: ' + selectedDEList[key].DEExtKey);
           console.log('Field-Name : ' + DEFieldMap[key].FieldName);
 
-          console.log('DE-ExtKey : ' + selectedDEList[key]["DEExtKey"] );
-          console.log('DE-Name : ' + selectedDEList[key]["DEName"] );
-          console.log('IfEnd');
-          
-          
           DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
                             '<soapenv:Header>' +
@@ -245,65 +232,50 @@ app.post('/Authenticate', (req, res) => {
                                 '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
                                     '<Options/>' +
                                     '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-                                        '<CustomerKey>'+ selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEExtKey"] +'</CustomerKey>' +
-                                        '<Name>'+ selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEName"] +'</Name>' +
-                                        '<Description>'+ selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEDes"] +'</Description>' +
-                                        '<IsSendable>'+ selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEIsSend"] +'</IsSendable>' +
-                                        '<IsTestable>'+ selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEIsSend"] +'</IsTestable>' +
-                                        '<Fields>' +
-                                            '<Field xsi:type="ns2:DataExtensionField">' +
-                                                '<CustomerKey>VersionID</CustomerKey>' +
-                                                '<Name>VersionID</Name>' +
-                                                '<Label>VersionID</Label>' +
-                                                '<IsRequired>true</IsRequired>' +
-                                                '<IsPrimaryKey>false</IsPrimaryKey>' +
-                                                '<FieldType>Text</FieldType>' +
-                                                '<MaxLength>36</MaxLength>' +
-                                            '</Field>' +
-                                        '</Fields>' +
-                                    '</Objects>' +
-                                '</CreateRequest>' +
-                            '</soapenv:Body>' +
+                                        '<CustomerKey>'+ selectedDEList[key].DEExtKey +'</CustomerKey>' +
+                                        '<Name>'+ selectedDEList[key].DEName +'</Name>' +
+                                        '<Description>'+ selectedDEList[key].DEDes +'</Description>' +
+                                        '<IsSendable>'+ selectedDEList[key].DEIsSend +'</IsSendable>' +
+                                        '<IsTestable>'+ selectedDEList[key].DEIsSend +'</IsTestable>' +
+                                        '<Fields>';
+          for(var i = 0 ; i<= DEFieldMap[key].length ; i++) {
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+                                        '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                        '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
+                                        '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
+                                        '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                        '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                        '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                        '<MaxLength>36</MaxLength>' +
+                                      '</Field>';
+          }
+          DEListBody = DEListBody + '</Fields>' +
+                                  '</Objects>' +
+                              '</CreateRequest>' +
+                          '</soapenv:Body>' +
                         '</soapenv:Envelope>';
+        }
 
-          
-        */  
-          
-          
-          
-          
-          
-          
-        //}
+        var DEListOption = {
+          'method': 'POST',
+          'url': DestinationSoapURL + 'Service.asmx',
+          'headers': {
+            'Content-Type': 'text/xml',
+            'SoapAction': 'Create',
+            'Authorization': 'Bearer ' + DestinationAccessToken
+          },
+          body: DEListBody
+  
+        };
+        request(DEListOption, function (error, response) {
+          if (error) throw new Error(error);
+          console.log(response.body);
+        });
+
 
       }
       
       
-
-      
-
-
-
-
-      /*
-      var DEListOption = {
-        'method': 'POST',
-        'url': DestinationSoapURL + 'Service.asmx',
-        'headers': {
-          'Content-Type': 'text/xml',
-          'SoapAction': 'Create',
-          'Authorization': 'Bearer ' + DestinationAccessToken
-        },
-        body: DEListBody
-
-      };
-      request(DEListOption, function (error, response) {
-        if (error) throw new Error(error);
-        console.log(response.body);
-      });
-      */
-      
-
 
     });
   }
