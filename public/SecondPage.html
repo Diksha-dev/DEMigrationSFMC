@@ -162,12 +162,12 @@
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
                 mapKeyTemp = document.getElementById("DEExtKey"+i).innerHTML;
-                selectedDE[mapKeyTemp].push({
-                    DEName : document.getElementById("DEName"+i).innerHTML,
-                    DEExtKey : document.getElementById("DEExtKey"+i).innerHTML,
-                    DEDes : document.getElementById("DEDes"+i).innerHTML,
-                    DEIsSend : document.getElementById("DEIsSend"+i).innerHTML
-                });
+                selectedDE[mapKeyTemp] = {
+                    "DEName" : document.getElementById("DEName"+i).innerHTML,
+                    "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                    "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                    "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML
+                };
             }
         }
         console.log(selectedDE);
