@@ -221,7 +221,8 @@ app.post('/Authenticate', (req, res) => {
       for (var key in DEFieldMap) {
         if(key in selectedDEList) {
           console.log('selectedDEList[key].DEExtKey Apna Loop: ' + selectedDEList[key].DEExtKey);
-          console.log('Field-Name : ' + DEFieldMap[key].FieldName);
+          console.log('Field-Name : ' + DEFieldMap[key][0].FieldName);
+          console.log('Field-Name : ' + DEFieldMap[key][1].FieldName);
 
           DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
@@ -239,6 +240,12 @@ app.post('/Authenticate', (req, res) => {
                                         '<IsTestable>'+ selectedDEList[key].DEIsSend +'</IsTestable>' +
                                         '<Fields>';
           for(var i = 0 ; i<= DEFieldMap[key].length ; i++) {
+            console.log('DEFieldMap[key] : ' + DEFieldMap[key][i]);
+            console.log('DEFieldMap[key] : ' + JSON.stringify(DEFieldMap[key][i]));
+            console.log('DEFieldMap[key] : ' + DEFieldMap[key][i]["FieldName"]);
+            
+            
+            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                         '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                         '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
