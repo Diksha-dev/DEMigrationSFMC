@@ -218,11 +218,13 @@ app.post('/Authenticate', (req, res) => {
 
       
       var DEListBody = '';
-      for (var key in SourceDEFieldsResult) {
-        if (SourceDEFieldsResult.hasOwnProperty(key)) {
-          console.log(key);
+      //for (const [key, value] of Object.entries(map)){ console.log(keyimage);}
+      for (var key in DEFieldMap) {
+        //if (SourceDEFieldsResult.hasOwnProperty(key)) {
+          console.log('key : ' + key);
+          console.log('DEFieldMap : ' + JSON.stringify(DEFieldMap[key]));
           //console.log(JSON.stringify(SourceDEFieldsResult[key]));
-        }
+        //}
 
         /*
         if(selectedDEList[key]["DEExtKey"] == key) {
