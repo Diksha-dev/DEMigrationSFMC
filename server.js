@@ -229,7 +229,7 @@ app.post('/Authenticate', (req, res) => {
         console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
         console.log('DE-ExtKey : ' + JSON.stringify(selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]));
 
-        if(selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey].DEExtKey == SourceDEFieldsResult[key].DataExtension.CustomerKey) {
+        if(selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey][DEExtKey] == SourceDEFieldsResult[key].DataExtension.CustomerKey) {
           console.log('IfStart');
           console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
           console.log('Field-Name : ' + SourceDEFieldsResult[key].Name);
