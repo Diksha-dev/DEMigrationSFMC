@@ -136,23 +136,15 @@
                         tds = tds + '<tr class="slds-hint-parent"> ' +
                             '<td class="slds-row-select"> ' +
                             '<label class="slds-checkbox"> ' +
-                            '<input type="checkbox" id="'+SourceListDEResult[key].CustomerKey+'"/> ' +
+                            '<input type="checkbox" id="' + SourceListDEResult[key].CustomerKey + '" value="' + SourceListDEResult[key].Name,SourceListDEResult[key].CustomerKey,DEDes,SourceListDEResult[key].IsSendable + '"/> ' +
                             '<span class="slds-checkbox--faux"></span> ' +
                             '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
                             '</label> ' +
                             '</td>' +
-                            '<th data-label="name" role="row">' +
-                            '<span class="slds-truncate">' + SourceListDEResult[key].Name + '</span>' +
-                            '</th> ' +
-                            '<td data-label="external-key"> ' +
-                            '<span class="slds-truncate">' + SourceListDEResult[key].CustomerKey + '</span>' +
-                            '</td> ' +
-                            '<td data-label="description"> ' +
-                            '<span class="slds-truncate">' + DEDes + '</span>' +
-                            '</td>' +
-                            '<td data-label="sendable">' +
-                            '<span class="slds-truncate">' + SourceListDEResult[key].IsSendable + '</span>' +
-                            '</td>' +
+                            '<th data-label="name" role="row">' + SourceListDEResult[key].Name + '</th> ' +
+                            '<td data-label="external-key"> ' + SourceListDEResult[key].CustomerKey + '</td> ' +
+                            '<td data-label="description"> ' + DEDes + '</td>' +
+                            '<td data-label="sendable">' + SourceListDEResult[key].IsSendable + '</td>' +
                             '</tr>';
                         i = i + 1;
                     }
@@ -168,6 +160,7 @@
         var selectedDE = [];
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
+                console.log(checkBoxes[i].value);
                 selectedDE.push(checkBoxes[i].id);
             }
         }

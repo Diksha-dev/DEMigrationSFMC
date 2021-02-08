@@ -184,7 +184,9 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
       SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-      //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
+      console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
+      
+      /*
       var DEFieldMap={};
       for (var key in SourceDEFieldsResult) {
         //console.log('keyvalue  '+SourceDEFieldsResult[key].Name);
@@ -194,6 +196,12 @@ app.post('/Authenticate', (req, res) => {
         //console.log('keyvalue  '+SourceDEFieldsResult[key].DataExtension.CustomerKey);
         //console.log('keyvalue  '+SourceDEFieldsResult[key].FieldType);
         //console.log('Next');
+
+        
+        var keys=[];
+        Object.keys(DEFieldMap).map(function(key, index) {
+          keys.push(key);
+        });
         if(DEFieldMap.keys().has(SourceDEFieldsResult[key].DataExtension.CustomerKey)){
           DEFieldMap.set(SourceDEFieldsResult[key].DataExtension.CustomerKey, 
           {
@@ -213,8 +221,13 @@ app.post('/Authenticate', (req, res) => {
         } 
       }
       console.log('DEFieldMap : '+ DEFieldMap);
+      */
 
 
+
+     for (var key in SourceDEFieldsResult) {
+       //if() {}
+     }
       
 
 
