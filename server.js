@@ -215,7 +215,7 @@ app.post('/Authenticate', (req, res) => {
           }];
         }
       }
-      console.log('DEFieldMap : '+DEFieldMap);
+      console.log('DEFieldMap : '+ JSON.stringify(DEFieldMap));
 
 
       /*
@@ -268,7 +268,7 @@ app.post('/Authenticate', (req, res) => {
         }
 
       }
-      */
+      
       
 
       
@@ -292,37 +292,7 @@ app.post('/Authenticate', (req, res) => {
         if (error) throw new Error(error);
         console.log(response.body);
       });
-
-      
-      
-
-
-
-      var DEListForInsert = {
-        'method': 'POST',
-        'url': DestinationSoapURL + 'Service.asmx',
-        'headers': {
-          'Content-Type': 'text/xml',
-          'SoapAction': 'Create',
-          'Authorization': 'Bearer ' + DestinationAccessToken
-        },
-        body: DEListBody
-      
-      };
-      request(DEListForInsert, function (error, response) {
-        if (error) throw new Error(error);
-        console.log(response.body);
-      });
-
-      
-
-
-
-
-
-
-
-
+      */
 
 
     });
