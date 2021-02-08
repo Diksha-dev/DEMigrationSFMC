@@ -221,8 +221,6 @@ app.post('/Authenticate', (req, res) => {
       for (var key in DEFieldMap) {
         if(key in selectedDEList) {
           console.log('selectedDEList[key].DEExtKey Apna Loop: ' + selectedDEList[key].DEExtKey);
-          console.log('Field-Name : ' + DEFieldMap[key][0].FieldName);
-          console.log('Field-Name : ' + DEFieldMap[key][1].FieldName);
 
           DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
@@ -239,23 +237,32 @@ app.post('/Authenticate', (req, res) => {
                                         '<IsSendable>'+ selectedDEList[key].DEIsSend +'</IsSendable>' +
                                         '<IsTestable>'+ selectedDEList[key].DEIsSend +'</IsTestable>' +
                                         '<Fields>';
+
           for(var i = 0 ; i< DEFieldMap[key].length ; i++) {
-            console.log('DEFieldMap[key] : ' + DEFieldMap[key][i]);
-            console.log('DEFieldMap[key] : ' + JSON.stringify(DEFieldMap[key][i]));
-            console.log('DEFieldMap[key] : ' + DEFieldMap[key][i]["FieldName"]);
-            
-            
-            
-            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+            if(DEFieldMap[key][i].FieldFieldType == 'Number' || DEFieldMap[key][i].FieldFieldType == 'Date' || DEFieldMap[key][i].FieldFieldType == 'Boolean') {
+              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                         '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                         '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
                                         '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
                                         '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
                                         '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                         '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
-                                        '<MaxLength>36</MaxLength>' +
                                       '</Field>';
+            }
+            else {
+              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+                                        '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                        '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
+                                        '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
+                                        '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                        '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                        '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                        '<MaxLength>25</MaxLength>' +
+                                      '</Field>';
+            }
+            
           }
+
           DEListBody = DEListBody + '</Fields>' +
                                   '</Objects>' +
                               '</CreateRequest>' +
@@ -263,21 +270,23 @@ app.post('/Authenticate', (req, res) => {
                         '</soapenv:Envelope>';
         }
 
-        var DEListOption = {
-          'method': 'POST',
-          'url': DestinationSoapURL + 'Service.asmx',
-          'headers': {
-            'Content-Type': 'text/xml',
-            'SoapAction': 'Create',
-            'Authorization': 'Bearer ' + DestinationAccessToken
-          },
-          body: DEListBody
-  
-        };
-        request(DEListOption, function (error, response) {
-          if (error) throw new Error(error);
-          console.log(response.body);
-        });
+        if(DEListBody == '') {
+          var DEListOption = {
+            'method': 'POST',
+            'url': DestinationSoapURL + 'Service.asmx',
+            'headers': {
+              'Content-Type': 'text/xml',
+              'SoapAction': 'Create',
+              'Authorization': 'Bearer ' + DestinationAccessToken
+            },
+            body: DEListBody
+          };
+          request(DEListOption, function (error, response) {
+            if (error) throw new Error(error);
+            console.log(response.body);
+          });
+        }
+        DEListBody = '';
 
 
       }
