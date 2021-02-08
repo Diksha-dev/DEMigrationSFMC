@@ -226,10 +226,13 @@ app.post('/Authenticate', (req, res) => {
 
 
       for (var key in SourceDEFieldsResult) {
-        console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
-        console.log('DE-ExtKey : ' + JSON.stringify(selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]));
-
-        if(selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey][DEExtKey] == SourceDEFieldsResult[key].DataExtension.CustomerKey) {
+        if(SourceDEFieldsResult[key].DataExtension.CustomerKey == 'Adventure') {
+          console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
+          console.log('DE-ExtKey : ' + JSON.stringify(selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEName"]));
+        }
+        
+        
+        if(selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]["DEExtKey"] == SourceDEFieldsResult[key].DataExtension.CustomerKey) {
           console.log('IfStart');
           console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
           console.log('Field-Name : ' + SourceDEFieldsResult[key].Name);
