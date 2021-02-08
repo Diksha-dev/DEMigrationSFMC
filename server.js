@@ -226,7 +226,8 @@ app.post('/Authenticate', (req, res) => {
 
 
       for (var key in SourceDEFieldsResult) {
-        console.log('DE-ExtKey : ' + selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey].DEExtKey);
+        console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);
+        console.log('DE-ExtKey : ' + selectedDEList[SourceDEFieldsResult[key].DataExtension.CustomerKey]);
         if(selectedDEList.includes(SourceDEFieldsResult[key].DataExtension.CustomerKey)) {
           console.log('IfStart');
           console.log('Field-DE-ExtKey : ' + SourceDEFieldsResult[key].DataExtension.CustomerKey);

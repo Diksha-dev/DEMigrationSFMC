@@ -157,7 +157,7 @@
     function SendDEIdsToServer() {
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("input");
-        var selectedDE = {};
+        var selectedDE = [];
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
