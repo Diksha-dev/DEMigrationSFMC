@@ -146,12 +146,18 @@ app.post('/Authenticate', (req, res) => {
       SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
       
       for (var key in SourceListDEResult) {
-        //if(SourceListDEResult[key].Name == "ExpressionBuilderAttributes" || SourceListDEResult[key].Name == "_MobileAddress" || SourceListDEResult[key].Name == "_MobileSubscription" || SourceListDEResult[key].Name == "_PushAddress" || SourceListDEResult[key].Name == "_PushTag" || SourceListDEResult[key].Name == "_MobileLineAddressContact" || SourceListDEResult[key].Name == "_MobileLineAddress" || SourceListDEResult[key].Name == "_MobileLineProfile" || SourceListDEResult[key].Name == "_MobileLineProfileAttribute" || SourceListDEResult[key].Name == "_MobileLineSubscription" || SourceListDEResult[key].Name == "MobileLineOrphanContact") {
-          //if (key > -1) {
-            //SourceListDEResult.splice(key, 1);
-          //}
-        //}
         console.log('key : ' + SourceListDEResult[key].Name);
+      }
+
+      for (var key in SourceListDEResult) {
+        if(SourceListDEResult[key].Name == "ExpressionBuilderAttributes" || SourceListDEResult[key].Name == "_MobileAddress" || SourceListDEResult[key].Name == "_MobileSubscription" || SourceListDEResult[key].Name == "_PushAddress" || SourceListDEResult[key].Name == "_PushTag" || SourceListDEResult[key].Name == "_MobileLineAddressContact" || SourceListDEResult[key].Name == "_MobileLineAddress" || SourceListDEResult[key].Name == "_MobileLineProfile" || SourceListDEResult[key].Name == "_MobileLineProfileAttribute" || SourceListDEResult[key].Name == "_MobileLineSubscription" || SourceListDEResult[key].Name == "MobileLineOrphanContact") {
+          console.log('First If : ' + SourceListDEResult[key].Name);
+          if (key > -1) {
+            console.log('Second If : ' + key);
+            SourceListDEResult.splice(key, 1);
+          }
+        }
+        console.log('keyNext : ' + SourceListDEResult[key].Name);
       }
       //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
