@@ -145,14 +145,13 @@ app.post('/Authenticate', (req, res) => {
       SourceListDEResult = JSON.parse(SourceListDEResult);
       SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-      var temp = [];
+      var tempDEList = [];
       for (var key in SourceListDEResult) {
         if(SourceListDEResult[key].Name != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name != "_MobileAddress" && SourceListDEResult[key].Name != "_MobileSubscription" && SourceListDEResult[key].Name != "_PushAddress" && SourceListDEResult[key].Name != "_PushTag" && SourceListDEResult[key].Name != "_MobileLineAddressContact" && SourceListDEResult[key].Name != "_MobileLineAddress" && SourceListDEResult[key].Name != "_MobileLineProfile" && SourceListDEResult[key].Name != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name != "_MobileLineSubscription" && SourceListDEResult[key].Name != "MobileLineOrphanContact") {
-          temp.push(SourceListDEResult[key]);
+          tempDEList.push(SourceListDEResult[key]);
         }
       }
-      console.log('Parsed DE List :'+JSON.stringify(temp));
-      SourceListDEResult = temp;
+      SourceListDEResult = tempDEList;
       //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
 
@@ -237,8 +236,8 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEtoDestination() { 
     var DEListBody = '';
-    for (var key in DEFieldMap) {
-      if(key in selectedDEList) {
+    for (var key in selectedDEList) {
+      if(key in DEFieldMap) {
         console.log('Apna Loop');
         DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
