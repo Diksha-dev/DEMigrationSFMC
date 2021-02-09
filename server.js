@@ -147,7 +147,7 @@ app.post('/Authenticate', (req, res) => {
 
       var temp = [];
       for (var key in SourceListDEResult) {
-        if(SourceListDEResult[key].Name != "ExpressionBuilderAttributes" || SourceListDEResult[key].Name != "_MobileAddress" || SourceListDEResult[key].Name != "_MobileSubscription" || SourceListDEResult[key].Name != "_PushAddress" || SourceListDEResult[key].Name != "_PushTag" || SourceListDEResult[key].Name != "_MobileLineAddressContact" || SourceListDEResult[key].Name != "_MobileLineAddress" || SourceListDEResult[key].Name != "_MobileLineProfile" || SourceListDEResult[key].Name != "_MobileLineProfileAttribute" || SourceListDEResult[key].Name != "_MobileLineSubscription" || SourceListDEResult[key].Name != "MobileLineOrphanContact") {
+        if(SourceListDEResult[key].Name != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name != "_MobileAddress" && SourceListDEResult[key].Name != "_MobileSubscription" && SourceListDEResult[key].Name != "_PushAddress" && SourceListDEResult[key].Name != "_PushTag" && SourceListDEResult[key].Name != "_MobileLineAddressContact" && SourceListDEResult[key].Name != "_MobileLineAddress" && SourceListDEResult[key].Name != "_MobileLineProfile" && SourceListDEResult[key].Name != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name != "_MobileLineSubscription" && SourceListDEResult[key].Name != "MobileLineOrphanContact") {
           temp.push(SourceListDEResult[key]);
         }
       }
