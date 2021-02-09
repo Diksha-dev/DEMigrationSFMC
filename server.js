@@ -82,8 +82,13 @@ app.post('/Authenticate', (req, res) => {
         DestinationSoapURL = body.soap_instance_url;
         //console.log("body : "+ JSON.stringify(body));
       });
+      console.log('auth chala');
   }
-  authTokenForBothSFDC();
+  
+
+  var b = setInterval(function() {
+    authTokenForBothSFDC();
+  }, 1000);
 
 
 
