@@ -225,6 +225,7 @@ app.post('/Authenticate', (req, res) => {
             "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
             "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
             "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
+            "FieldScale" : SourceDEFieldsResult[key].Scale,
             "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
           });
         }
@@ -235,6 +236,7 @@ app.post('/Authenticate', (req, res) => {
             "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
             "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
             "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
+            "FieldScale" : SourceDEFieldsResult[key].Scale,
             "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
           }];
         }
@@ -336,6 +338,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                       '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>'+ DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
+                                      '<Scale>'+ DEFieldMap[key][i].FieldScale +'</Scale>' +
                                       '<DefaultValue>'+ tempDefaultValue +'</DefaultValue>' +
                                     '</Field>';
           }
