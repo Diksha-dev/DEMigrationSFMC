@@ -283,14 +283,12 @@ app.post('/Authenticate', (req, res) => {
         var tempDefaultValue = '';
         for(var i = 0 ; i< DEFieldMap[key].length ; i++) {
           if(DEFieldMap[key][i].FieldFieldType == 'Number' || DEFieldMap[key][i].FieldFieldType == 'Date' || DEFieldMap[key][i].FieldFieldType == 'Boolean') {
-            
             if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
               tempDefaultValue = '';
             }
             else {
               tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
             }
-            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -299,17 +297,9 @@ app.post('/Authenticate', (req, res) => {
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                       '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<DefaultValue>'+ tempDefaultValue +'</DefaultValue>' +
-                                    '</Field>';
+                                      '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'EmailAddress'){
-
-            if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
-              tempDefaultValue = '';
-            }
-            else {
-              tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
-            }
-
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -318,17 +308,9 @@ app.post('/Authenticate', (req, res) => {
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                       '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>254</MaxLength>' +
-                                    '</Field>';
+                                      '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Phone'){
-
-            if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
-              tempDefaultValue = '';
-            }
-            else {
-              tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
-            }
-            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -337,17 +319,15 @@ app.post('/Authenticate', (req, res) => {
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                       '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>50</MaxLength>' +
-                                    '</Field>';
+                                      '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Decimal'){
-            
             if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
               tempDefaultValue = '';
             }
             else {
               tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
             }
-            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -360,14 +340,6 @@ app.post('/Authenticate', (req, res) => {
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Locale'){
-            
-            if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
-              tempDefaultValue = '';
-            }
-            else {
-              tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
-            }
-            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -379,14 +351,12 @@ app.post('/Authenticate', (req, res) => {
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Text'){
-            
             if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
               tempDefaultValue = '';
             }
             else {
               tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
             }
-            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
