@@ -155,11 +155,6 @@ app.post('/Authenticate', (req, res) => {
         //console.log('key : ' + SourceListDEResult[key].SendableSubscriberField.Name);
         console.log('Next');
       }*/
-      var b = setInterval(function(){
-        if(SourceListDEResult){
-          clearInterval(b);
-        }
-      }, 500);
     });
     return SourceListDEResult;
   }
@@ -222,11 +217,6 @@ app.post('/Authenticate', (req, res) => {
         }
       }
       //console.log('DEFieldMap : '+ JSON.stringify(DEFieldMap));
-      var a = setInterval(function(){
-        if(DEFieldMap){
-          clearInterval(a);
-        }
-      }, 500);
     });
     return DEFieldMap;
   }
@@ -388,6 +378,18 @@ app.post('/Authenticate', (req, res) => {
 
       SourceListDEResult = await getSourceListOfDE();
       DEFieldMap = await getSourceDEFields();
+
+      var a = setInterval(function(){
+        if(SourceListDEResult){
+          clearInterval(a);
+        }
+      }, 500);
+      var b = setInterval(function(){
+        if(DEFieldMap){
+          clearInterval(b);
+        }
+      }, 500);
+      
       console.log('DEListShowAPI SourceListDEResult : ' + JSON.stringify(SourceListDEResult));
       console.log('DEListShowAPI DEFieldMap : ' + JSON.stringify(DEFieldMap));
       
