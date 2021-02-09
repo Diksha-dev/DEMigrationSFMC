@@ -84,6 +84,7 @@ app.post('/Authenticate', (req, res) => {
       });
       console.log('auth chala');
   }
+  authTokenForBothSFDC();
   
   var c = 0;
   var b = setInterval(function() {
