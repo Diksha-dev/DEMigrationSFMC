@@ -160,6 +160,9 @@ app.post('/Authenticate', (req, res) => {
         console.log('keyNext : ' + SourceListDEResult[key].Name);
       }
       //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
+      for (var key in SourceListDEResult) {
+        console.log('Finalkey : ' + SourceListDEResult[key].Name);
+      }
 
 
 
