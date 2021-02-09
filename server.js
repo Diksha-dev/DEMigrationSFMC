@@ -92,7 +92,7 @@ app.post('/Authenticate', (req, res) => {
     if(c == 5) {
       clearInterval(b);
     }
-  }, 1000);
+  }, 1000000);
 
 
 
