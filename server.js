@@ -156,6 +156,7 @@ app.post('/Authenticate', (req, res) => {
         console.log('Next');
       }*/
     });
+    console.log('SourceListDEResult : ' + SourceListDEResult);
     return SourceListDEResult;
   }
 

@@ -220,6 +220,17 @@
                         "DESendSubField" : "Subscriber ID",
                     };
                 }
+                else {
+                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
+                        "DEName" : document.getElementById("DEName"+i).innerHTML,
+                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
+                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
+                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
+                        "DESendSubField" : document.getElementById("DESendSubField"+i).innerHTML
+                    };
+                }
                     
             }
         }
