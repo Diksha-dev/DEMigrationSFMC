@@ -383,9 +383,11 @@ app.post('/Authenticate', (req, res) => {
         if(SourceListDEResult && JSON.stringify(DEFieldMap) != '{}') {
 
           for (var key in SourceListDEResult) {
-            console.log('list length : ' + DEFieldMap[SourceListDEResult[key].CustomerKey].length);
+            //console.log('list length : ' + DEFieldMap[SourceListDEResult[key].CustomerKey].length);
             SourceListDEResult[key].FieldCount = DEFieldMap[SourceListDEResult[key].CustomerKey].length;
           }
+          console.log('SourceListDEResult : ' + JSON.stringify(SourceListDEResult));
+          res.send(SourceListDEResult);
 
 
 
@@ -399,14 +401,6 @@ app.post('/Authenticate', (req, res) => {
       
       
     }
-
-    var x = setInterval(function(){
-      //console.log('sbse last : '+ SourceListDEResult);
-      res.send(SourceListDEResult);
-      if(SourceListDEResult){
-        clearInterval(x);
-      }
-    }, 500);
       
     
 
