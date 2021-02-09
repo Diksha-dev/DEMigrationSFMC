@@ -91,9 +91,6 @@
                             <span class="slds-truncate">Name</span>
                         </th>
                         <th scope="col">
-                            <span class="slds-truncate">Field Count</span>
-                        </th>
-                        <th scope="col">
                             <span class="slds-truncate">External Key</span>
                         </th>
                         <th scope="col">
@@ -110,6 +107,9 @@
                         </th>
                         <th scope="col">
                             <span class="slds-truncate">SendableSubscriberField</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate">Field Count</span>
                         </th>
                     </tr>
                 </thead>
@@ -155,8 +155,8 @@
                                 '</label> ' +
                                 '</td>' +
                                 '<th data-label="name" role="row" id="DEName'+i+'">' + SourceListDEResult[key].Name + '</th> ' +
-                                '<td data-label="FieldCount" id="DEFieldCount'+i+'">' + SourceListDEResult[key].FieldCount + '</td>' +
                                 '<td data-label="external-key" id="DEExtKey'+i+'">' + SourceListDEResult[key].CustomerKey + '</td> ' +
+                                '<td data-label="FieldCount" id="DEFieldCount'+i+'">' + SourceListDEResult[key].FieldCount + '</td>' +
                                 '<td data-label="description" id="DEDes'+i+'">' + DEDes + '</td>' +
                                 '<td data-label="sendable" id="DEIsSend'+i+'">' + SourceListDEResult[key].IsSendable + '</td>' +
                                 '<td data-label="Testable" id="DEIsTest'+i+'">' + SourceListDEResult[key].IsTestable + '</td>' +
@@ -175,6 +175,7 @@
                                 '</td>' +
                                 '<th data-label="name" role="row" id="DEName'+i+'">' + SourceListDEResult[key].Name + '</th> ' +
                                 '<td data-label="external-key" id="DEExtKey'+i+'">' + SourceListDEResult[key].CustomerKey + '</td> ' +
+                                '<td data-label="FieldCount" id="DEFieldCount'+i+'">' + SourceListDEResult[key].FieldCount + '</td>' +
                                 '<td data-label="description" id="DEDes'+i+'">' + DEDes + '</td>' +
                                 '<td data-label="sendable" id="DEIsSend'+i+'">' + SourceListDEResult[key].IsSendable + '</td>' +
                                 '<td data-label="sendable" id="DEIsTest'+i+'">' + SourceListDEResult[key].IsTestable + '</td>' +
