@@ -82,7 +82,7 @@
                     <tr class="slds-text-heading--label">
                         <th class="slds-cell-shrink" scope="col">
                             <label class="slds-checkbox" for="select-all">
-                                <input name="checkbox" type="checkbox" id="select-all" />
+                                <input name="checkbox" type="checkbox" id="select-all" onclick="selectAllRows()"/>
                                 <span class="slds-checkbox--faux"></span>
                                 <span class="slds-form-element__label slds-assistive-text">select all</span>
                             </label>
@@ -122,6 +122,26 @@
 
 </body>
 <script>
+    function selectAllRows() {
+        //var selectAll = document.getElementById("select-all");
+        
+        //var gridTable = document.getElementById("DEDataTableId");
+        //var checkBoxes = gridTable.getElementsByTagName("input");
+        //for (var i = 0; i < checkBoxes.length; i++) {
+            //if (checkBoxes[i].checked == true) {
+
+            //}
+        //}
+        
+    }
+
+
+
+
+
+
+
+
     var SourceListDEResult;
     async function DEListShow() {
         await $.ajax
