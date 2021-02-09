@@ -85,10 +85,14 @@ app.post('/Authenticate', (req, res) => {
       console.log('auth chala');
   }
   
-
+  var c = 0;
   var b = setInterval(function() {
     authTokenForBothSFDC();
-  }, 1000);
+    c = c + 1;
+    if(c == 5) {
+      clearInterval(b);
+    }
+  }, 1000000);
 
 
 
