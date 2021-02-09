@@ -382,13 +382,13 @@ app.post('/Authenticate', (req, res) => {
           for (var key in SourceListDEResult) {
             SourceListDEResult[key].FieldCount = DEFieldMap[SourceListDEResult[key].CustomerKey].length;
           }
-          console.log('SourceListDEResult : ' + JSON.stringify(SourceListDEResult));
+          //console.log('SourceListDEResult : ' + JSON.stringify(SourceListDEResult));
           res.send(SourceListDEResult);
 
           clearInterval(a);
         }
       }, 500);
-      
+
     }
   });
 
