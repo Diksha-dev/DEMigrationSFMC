@@ -373,38 +373,23 @@ app.post('/Authenticate', (req, res) => {
 
 
   app.post("/DEListShowAPI", async (req, res) => {
-
     if (req.body.reqForDEList = 'True') {
-
       SourceListDEResult = await getSourceListOfDE();
       DEFieldMap = await getSourceDEFields();
 
       var a = setInterval(function(){
         if(SourceListDEResult && JSON.stringify(DEFieldMap) != '{}') {
-
           for (var key in SourceListDEResult) {
-            //console.log('list length : ' + DEFieldMap[SourceListDEResult[key].CustomerKey].length);
             SourceListDEResult[key].FieldCount = DEFieldMap[SourceListDEResult[key].CustomerKey].length;
           }
           console.log('SourceListDEResult : ' + JSON.stringify(SourceListDEResult));
           res.send(SourceListDEResult);
 
-
-
-
-
           clearInterval(a);
         }
-
       }, 500);
       
-      
-      
     }
-      
-    
-
-
   });
 
 
