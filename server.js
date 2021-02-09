@@ -144,20 +144,14 @@ app.post('/Authenticate', (req, res) => {
       SourceListDEResult = xmlParser.toJson(SourceListDEResult);
       SourceListDEResult = JSON.parse(SourceListDEResult);
       SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-      
-      
-      var temp = 0;
+
+      var temp = [];
       for (var key in SourceListDEResult) {
-        console.log('if se pehle key '+ key);
-        if(SourceListDEResult[key].Name == "ExpressionBuilderAttributes" || SourceListDEResult[key].Name == "_MobileAddress" || SourceListDEResult[key].Name == "_MobileSubscription" || SourceListDEResult[key].Name == "_PushAddress" || SourceListDEResult[key].Name == "_PushTag" || SourceListDEResult[key].Name == "_MobileLineAddressContact" || SourceListDEResult[key].Name == "_MobileLineAddress" || SourceListDEResult[key].Name == "_MobileLineProfile" || SourceListDEResult[key].Name == "_MobileLineProfileAttribute" || SourceListDEResult[key].Name == "_MobileLineSubscription" || SourceListDEResult[key].Name == "MobileLineOrphanContact") {
-          console.log('Name : ' + SourceListDEResult[key].Name);
-          console.log('Key : ' + key);
-          key = key - temp;
-          SourceListDEResult.splice(key, 1);
-          temp = temp + 1;
+        if(SourceListDEResult[key].Name != "ExpressionBuilderAttributes" || SourceListDEResult[key].Name != "_MobileAddress" || SourceListDEResult[key].Name != "_MobileSubscription" || SourceListDEResult[key].Name != "_PushAddress" || SourceListDEResult[key].Name != "_PushTag" || SourceListDEResult[key].Name != "_MobileLineAddressContact" || SourceListDEResult[key].Name != "_MobileLineAddress" || SourceListDEResult[key].Name != "_MobileLineProfile" || SourceListDEResult[key].Name != "_MobileLineProfileAttribute" || SourceListDEResult[key].Name != "_MobileLineSubscription" || SourceListDEResult[key].Name != "MobileLineOrphanContact") {
+          temp.push(SourceListDEResult[key]);
         }
-        console.log('if k baad key '+ key);
       }
+      SourceListDEResult = temp;
       //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
 
