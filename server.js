@@ -214,7 +214,7 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
       SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-      //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
+      console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
       
       for (var key in SourceDEFieldsResult) {
@@ -224,7 +224,8 @@ app.post('/Authenticate', (req, res) => {
             "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
             "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
             "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
-            "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength
+            "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
+            "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
           });
         }
         else {
@@ -233,7 +234,8 @@ app.post('/Authenticate', (req, res) => {
             "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
             "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
             "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
-            "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength
+            "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
+            "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
           }];
         }
       }
@@ -289,6 +291,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                       '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                      '<DefaultValue>'+ DEFieldMap[key][i].FieldDefaultValue +'</DefaultValue>' +
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'EmailAddress'){
@@ -325,6 +328,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                       '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>'+ DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
+                                      '<DefaultValue>'+ DEFieldMap[key][i].FieldDefaultValue +'</DefaultValue>' +
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Locale'){
@@ -349,6 +353,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
                                       '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>'+ DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
+                                      '<DefaultValue>'+ DEFieldMap[key][i].FieldDefaultValue +'</DefaultValue>' +
                                     '</Field>';
           }
         }
