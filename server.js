@@ -155,8 +155,8 @@ app.post('/Authenticate', (req, res) => {
         //console.log('key : ' + SourceListDEResult[key].SendableSubscriberField.Name);
         console.log('Next');
       }*/
+      console.log('SourceListDEResult : ' + SourceListDEResult);
     });
-    console.log('SourceListDEResult : ' + SourceListDEResult);
     return SourceListDEResult;
   }
 
