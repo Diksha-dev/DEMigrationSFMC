@@ -154,6 +154,7 @@ app.post('/Authenticate', (req, res) => {
           console.log('First If : ' + SourceListDEResult[key].Name);
           if (key > -1) {
             console.log('Second If : ' + key);
+            console.log('Second If : ' + SourceListDEResult.indexOf(SourceListDEResult[key].Name));
             SourceListDEResult.splice(key, 1);
           }
         }
