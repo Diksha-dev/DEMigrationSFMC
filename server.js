@@ -385,7 +385,7 @@ app.post('/Authenticate', (req, res) => {
         console.log('DEListShowAPI DEFieldMap : ' + JSON.stringify(DEFieldMap));
 
         if(SourceListDEResult){
-          if(DEFieldMap.length() != 0){
+          if(JSON.stringify(DEFieldMap) != '{}') {
             clearInterval(a);
           }
         }
