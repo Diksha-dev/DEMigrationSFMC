@@ -380,13 +380,8 @@ app.post('/Authenticate', (req, res) => {
       DEFieldMap = await getSourceDEFields();
 
       var a = setInterval(function(){
-        if(SourceListDEResult){
+        if(SourceListDEResult && DEFieldMap){
           clearInterval(a);
-        }
-      }, 500);
-      var b = setInterval(function(){
-        if(DEFieldMap){
-          clearInterval(b);
         }
       }, 500);
       
@@ -394,14 +389,7 @@ app.post('/Authenticate', (req, res) => {
       console.log('DEListShowAPI DEFieldMap : ' + JSON.stringify(DEFieldMap));
       
     }
-
-    var x = setInterval(function(){
-      //console.log('sbse last : '+ SourceListDEResult);
-      res.send(SourceListDEResult);
-      if(SourceListDEResult){
-        clearInterval(x);
-      }
-    }, 500);
+    res.send(SourceListDEResult);
       
     
 
