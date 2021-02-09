@@ -151,6 +151,7 @@ app.post('/Authenticate', (req, res) => {
           temp.push(SourceListDEResult[key]);
         }
       }
+      console.log('Parsed DE List :'+JSON.stringify(temp));
       SourceListDEResult = temp;
       //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
