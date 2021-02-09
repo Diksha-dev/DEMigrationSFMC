@@ -316,7 +316,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
                                       '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ tempDefaultValue +'</FieldType>' +
+                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>254</MaxLength>' +
                                     '</Field>';
           }
@@ -335,7 +335,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
                                       '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ tempDefaultValue +'</FieldType>' +
+                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>50</MaxLength>' +
                                     '</Field>';
           }
@@ -374,7 +374,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
                                       '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
                                       '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ tempDefaultValue +'</FieldType>' +
+                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>5</MaxLength>' +
                                     '</Field>';
           }
