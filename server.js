@@ -148,6 +148,7 @@ app.post('/Authenticate', (req, res) => {
       
       var temp = 0;
       for (var key in SourceListDEResult) {
+        console.log('if se pehle key '+ key);
         if(SourceListDEResult[key].Name == "ExpressionBuilderAttributes" || SourceListDEResult[key].Name == "_MobileAddress" || SourceListDEResult[key].Name == "_MobileSubscription" || SourceListDEResult[key].Name == "_PushAddress" || SourceListDEResult[key].Name == "_PushTag" || SourceListDEResult[key].Name == "_MobileLineAddressContact" || SourceListDEResult[key].Name == "_MobileLineAddress" || SourceListDEResult[key].Name == "_MobileLineProfile" || SourceListDEResult[key].Name == "_MobileLineProfileAttribute" || SourceListDEResult[key].Name == "_MobileLineSubscription" || SourceListDEResult[key].Name == "MobileLineOrphanContact") {
           console.log('Name : ' + SourceListDEResult[key].Name);
           console.log('Key : ' + key);
@@ -155,7 +156,7 @@ app.post('/Authenticate', (req, res) => {
           SourceListDEResult.splice(key, 1);
           temp = temp + 1;
         }
-        console.log('keyNext : ' + SourceListDEResult[key].Name);
+        console.log('if k baad key '+ key);
       }
       //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
