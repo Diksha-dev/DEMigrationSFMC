@@ -144,8 +144,8 @@ app.post('/Authenticate', (req, res) => {
       SourceListDEResult = xmlParser.toJson(SourceListDEResult);
       SourceListDEResult = JSON.parse(SourceListDEResult);
       SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-      /*console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
-      for (var key in SourceListDEResult) {
+      console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
+      /*for (var key in SourceListDEResult) {
         console.log('key : ' + SourceListDEResult[key].Name);
         console.log('key : ' + SourceListDEResult[key].CustomerKey);
         console.log('key : ' + SourceListDEResult[key].IsSendable);
@@ -155,7 +155,6 @@ app.post('/Authenticate', (req, res) => {
         //console.log('key : ' + SourceListDEResult[key].SendableSubscriberField.Name);
         console.log('Next');
       }*/
-      console.log('SourceListDEResult : ' + SourceListDEResult);
     });
     return SourceListDEResult;
   }
