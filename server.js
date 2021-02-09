@@ -214,7 +214,7 @@ app.post('/Authenticate', (req, res) => {
       SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
       SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
       SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-      console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
+      //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
       
       for (var key in SourceDEFieldsResult) {
@@ -283,7 +283,9 @@ app.post('/Authenticate', (req, res) => {
 
         for(var i = 0 ; i< DEFieldMap[key].length ; i++) {
           if(DEFieldMap[key][i].FieldFieldType == 'Number' || DEFieldMap[key][i].FieldFieldType == 'Date' || DEFieldMap[key][i].FieldFieldType == 'Boolean') {
-            console.log('NumberDateBoolean : ' + DEFieldMap[key][i].FieldFieldType);
+            
+            console.log('DefaultValue : ' + DEFieldMap[key][i].FieldFieldType + '-' + DEFieldMap[key][i].FieldFieldType);
+            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -295,7 +297,9 @@ app.post('/Authenticate', (req, res) => {
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'EmailAddress'){
-            console.log('EmailAddress : ' + DEFieldMap[key][i].FieldFieldType);
+
+            console.log('DefaultValue : ' + DEFieldMap[key][i].FieldFieldType + '-' + DEFieldMap[key][i].FieldFieldType);
+
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -307,7 +311,9 @@ app.post('/Authenticate', (req, res) => {
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Phone'){
-            console.log('Phone : ' + DEFieldMap[key][i].FieldFieldType);
+
+            console.log('DefaultValue : ' + DEFieldMap[key][i].FieldFieldType + '-' + DEFieldMap[key][i].FieldFieldType);
+            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -319,7 +325,9 @@ app.post('/Authenticate', (req, res) => {
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Decimal'){
-            console.log('Decimal : ' + DEFieldMap[key][i].FieldFieldType);
+            
+            console.log('DefaultValue : ' + DEFieldMap[key][i].FieldFieldType + '-' + DEFieldMap[key][i].FieldFieldType);
+            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -332,7 +340,9 @@ app.post('/Authenticate', (req, res) => {
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Locale'){
-            console.log('Locale : ' + DEFieldMap[key][i].FieldFieldType);
+            
+            console.log('DefaultValue : ' + DEFieldMap[key][i].FieldFieldType + '-' + DEFieldMap[key][i].FieldFieldType);
+            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
@@ -344,7 +354,9 @@ app.post('/Authenticate', (req, res) => {
                                     '</Field>';
           }
           else if(DEFieldMap[key][i].FieldFieldType == 'Text'){
-            console.log('Text : ' + DEFieldMap[key][i].FieldFieldType);
+            
+            console.log('DefaultValue : ' + DEFieldMap[key][i].FieldFieldType + '-' + DEFieldMap[key][i].FieldFieldType);
+            
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                                       '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
                                       '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
