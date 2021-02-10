@@ -273,6 +273,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
+          console.log('DEDataBody : ' + DEDataBody);
           var DEDataOptions = {
             'method': 'POST',
             'url': SourceSoapURL + 'Service.asmx',
@@ -286,7 +287,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataOptions, function (error, response) {
             if (error) throw new Error(error);
-            console.log(response.body);
+            console.log('DE Data' + response.body);
           });
 
         }
