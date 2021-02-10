@@ -224,7 +224,7 @@ app.post('/Authenticate', (req, res) => {
         }
         SourceDEFieldsResult = [];
         for (let Val of Array.from(FieldSet)) {
-          SourceDEFieldsResult.add(JSON.parse(Val));
+          SourceDEFieldsResult.push(JSON.parse(Val));
         }
 
 
