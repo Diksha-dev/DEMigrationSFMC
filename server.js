@@ -217,6 +217,7 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
         //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
+        /*
         var FieldSet = new Set(); 
         //Array.from(FieldSet);
 
@@ -232,6 +233,7 @@ app.post('/Authenticate', (req, res) => {
           temp.push(JSON.parse(temp1[Val]));
         }
         SourceDEFieldsResult = temp;
+        
 
 
         for (var key in SourceDEFieldsResult) {
@@ -247,20 +249,30 @@ app.post('/Authenticate', (req, res) => {
           }
           
         }
+        */
 
-
-
+        var tempbool;
         for (var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey in DEFieldMap) {
-            DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey].push({
-              "FieldName" : SourceDEFieldsResult[key].Name,
-              "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
-              "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
-              "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
-              "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
-              "FieldScale" : SourceDEFieldsResult[key].Scale,
-              "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
-            });
+            for(var key1 in DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey]) {
+              if(DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey][key1].FieldName == SourceDEFieldsResult[key].Name) {
+                tempbool = false;
+              }
+              else {
+                tempbool = true;
+              }
+            }
+            if(tempbool == true) {
+              DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey].push({
+                "FieldName" : SourceDEFieldsResult[key].Name,
+                "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
+                "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
+                "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
+                "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
+                "FieldScale" : SourceDEFieldsResult[key].Scale,
+                "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
+              });
+            }
           }
           else {
             DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey] = [{
