@@ -241,54 +241,68 @@ app.post('/Authenticate', (req, res) => {
           }
         }
 
-
+        for(var key in DEFieldMap) {
+          console.log('DE Key : ' + key);
+          for(var key1 in DEFieldMap[key]) {
+            console.log('FieldName : ' + DEFieldMap[key][key1]["FieldName"]);
+          }
+          console.log('NEXT');
+        }
+        
 
         var DEDataBody = '';
         for(var key in DEFieldMap) {
-          DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
-                          '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
-                              '<s:Header>' +
-                                  '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
-                                  '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
-                                  '<a:ReplyTo>' +
-                                      '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
-                                  '</a:ReplyTo>' +
-                                  '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx' + '</a:To>' +
-                                  '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
-                              '</s:Header>' +
-                              '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-                                  '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
-                                      '<RetrieveRequest>' +
-                                      '<ObjectType>DataExtensionObject[' + key + ']</ObjectType>';
-          
-          for(var key1 in DEFieldMap[key]) {
-            DEDataBody = DEDataBody + '<Properties>' + DEFieldMap[key][key1]["FieldName"] + '</Properties>';
-          }                            
+          console.log('DEFieldMap-Keys : ' + key);
+          if(key == "IGO_PROFILES") {
+            
+            DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
+                            '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+                                '<s:Header>' +
+                                    '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+                                    '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
+                                    '<a:ReplyTo>' +
+                                        '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
+                                    '</a:ReplyTo>' +
+                                    '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx' + '</a:To>' +
+                                    '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
+                                '</s:Header>' +
+                                '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+                                    '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+                                        '<RetrieveRequest>' +
+                                        '<ObjectType>DataExtensionObject[' + key + ']</ObjectType>';
+            
+            for(var key1 in DEFieldMap[key]) {
+              DEDataBody = DEDataBody + '<Properties>' + DEFieldMap[key][key1]["FieldName"] + '</Properties>';
+            }                            
 
-                                          
-          DEDataBody = DEDataBody + '</RetrieveRequest>' +
-                                  '</RetrieveRequestMsg>' +
-                              '</s:Body>' +
-                            '</s:Envelope>';
+                                            
+            DEDataBody = DEDataBody + '</RetrieveRequest>' +
+                                    '</RetrieveRequestMsg>' +
+                                '</s:Body>' +
+                              '</s:Envelope>';
 
 
 
-          console.log('DEDataBody : ' + DEDataBody);
-          var DEDataOptions = {
-            'method': 'POST',
-            'url': SourceSoapURL + 'Service.asmx',
-            'headers': {
-              'Content-Type': 'text/xml',
-              'SoapAction': 'Retrieve',
-              'Authorization': 'Bearer ' + SourceAccessToken
-            },
-            body: DEDataBody
+            console.log('DEDataBody : ' + DEDataBody);
+            var DEDataOptions = {
+              'method': 'POST',
+              'url': SourceSoapURL + 'Service.asmx',
+              'headers': {
+                'Content-Type': 'text/xml',
+                'SoapAction': 'Retrieve',
+                'Authorization': 'Bearer ' + SourceAccessToken
+              },
+              body: DEDataBody
 
-          };
-          request(DEDataOptions, function (error, response) {
-            if (error) throw new Error(error);
-            console.log('DE Data' + response.body);
-          });
+            };
+            request(DEDataOptions, function (error, response) {
+              if (error) throw new Error(error);
+              console.log('DE Data' + response.body);
+            });
+
+
+
+          }
 
         }
 
