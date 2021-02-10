@@ -193,6 +193,7 @@ app.post('/Authenticate', (req, res) => {
 
   async function getSourceDEFieldsAndData(){
     return new Promise(function (resolve, reject) {
+      DEFieldMap = {};
       authTokenForBothSFDC();
       var DEFieldOption = {
         'method': 'POST',
