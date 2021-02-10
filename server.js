@@ -216,8 +216,18 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
         //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
-        var FieldSet = new Set(SourceDEFieldsResult); 
-        SourceDEFieldsResult = Array.from(FieldSet);
+        var FieldSet = new Set(); 
+        //Array.from(FieldSet);
+
+        for(var key in SourceDEFieldsResult) {
+          FieldSet.add(JSON.stringify(SourceDEFieldsResult[key]));
+        }
+        SourceDEFieldsResult = [];
+        for (let Val of Array.from(FieldSet)) {
+          SourceDEFieldsResult.add(JSON.parse(Val));
+        }
+
+
         for (var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
             console.log('IGO_PROFILES Name : ' + SourceDEFieldsResult[key].Name);
