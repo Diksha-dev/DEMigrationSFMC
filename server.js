@@ -215,7 +215,7 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
         SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
         SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-        //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
+        console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
         var FieldSet = new Set(); 
         //Array.from(FieldSet);
@@ -224,8 +224,9 @@ app.post('/Authenticate', (req, res) => {
           FieldSet.add(JSON.stringify(SourceDEFieldsResult[key]));
         }
         var temp = [];
-        for (let Val of Array.from(FieldSet)) {
-          temp.push(JSON.parse(Val));
+        var temp1 = Array.from(FieldSet);
+        for (var Val in temp1) {
+          temp.push(JSON.parse(temp1[Val]));
         }
         SourceDEFieldsResult = temp;
 
@@ -282,7 +283,6 @@ app.post('/Authenticate', (req, res) => {
 
         var DEDataBody = '';
         for(var key in DEFieldMap) {
-          console.log('DEFieldMap-Keys : ' + key);
           if(key == "IGO_PROFILES") {
             
             DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
