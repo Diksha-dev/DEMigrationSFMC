@@ -193,7 +193,7 @@ app.post('/Authenticate', (req, res) => {
 
   async function getSourceDEFields(){
     return new Promise(function (resolve, reject) {
-      await authTokenForBothSFDC();
+      authTokenForBothSFDC();
       var DEFieldOption = {
         'method': 'POST',
         'url': SourceSoapURL + 'Service.asmx',
