@@ -225,9 +225,8 @@ app.post('/Authenticate', (req, res) => {
             console.log('IGO_PROFILES IsPrimaryKey : ' + SourceDEFieldsResult[key].IsPrimaryKey);
             console.log('IGO_PROFILES FieldType : ' + SourceDEFieldsResult[key].FieldType);
             console.log('IGO_PROFILES MaxLength : ' + SourceDEFieldsResult[key].MaxLength);
-            console.log('IGO_PROFILES MaxLength : ' + SourceDEFieldsResult[key].MaxLength);
             console.log('IGO_PROFILES Scale : ' + SourceDEFieldsResult[key].Scale);
-            console.log('IGO_PROFILES DefaultValue : ' + SourceDEFieldsResult[key].DefaultValue);
+            console.log('IGO_PROFILES DefaultValue : ' + JSON.stringify(SourceDEFieldsResult[key].DefaultValue));
             console.log('NEXT FIELD IGO_PROFILES');
           }
           
@@ -260,13 +259,13 @@ app.post('/Authenticate', (req, res) => {
           }
         }
 
-        for(var key in DEFieldMap) {
+        /*for(var key in DEFieldMap) {
           console.log('DE Key : ' + key);
           for(var key1 in DEFieldMap[key]) {
             console.log('FieldName : ' + DEFieldMap[key][key1]["FieldName"]);
           }
           console.log('NEXT');
-        }
+        }*/
         
 
         var DEDataBody = '';
