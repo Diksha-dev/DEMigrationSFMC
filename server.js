@@ -209,6 +209,7 @@ app.post('/Authenticate', (req, res) => {
       request(DEFieldOption, function (error, response) {
         if (error) throw new Error(error);
 
+
         SourceDEFieldsResult = response.body;
         SourceDEFieldsResult = SourceDEFieldsResult.replace(/:/g, "");
         SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
@@ -222,10 +223,11 @@ app.post('/Authenticate', (req, res) => {
         for(var key in SourceDEFieldsResult) {
           FieldSet.add(JSON.stringify(SourceDEFieldsResult[key]));
         }
-        SourceDEFieldsResult = {};
+        temp;
         for (let Val of Array.from(FieldSet)) {
-          SourceDEFieldsResult.push(JSON.parse(Val));
+          temp.push(JSON.parse(Val));
         }
+        SourceDEFieldsResult = temp;
 
 
         for (var key in SourceDEFieldsResult) {
