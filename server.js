@@ -214,8 +214,10 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
         SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
         //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
-
         
+        var FieldSet = new Set(SourceDEFieldsResult); 
+        SourceDEFieldsResult = Array.from(FieldSet);
+
         for (var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey in DEFieldMap) {
             DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey].push({
