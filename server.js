@@ -228,8 +228,9 @@ app.post('/Authenticate', (req, res) => {
             console.log('IGO_PROFILES MaxLength : ' + SourceDEFieldsResult[key].MaxLength);
             console.log('IGO_PROFILES Scale : ' + SourceDEFieldsResult[key].Scale);
             console.log('IGO_PROFILES DefaultValue : ' + SourceDEFieldsResult[key].DefaultValue);
+            console.log('NEXT FIELD IGO_PROFILES');
           }
-          console.log('NEXT FIELD IGO_PROFILES');
+          
         }
 
 
