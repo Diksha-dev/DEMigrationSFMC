@@ -215,13 +215,16 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
         SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
         SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-        console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
+        //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
         var FieldSet = new Set(); 
         //Array.from(FieldSet);
 
         for(var key in SourceDEFieldsResult) {
-          FieldSet.add(JSON.stringify(SourceDEFieldsResult[key]));
+          if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
+            console.log('IGO_PROFILES SourceDEFieldsResult[key] : ' + JSON.stringify(SourceDEFieldsResult[key]));
+            FieldSet.add(JSON.stringify(SourceDEFieldsResult[key]));
+          }
         }
         var temp = [];
         var temp1 = Array.from(FieldSet);
