@@ -214,9 +214,24 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
         SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
         //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
-        
+
         var FieldSet = new Set(SourceDEFieldsResult); 
         SourceDEFieldsResult = Array.from(FieldSet);
+        for (var key in SourceDEFieldsResult) {
+          if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
+            console.log('IGO_PROFILES Name : ' + SourceDEFieldsResult[key].Name);
+            console.log('IGO_PROFILES IsRequired : ' + SourceDEFieldsResult[key].IsRequired);
+            console.log('IGO_PROFILES IsPrimaryKey : ' + SourceDEFieldsResult[key].IsPrimaryKey);
+            console.log('IGO_PROFILES FieldType : ' + SourceDEFieldsResult[key].FieldType);
+            console.log('IGO_PROFILES MaxLength : ' + SourceDEFieldsResult[key].MaxLength);
+            console.log('IGO_PROFILES MaxLength : ' + SourceDEFieldsResult[key].MaxLength);
+            console.log('IGO_PROFILES Scale : ' + SourceDEFieldsResult[key].Scale);
+            console.log('IGO_PROFILES DefaultValue : ' + SourceDEFieldsResult[key].DefaultValue);
+          }
+          console.log('NEXT FIELD IGO_PROFILES');
+        }
+
+
 
         for (var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey in DEFieldMap) {
