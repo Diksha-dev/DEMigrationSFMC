@@ -186,21 +186,9 @@ app.post('/Authenticate', (req, res) => {
           }
         }
         console.log('DEListMap : ' + JSON.stringify(DEListMap));
+        resolve(DEListMap);
 
-
-
-
-
-
-
-
-
-
-        resolve(DEListMap); 
         //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
-
-
-
         /*for (var key in SourceListDEResult) {
           console.log('key : ' + SourceListDEResult[key].Name);
           console.log('key : ' + SourceListDEResult[key].CustomerKey);
@@ -526,7 +514,7 @@ app.post('/Authenticate', (req, res) => {
       DEFieldMap = await getSourceDEFieldsAndData();
 
       for (var key in DEListMap) {
-        key.FieldCount = DEFieldMap[key].length;
+        DEListMap[key].FieldCount = DEFieldMap[key].length;
       }
 
       res.send(DEListMap);
