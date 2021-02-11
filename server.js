@@ -371,16 +371,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-          for(var key1 in SourceDEDataResult) {
-            console.log('Dataval : ' + JSON.stringify(SourceDEDataResult[key1]));
-            if(DEFieldAndDataMap.DEDataMap[key]) {
-              DEFieldAndDataMap.DEDataMap[key].push(SourceDEDataResult[key1]);
-            }
-            else {
-              DEFieldAndDataMap.DEDataMap[key] = [(SourceDEDataResult[key1])];
-            }
-          }
-          console.log('DEFieldAndDataMap.DEDataMap : ' + JSON.stringify(DEFieldAndDataMap.DEDataMap));
+          
 
 
 
