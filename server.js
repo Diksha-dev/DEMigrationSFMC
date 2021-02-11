@@ -157,14 +157,46 @@ app.post('/Authenticate', (req, res) => {
         SourceListDEResult = JSON.parse(SourceListDEResult);
         SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-        var tempDEList = [];
+        
+        var DEListMap = {};
         for (var key in SourceListDEResult) {
           if(SourceListDEResult[key].Name != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name != "_MobileAddress" && SourceListDEResult[key].Name != "_MobileSubscription" && SourceListDEResult[key].Name != "_PushAddress" && SourceListDEResult[key].Name != "_PushTag" && SourceListDEResult[key].Name != "_MobileLineAddressContact" && SourceListDEResult[key].Name != "_MobileLineAddress" && SourceListDEResult[key].Name != "_MobileLineProfile" && SourceListDEResult[key].Name != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name != "_MobileLineSubscription" && SourceListDEResult[key].Name != "MobileLineOrphanContact") {
-            tempDEList.push(SourceListDEResult[key]);
+            if(SourceListDEResult[key].CustomerKey in DEListMap) {
+              DEListMap[SourceListDEResult[key].CustomerKey].push({
+                "DEName" : SourceListDEResult[key].Name,
+                "DECustomerKey" : SourceListDEResult[key].CustomerKey,
+                "DEIsSendable" : SourceListDEResult[key].IsSendable,
+                "DEIsTestable" : SourceListDEResult[key].IsTestable,
+                "DEDescription" : SourceListDEResult[key].Description,
+                "DESendDEField" : SourceListDEResult[key].SendableDataExtensionField.Name,
+                "DESendSubsField" : SourceListDEResult[key].SendableSubscriberField.Name
+              });
+              
+            }
+            else {
+              DEListMap[SourceListDEResult[key].CustomerKey] = [{
+                "DEName" : SourceListDEResult[key].Name,
+                "DECustomerKey" : SourceListDEResult[key].CustomerKey,
+                "DEIsSendable" : SourceListDEResult[key].IsSendable,
+                "DEIsTestable" : SourceListDEResult[key].IsTestable,
+                "DEDescription" : SourceListDEResult[key].Description,
+                "DESendDEField" : SourceListDEResult[key].SendableDataExtensionField.Name,
+                "DESendSubsField" : SourceListDEResult[key].SendableSubscriberField.Name
+              }];
+            }
           }
         }
-        SourceListDEResult = tempDEList;
-        resolve(SourceListDEResult); 
+
+
+
+
+
+
+
+
+
+
+        resolve(DEListMap); 
         //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
 
 
@@ -495,14 +527,14 @@ app.post('/Authenticate', (req, res) => {
 
   app.post("/DEListShowAPI", async (req, res) => {
     if (req.body.reqForDEList = 'True') {
-      SourceListDEResult = await getSourceListOfDE();
+      DEListMap = await getSourceListOfDE();
       DEFieldMap = await getSourceDEFieldsAndData();
 
-      for (var key in SourceListDEResult) {
-        SourceListDEResult[key].FieldCount = DEFieldMap[SourceListDEResult[key].CustomerKey].length;
+      for (var key in DEListMap) {
+        key.FieldCount = DEFieldMap[key].length;
       }
 
-      res.send(SourceListDEResult);
+      res.send(DEListMap);
     }
   });
 
