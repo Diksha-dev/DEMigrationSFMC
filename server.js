@@ -293,21 +293,21 @@ app.post('/Authenticate', (req, res) => {
 
 
         //-----------------------------------------
-        var temp;
-        
+        var temp = [];
+        var temp2
         for(var key in DEFieldAndDataMap.DEFieldMap) {
-          temp[key] = await getDEData(key);
-          console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp[key]));
+          temp2 = await getDEData(key);
+          temp.push(temp2);
+          console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp2));
         }
-        var temp1 = temp;
 
         
         var h = setInterval(function() {
-          console.log('temp1 : ' + JSON.stringify(temp1));
-          if(temp1) {
+          console.log('temp : ' + JSON.stringify(temp));
+          if(temp) {
             clearInterval(h);
           }
-        }, 10000);
+        }, 1000);
 
 
         
