@@ -239,16 +239,18 @@ app.post('/Authenticate', (req, res) => {
 
         var FieldSet = new Set();
         for(var key in SourceDEFieldsResult) {
-          FieldSet.add(JSON.stringify({
-            "DEExtKey" : SourceDEFieldsResult[key].DataExtension.CustomerKey,
-            "Name" : SourceDEFieldsResult[key].Name,
-            "IsRequired" : SourceDEFieldsResult[key].IsRequired,
-            "IsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
-            "FieldType" : SourceDEFieldsResult[key].FieldType,
-            "MaxLength" : SourceDEFieldsResult[key].MaxLength,
-            "Scale" : SourceDEFieldsResult[key].Scale,
-            "DefaultValue" : SourceDEFieldsResult[key].DefaultValue
-          }));
+          if(SourceDEFieldsResult[key].DataExtension.CustomerKey in DEListMap) {
+            FieldSet.add(JSON.stringify({
+              "DEExtKey" : SourceDEFieldsResult[key].DataExtension.CustomerKey,
+              "Name" : SourceDEFieldsResult[key].Name,
+              "IsRequired" : SourceDEFieldsResult[key].IsRequired,
+              "IsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
+              "FieldType" : SourceDEFieldsResult[key].FieldType,
+              "MaxLength" : SourceDEFieldsResult[key].MaxLength,
+              "Scale" : SourceDEFieldsResult[key].Scale,
+              "DefaultValue" : SourceDEFieldsResult[key].DefaultValue
+            }));
+          }
         }
         //console.log('IGO_PROFILES-FieldSet : ' + [...FieldSet]);
 
@@ -327,10 +329,10 @@ app.post('/Authenticate', (req, res) => {
             body: DEDataBody
 
           };
-          /*request(DEDataOptions, function (error, response) {
+          request(DEDataOptions, function (error, response) {
             if (error) throw new Error(error);
             console.log('DE Data' + response.body);
-          });*/
+          });
 
         }
 
