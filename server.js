@@ -361,7 +361,7 @@ app.post('/Authenticate', (req, res) => {
           SourceDEDataResult = JSON.parse(SourceDEDataResult);
           SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-          console.log('SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
+          console.log('DE-Key : '+ key + ' SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
 
 
 
