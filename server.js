@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000
 var request = require('request');
 const { stringify } = require("querystring");
 let xmlParser = require('xml2json');
-var Set = require("collections/set");
+var Set = require("collections");
 
 app.get("*", (req, res) => {
   const FirstPage = path.join(__dirname, 'public', 'index.html');
@@ -221,18 +221,18 @@ app.post('/Authenticate', (req, res) => {
         
 
         
-        
-        var FieldSet = new Set(); 
+        var temp0;
+        var FieldSet = new Set();
         //Array.from(FieldSet);
 
         for(var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
-            FieldSet.add(JSON.stringify(SourceDEFieldsResult[key]));
+            temp0 = JSON.stringify(SourceDEFieldsResult[key]);
+            console.log('temp0 : '+ temp0);
+            FieldSet.add(temp0);
           }
         }
-        console.log('IGO_PROFILES-FieldSet : ' + FieldSet);
-        console.log('IGO_PROFILES-FieldSet : ' + JSON.stringify(FieldSet));
-        console.log('IGO_PROFILES-FieldSet : ' + stringify(FieldSet));
+        console.log('IGO_PROFILES-FieldSet : ' + [...FieldSet]);
         var temp = [];
         var temp1 = Array.from(FieldSet);
         for (var Val in temp1) {
