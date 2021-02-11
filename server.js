@@ -214,7 +214,7 @@ app.post('/Authenticate', (req, res) => {
 
 
   async function getSourceDEFieldsAndData(){
-    return new Promise(function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       DEFieldAndDataMap = {
         "DEFieldMap" : {},
         "DEDataMap" : {}
@@ -293,7 +293,9 @@ app.post('/Authenticate', (req, res) => {
 
 
         //-----------------------------------------
-        getDEData();
+        var temp;
+        temp = await getDEData();
+        console.log('DE-Key : '+ key + ' SourceDEDataResult : ' + JSON.stringify(temp));
         
 
 
@@ -361,7 +363,7 @@ app.post('/Authenticate', (req, res) => {
           SourceDEDataResult = JSON.parse(SourceDEDataResult);
           SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-          console.log('DE-Key : '+ key + ' SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
+          //console.log('DE-Key : '+ key + ' SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
 
 
 
@@ -371,7 +373,8 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-          
+          onsole.log('DEFieldAndDataMap.DEDataMap : ' + JSON.stringify(DEFieldAndDataMap.DEDataMap));
+
 
 
 
