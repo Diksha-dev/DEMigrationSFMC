@@ -302,9 +302,7 @@ app.post('/Authenticate', (req, res) => {
         }
 
         
-        var h = setInterval(function() {
-          console.log('temp : ' + JSON.stringify(temp));
-        }, 10000);
+        
 
 
         
