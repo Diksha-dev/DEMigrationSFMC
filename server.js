@@ -227,7 +227,7 @@ app.post('/Authenticate', (req, res) => {
 
         for(var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
-            temp0 = JSON.stringify(SourceDEFieldsResult[key]);
+            temp0 = SourceDEFieldsResult[key].Name;
             console.log('temp0 : '+ temp0);
             FieldSet.add(temp0);
           }
