@@ -222,33 +222,30 @@ app.post('/Authenticate', (req, res) => {
 
         
         var FieldSet = new Set();
-        //Array.from(FieldSet);
 
         for(var key in SourceDEFieldsResult) {
-          if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
-            FieldSet.add(JSON.stringify({ 
-              "FieldName" : SourceDEFieldsResult[key].Name,
-              "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
-              "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
-              "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
-              "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
-              "FieldScale" : SourceDEFieldsResult[key].Scale,
-              "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
-            }));
-          }
+          FieldSet.add(JSON.stringify({
+            "DEExtKey" : SourceDEFieldsResult[key].DataExtension.CustomerKey,
+            "Name" : SourceDEFieldsResult[key].Name,
+            "IsRequired" : SourceDEFieldsResult[key].IsRequired,
+            "IsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
+            "FieldType" : SourceDEFieldsResult[key].FieldType,
+            "MaxLength" : SourceDEFieldsResult[key].MaxLength,
+            "Scale" : SourceDEFieldsResult[key].Scale,
+            "DefaultValue" : SourceDEFieldsResult[key].DefaultValue
+          }));
         }
-        console.log('IGO_PROFILES-FieldSet : ' + [...FieldSet]);
-        var temp = [];
-        var temp1 = Array.from(FieldSet);
-        for (var Val in temp1) {
-          temp.push(JSON.parse(temp1[Val]));
+        //console.log('IGO_PROFILES-FieldSet : ' + [...FieldSet]);
+
+        var SourceDEFieldsResult = [];
+        for (var val of Array.from(FieldSet)) {
+          SourceDEFieldsResult.push(JSON.parse(val));
         }
-        SourceDEFieldsResult = temp;
         
 
 
         for (var key in SourceDEFieldsResult) {
-          if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
+          if(SourceDEFieldsResult[key].DEExtKey == "IGO_PROFILES") {
             console.log('IGO_PROFILES Name : ' + SourceDEFieldsResult[key].Name);
           }
         }
@@ -256,8 +253,8 @@ app.post('/Authenticate', (req, res) => {
 
         
         for (var key in SourceDEFieldsResult) {
-          if(SourceDEFieldsResult[key].DataExtension.CustomerKey in DEFieldMap) {
-            DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey].push({
+          if(SourceDEFieldsResult[key].DEExtKey in DEFieldMap) {
+            DEFieldMap[SourceDEFieldsResult[key].DEExtKey].push({
               "FieldName" : SourceDEFieldsResult[key].Name,
               "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
@@ -269,7 +266,7 @@ app.post('/Authenticate', (req, res) => {
             
           }
           else {
-            DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey] = [{
+            DEFieldMap[SourceDEFieldsResult[key].DEExtKey] = [{
               "FieldName" : SourceDEFieldsResult[key].Name,
               "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
