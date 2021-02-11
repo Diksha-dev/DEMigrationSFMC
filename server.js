@@ -337,10 +337,17 @@ app.post('/Authenticate', (req, res) => {
             if (error) throw new Error(error);
             //console.log('DE Data' + response.body);
 
-            SourceDEDataResult = response.body.getElementsByTagName("Results");
-            for (i = 0; i< SourceDEDataResult.length; i++) {
-              console.log('XML ayaa : ' + SourceDEDataResult[i].childNodes[0].nodeValue);
+            SourceDEDataResult = response.body;
+            SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
+            SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
+            SourceDEDataResult = JSON.parse(SourceDEDataResult);
+            SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+
+            for(var val of SourceDEDataResult) {
+              console.log('Dataval : ' + val)
+              DEFieldAndDataMap.DEDataMap[key].push(val);
             }
+            console.log('DEFieldAndDataMap.DEDataMap : ' + JSON.stringify(DEFieldAndDataMap.DEDataMap));
             
             
 
