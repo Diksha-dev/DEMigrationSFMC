@@ -221,15 +221,20 @@ app.post('/Authenticate', (req, res) => {
         
 
         
-        var temp0;
         var FieldSet = new Set();
         //Array.from(FieldSet);
 
         for(var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
-            temp0 = JSON.stringify({ "Name" : SourceDEFieldsResult[key].Name });
-            console.log('temp0 : '+ temp0);
-            FieldSet.add(temp0);
+            FieldSet.add(JSON.stringify({ 
+              "FieldName" : SourceDEFieldsResult[key].Name,
+              "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
+              "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
+              "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
+              "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
+              "FieldScale" : SourceDEFieldsResult[key].Scale,
+              "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
+            }));
           }
         }
         console.log('IGO_PROFILES-FieldSet : ' + [...FieldSet]);
