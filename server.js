@@ -230,6 +230,7 @@ app.post('/Authenticate', (req, res) => {
           }
         }
         console.log('IGO_PROFILES-FieldSet : ' + FieldSet);
+        console.log('IGO_PROFILES-FieldSet : ' + JSON.stringify(FieldSet));
         var temp = [];
         var temp1 = Array.from(FieldSet);
         for (var Val in temp1) {
