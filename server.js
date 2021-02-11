@@ -217,16 +217,19 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
         //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
-        /*
+        
+
+        
+        
         var FieldSet = new Set(); 
         //Array.from(FieldSet);
 
         for(var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
-            console.log('IGO_PROFILES SourceDEFieldsResult[key] : ' + JSON.stringify(SourceDEFieldsResult[key]));
             FieldSet.add(JSON.stringify(SourceDEFieldsResult[key]));
           }
         }
+        console.log('IGO_PROFILES-FieldSet : ' + FieldSet);
         var temp = [];
         var temp1 = Array.from(FieldSet);
         for (var Val in temp1) {
@@ -239,40 +242,23 @@ app.post('/Authenticate', (req, res) => {
         for (var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey == "IGO_PROFILES") {
             console.log('IGO_PROFILES Name : ' + SourceDEFieldsResult[key].Name);
-            console.log('IGO_PROFILES IsRequired : ' + SourceDEFieldsResult[key].IsRequired);
-            console.log('IGO_PROFILES IsPrimaryKey : ' + SourceDEFieldsResult[key].IsPrimaryKey);
-            console.log('IGO_PROFILES FieldType : ' + SourceDEFieldsResult[key].FieldType);
-            console.log('IGO_PROFILES MaxLength : ' + SourceDEFieldsResult[key].MaxLength);
-            console.log('IGO_PROFILES Scale : ' + SourceDEFieldsResult[key].Scale);
-            console.log('IGO_PROFILES DefaultValue : ' + JSON.stringify(SourceDEFieldsResult[key].DefaultValue));
-            console.log('NEXT FIELD IGO_PROFILES');
           }
-          
         }
-        */
+        
 
-        var tempbool;
+        
         for (var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DataExtension.CustomerKey in DEFieldMap) {
-            for(var key1 in DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey]) {
-              if(DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey][key1].FieldName == SourceDEFieldsResult[key].Name) {
-                tempbool = false;
-              }
-              else {
-                tempbool = true;
-              }
-            }
-            if(tempbool == true) {
-              DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey].push({
-                "FieldName" : SourceDEFieldsResult[key].Name,
-                "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
-                "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
-                "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
-                "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
-                "FieldScale" : SourceDEFieldsResult[key].Scale,
-                "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
-              });
-            }
+            DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey].push({
+              "FieldName" : SourceDEFieldsResult[key].Name,
+              "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
+              "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
+              "FieldFieldType" : SourceDEFieldsResult[key].FieldType,
+              "FieldMaxLength" : SourceDEFieldsResult[key].MaxLength,
+              "FieldScale" : SourceDEFieldsResult[key].Scale,
+              "FieldDefaultValue" : SourceDEFieldsResult[key].DefaultValue
+            });
+            
           }
           else {
             DEFieldMap[SourceDEFieldsResult[key].DataExtension.CustomerKey] = [{
