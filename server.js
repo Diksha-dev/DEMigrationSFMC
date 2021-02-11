@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000
 var request = require('request');
 const { stringify } = require("querystring");
 let xmlParser = require('xml2json');
+var Set = require("collections/set");
 
 app.get("*", (req, res) => {
   const FirstPage = path.join(__dirname, 'public', 'index.html');
