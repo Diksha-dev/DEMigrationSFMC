@@ -24,6 +24,7 @@ var SourceRestURL = '';
 var SourceSoapURL = '';
 var SourceListDEResult;
 var SourceDEFieldsResult;
+var SourceDEDataResult;
 var DEFieldMap={};
 
 var DestinationAccessToken = '';
@@ -185,7 +186,7 @@ app.post('/Authenticate', (req, res) => {
             }
           }
         }
-        console.log('DEListMap : ' + JSON.stringify(DEListMap));
+        //console.log('DEListMap : ' + JSON.stringify(DEListMap));
         resolve(DEListMap);
 
         //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
@@ -214,7 +215,10 @@ app.post('/Authenticate', (req, res) => {
 
   async function getSourceDEFieldsAndData(){
     return new Promise(function (resolve, reject) {
-      DEFieldMap = {};
+      DEFieldAndDataMap = {
+        "DEFieldMap" : {},
+        "DEDataMap" : {}
+      };
       authTokenForBothSFDC();
       var DEFieldOption = {
         'method': 'POST',
@@ -261,8 +265,8 @@ app.post('/Authenticate', (req, res) => {
 
         
         for (var key in SourceDEFieldsResult) {
-          if(SourceDEFieldsResult[key].DEExtKey in DEFieldMap) {
-            DEFieldMap[SourceDEFieldsResult[key].DEExtKey].push({
+          if(SourceDEFieldsResult[key].DEExtKey in DEFieldAndDataMap.DEFieldMap) {
+            DEFieldAndDataMap.DEFieldMap[SourceDEFieldsResult[key].DEExtKey].push({
               "FieldName" : SourceDEFieldsResult[key].Name,
               "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
@@ -274,7 +278,7 @@ app.post('/Authenticate', (req, res) => {
             
           }
           else {
-            DEFieldMap[SourceDEFieldsResult[key].DEExtKey] = [{
+            DEFieldAndDataMap.DEFieldMap[SourceDEFieldsResult[key].DEExtKey] = [{
               "FieldName" : SourceDEFieldsResult[key].Name,
               "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
@@ -288,7 +292,7 @@ app.post('/Authenticate', (req, res) => {
         
 
         var DEDataBody = '';
-        for(var key in DEFieldMap) {
+        for(var key in DEFieldAndDataMap.DEFieldMap) {
           DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
                           '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
                               '<s:Header>' +
@@ -305,8 +309,8 @@ app.post('/Authenticate', (req, res) => {
                                       '<RetrieveRequest>' +
                                       '<ObjectType>DataExtensionObject[' + key + ']</ObjectType>';
           
-          for(var key1 in DEFieldMap[key]) {
-            DEDataBody = DEDataBody + '<Properties>' + DEFieldMap[key][key1]["FieldName"] + '</Properties>';
+          for(var key1 in DEFieldAndDataMap.DEFieldMap[key]) {
+            DEDataBody = DEDataBody + '<Properties>' + DEFieldAndDataMap.DEFieldMap[key][key1]["FieldName"] + '</Properties>';
           }                            
 
                                           
@@ -331,15 +335,22 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataOptions, function (error, response) {
             if (error) throw new Error(error);
-            console.log('DE Data' + response.body);
-          });
+            //console.log('DE Data' + response.body);
 
+            SourceDEDataResult = response.body.getElementsByTagName("Results");
+            for (i = 0; i< SourceDEDataResult.length; i++) {
+              console.log('XML ayaa : ' + SourceDEDataResult[i].childNodes[0].nodeValue);
+            }
+            
+            
+
+          });
         }
 
 
 
         //console.log('DEFieldMap : '+ JSON.stringify(DEFieldMap));
-        resolve(DEFieldMap); 
+        resolve(DEFieldAndDataMap.DEFieldMap); 
       });
     })
   }
