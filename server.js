@@ -172,7 +172,6 @@ app.post('/Authenticate', (req, res) => {
                   "DESendDEField" : SourceListDEResult[key].SendableDataExtensionField.Name,
                   "DESendSubsField" : SourceListDEResult[key].SendableSubscriberField.Name
                 });
-                
               }
               else {
                 DEListMap[SourceListDEResult[key].CustomerKey] = [{
@@ -197,7 +196,6 @@ app.post('/Authenticate', (req, res) => {
                   "DESendDEField" : '',
                   "DESendSubsField" : ''
                 });
-                
               }
               else {
                 DEListMap[SourceListDEResult[key].CustomerKey] = [{
@@ -213,6 +211,7 @@ app.post('/Authenticate', (req, res) => {
             }
           }
         }
+        console.log('DEListMap : ' + JSON.stringify(DEListMap));
 
 
 
@@ -276,11 +275,7 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
         //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
-        
-        console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult[0]));
-        
         var FieldSet = new Set();
-
         for(var key in SourceDEFieldsResult) {
           FieldSet.add(JSON.stringify({
             "DEExtKey" : SourceDEFieldsResult[key].DataExtension.CustomerKey,
@@ -358,7 +353,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-          console.log('DEDataBody : ' + DEDataBody);
+          //console.log('DEDataBody : ' + DEDataBody);
           var DEDataOptions = {
             'method': 'POST',
             'url': SourceSoapURL + 'Service.asmx',
@@ -370,10 +365,10 @@ app.post('/Authenticate', (req, res) => {
             body: DEDataBody
 
           };
-          request(DEDataOptions, function (error, response) {
+          /*request(DEDataOptions, function (error, response) {
             if (error) throw new Error(error);
             console.log('DE Data' + response.body);
-          });
+          });*/
 
         }
 
@@ -391,7 +386,6 @@ app.post('/Authenticate', (req, res) => {
     var DEListBody = '';
     for (var key in selectedDEList) {
       if(key in DEFieldMap) {
-        console.log('Apna Loop');
         DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
                           '<soapenv:Header>' +
@@ -508,7 +502,7 @@ app.post('/Authenticate', (req, res) => {
                                       '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>'+ DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
                                       '<DefaultValue>'+ tempDefaultValue +'</DefaultValue>' +
-                                    '</Field>';
+                                      '</Field>';
           }
         }
 
