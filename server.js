@@ -371,6 +371,8 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = JSON.parse(SourceDEDataResult);
         SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
+        resolve(SourceDEDataResult);
+
         //console.log('DE-Key : '+ key + ' SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
 
 
@@ -390,7 +392,7 @@ app.post('/Authenticate', (req, res) => {
         */
 
       });
-      resolve(SourceDEDataResult);
+      
     })      
   }
 
