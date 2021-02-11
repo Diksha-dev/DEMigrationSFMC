@@ -343,13 +343,13 @@ app.post('/Authenticate', (req, res) => {
             SourceDEDataResult = JSON.parse(SourceDEDataResult);
             SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-            for(var val of SourceDEDataResult) {
-              console.log('Dataval : ' + JSON.stringify(val));
+            for(var key1 in SourceDEDataResult) {
+              console.log('Dataval : ' + JSON.stringify(SourceDEDataResult[key1]));
               if(DEFieldAndDataMap.DEDataMap[key]) {
-                DEFieldAndDataMap.DEDataMap[key] = [val];
+                DEFieldAndDataMap.DEDataMap[key] = [SourceDEDataResult[key1]];
               }
               else {
-                DEFieldAndDataMap.DEDataMap[key].push(val);
+                DEFieldAndDataMap.DEDataMap[key].push(SourceDEDataResult[key1]);
               }
               
             }
