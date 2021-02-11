@@ -179,8 +179,8 @@ app.post('/Authenticate', (req, res) => {
                 "DEIsSendable" : SourceListDEResult[key].IsSendable,
                 "DEIsTestable" : SourceListDEResult[key].IsTestable,
                 "DEDescription" : SourceListDEResult[key].Description,
-                "DESendDEField" : SourceListDEResult[key].SendableDataExtensionField.Name,
-                "DESendSubsField" : SourceListDEResult[key].SendableSubscriberField.Name
+                "DESendDEField" : '',
+                "DESendSubsField" : ''
               }];
             }
           }
