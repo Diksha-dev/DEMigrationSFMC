@@ -162,7 +162,7 @@ app.post('/Authenticate', (req, res) => {
         for (var key in SourceListDEResult) {
           if(SourceListDEResult[key].Name != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name != "_MobileAddress" && SourceListDEResult[key].Name != "_MobileSubscription" && SourceListDEResult[key].Name != "_PushAddress" && SourceListDEResult[key].Name != "_PushTag" && SourceListDEResult[key].Name != "_MobileLineAddressContact" && SourceListDEResult[key].Name != "_MobileLineAddress" && SourceListDEResult[key].Name != "_MobileLineProfile" && SourceListDEResult[key].Name != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name != "_MobileLineSubscription" && SourceListDEResult[key].Name != "MobileLineOrphanContact") {
             if(SourceListDEResult[key].IsSendable == "true") {
-              DEListMap[SourceListDEResult[key].CustomerKey] = [{
+              DEListMap[SourceListDEResult[key].CustomerKey] = {
                 "DEName" : SourceListDEResult[key].Name,
                 "DECustomerKey" : SourceListDEResult[key].CustomerKey,
                 "DEIsSendable" : SourceListDEResult[key].IsSendable,
@@ -170,10 +170,10 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription" : SourceListDEResult[key].Description,
                 "DESendDEField" : SourceListDEResult[key].SendableDataExtensionField.Name,
                 "DESendSubsField" : SourceListDEResult[key].SendableSubscriberField.Name
-              }];
+              };
             }
             else {
-              DEListMap[SourceListDEResult[key].CustomerKey] = [{
+              DEListMap[SourceListDEResult[key].CustomerKey] = {
                 "DEName" : SourceListDEResult[key].Name,
                 "DECustomerKey" : SourceListDEResult[key].CustomerKey,
                 "DEIsSendable" : SourceListDEResult[key].IsSendable,
@@ -181,7 +181,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription" : SourceListDEResult[key].Description,
                 "DESendDEField" : '',
                 "DESendSubsField" : ''
-              }];
+              };
             }
           }
         }
