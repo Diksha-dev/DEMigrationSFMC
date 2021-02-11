@@ -296,9 +296,20 @@ app.post('/Authenticate', (req, res) => {
         var temp;
         
         for(var key in DEFieldAndDataMap.DEFieldMap) {
-          temp = await getDEData(key);
-          console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp));
+          temp[key] = await getDEData(key);
+          console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp[key]));
         }
+        var temp1 = temp;
+
+        
+        var h = setInterval(function() {
+          console.log('temp1 : ' + JSON.stringify(temp1));
+          if(temp1) {
+            clearInterval(h);
+          }
+        }, 10000);
+
+
         
 
 
