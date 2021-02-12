@@ -136,7 +136,7 @@
                 success: function (data) {
                     //console.log('data : ' + JSON.stringify(data));
                     SourceListDEResult = data;
-                    var tds = "", DEDes = '', i = 0;
+                    var tds = "", DEDes = '';
                     for (var key in SourceListDEResult) {
                         if (JSON.stringify(SourceListDEResult[key].DEDescription) == '{}') {
                             DEDes = '';
@@ -148,43 +148,42 @@
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<button type="checkbox" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
-                                '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
+                                '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
                                 '</label> ' +
                                 '</td>' +
-                                '<th data-label="name" role="row" id="DEName'+i+'">' + SourceListDEResult[key].DEName + '</th> ' +
-                                '<td data-label="external-key" id="DEExtKey'+i+'">' + SourceListDEResult[key].DECustomerKey + '</td> ' +
-                                '<td data-label="FieldCount" id="DEFieldCount'+i+'">' + SourceListDEResult[key].FieldCount + '</td>' +
-                                '<td data-label="RecordCount" id="DERecordCount'+i+'">' + SourceListDEResult[key].RecordCount + '</td>' +
-                                '<td data-label="description" id="DEDes'+i+'">' + DEDes + '</td>' +
-                                '<td data-label="sendable" id="DEIsSend'+i+'">' + SourceListDEResult[key].DEIsSendable + '</td>' +
-                                '<td data-label="Testable" id="DEIsTest'+i+'">' + SourceListDEResult[key].DEIsTestable + '</td>' +
-                                '<td data-label="sendable DE Field" id="DESendDEField'+i+'">' + SourceListDEResult[key].DESendDEField + '</td>' +
-                                '<td data-label="sendable Subscriber Field" id="DESendSubField'+i+'">' + SourceListDEResult[key].DESendSubsField + '</td>' +
+                                '<th data-label="name" role="row" id="' + SourceListDEResult[key].DECustomerKey + 'DEName">' + SourceListDEResult[key].DEName + '</th> ' +
+                                '<td data-label="external-key" id="' + SourceListDEResult[key].DECustomerKey + 'DEExtKey">' + SourceListDEResult[key].DECustomerKey + '</td> ' +
+                                '<td data-label="FieldCount" id="' + SourceListDEResult[key].DECustomerKey + 'DEFieldCount">' + SourceListDEResult[key].FieldCount + '</td>' +
+                                '<td data-label="RecordCount" id="' + SourceListDEResult[key].DECustomerKey + 'DERecordCount">' + SourceListDEResult[key].RecordCount + '</td>' +
+                                '<td data-label="description" id="' + SourceListDEResult[key].DECustomerKey + 'DEDes">' + DEDes + '</td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DEIsSend">' + SourceListDEResult[key].DEIsSendable + '</td>' +
+                                '<td data-label="Testable" id="' + SourceListDEResult[key].DECustomerKey + 'DEIsTest">' + SourceListDEResult[key].DEIsTestable + '</td>' +
+                                '<td data-label="sendable DE Field" id="' + SourceListDEResult[key].DECustomerKey + 'DESendDEField">' + SourceListDEResult[key].DESendDEField + '</td>' +
+                                '<td data-label="sendable Subscriber Field" id="' + SourceListDEResult[key].DECustomerKey + 'DESendSubField">' + SourceListDEResult[key].DESendSubsField + '</td>' +
                                 '</tr>';
                         }
                         else {
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<button type="checkbox" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
-                                '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
+                                '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
                                 '</label> ' +
                                 '</td>' +
-                                '<th data-label="name" role="row" id="DEName'+i+'">' + SourceListDEResult[key].DEName + '</th> ' +
-                                '<td data-label="external-key" id="DEExtKey'+i+'">' + SourceListDEResult[key].DECustomerKey + '</td> ' +
-                                '<td data-label="FieldCount" id="DEFieldCount'+i+'">' + SourceListDEResult[key].FieldCount + '</td>' +
-                                '<td data-label="RecordCount" id="DERecordCount'+i+'">' + SourceListDEResult[key].RecordCount + '</td>' +
-                                '<td data-label="description" id="DEDes'+i+'">' + DEDes + '</td>' +
-                                '<td data-label="sendable" id="DEIsSend'+i+'">' + SourceListDEResult[key].DEIsSendable + '</td>' +
-                                '<td data-label="sendable" id="DEIsTest'+i+'">' + SourceListDEResult[key].DEIsTestable + '</td>' +
-                                '<td data-label="sendable" id="DESendDEField'+i+'"></td>' +
-                                '<td data-label="sendable" id="DESendSubField'+i+'"></td>' +
+                                '<th data-label="name" role="row" id="' + SourceListDEResult[key].DECustomerKey + 'DEName">' + SourceListDEResult[key].DEName + '</th> ' +
+                                '<td data-label="external-key" id="' + SourceListDEResult[key].DECustomerKey + 'DEExtKey">' + SourceListDEResult[key].DECustomerKey + '</td> ' +
+                                '<td data-label="FieldCount" id="' + SourceListDEResult[key].DECustomerKey + 'DEFieldCount">' + SourceListDEResult[key].FieldCount + '</td>' +
+                                '<td data-label="RecordCount" id="' + SourceListDEResult[key].DECustomerKey + 'DERecordCount">' + SourceListDEResult[key].RecordCount + '</td>' +
+                                '<td data-label="description" id="' + SourceListDEResult[key].DECustomerKey + 'DEDes">' + DEDes + '</td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DEIsSend">' + SourceListDEResult[key].DEIsSendable + '</td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DEIsTest">' + SourceListDEResult[key].DEIsTestable + '</td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DESendDEField"></td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DESendSubField"></td>' +
                                 '</tr>';
                         }
-                        i = i + 1;
                     }
                     document.getElementById('DEBody').innerHTML = tds;
                 }
@@ -199,37 +198,37 @@
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true) {
-                if(document.getElementById("DESendSubField"+i).innerHTML == "_SubscriberKey" || document.getElementById("DESendSubField"+i).innerHTML == "Subscriber Key" || document.getElementById("DESendSubField"+i).innerHTML == "SubscriberKey") {
-                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
-                        "DEName" : document.getElementById("DEName"+i).innerHTML,
-                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
-                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
-                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
-                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
-                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
+                if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberKey" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber Key" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberKey") {
+                    selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                        "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
+                        "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
+                        "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
+                        "DEIsSend" : document.getElementById(checkBoxes[i].id + "DEIsSend").innerHTML,
+                        "DEIsTest" : document.getElementById(checkBoxes[i].id + "DEIsTest").innerHTML,
+                        "DESendDEField" : document.getElementById(checkBoxes[i].id + "DESendDEField").innerHTML,
                         "DESendSubField" : "Subscriber Key",
                     };
                 }
-                else if(document.getElementById("DESendSubField"+i).innerHTML == "_SubscriberID" || document.getElementById("DESendSubField"+i).innerHTML == "Subscriber ID" || document.getElementById("DESendSubField"+i).innerHTML == "SubscriberID") {
-                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
-                        "DEName" : document.getElementById("DEName"+i).innerHTML,
-                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
-                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
-                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
-                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
-                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
+                else if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberID" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber ID" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberID") {
+                    selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                        "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
+                        "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
+                        "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
+                        "DEIsSend" : document.getElementById(checkBoxes[i].id + "DEIsSend").innerHTML,
+                        "DEIsTest" : document.getElementById(checkBoxes[i].id + "DEIsTest").innerHTML,
+                        "DESendDEField" : document.getElementById(checkBoxes[i].id + "DESendDEField").innerHTML,
                         "DESendSubField" : "Subscriber ID",
                     };
                 }
                 else {
-                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
-                        "DEName" : document.getElementById("DEName"+i).innerHTML,
-                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
-                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
-                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
-                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
-                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
-                        "DESendSubField" : document.getElementById("DESendSubField"+i).innerHTML
+                    selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                        "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
+                        "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
+                        "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
+                        "DEIsSend" : document.getElementById(checkBoxes[i].id + "DEIsSend").innerHTML,
+                        "DEIsTest" : document.getElementById(checkBoxes[i].id + "DEIsTest").innerHTML,
+                        "DESendDEField" : document.getElementById(checkBoxes[i].id + "DESendDEField").innerHTML,
+                        "DESendSubField" : document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML
                     };
                 }
                     
