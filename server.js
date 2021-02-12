@@ -366,12 +366,15 @@ app.post('/Authenticate', (req, res) => {
 
         DEListMap[key].DEDataMap = [];
         if(key == 'TwilioV1') {
+          console.log(key + ' : ' + typeof(SourceDEDataResult));
           console.log(key + ' : ' + JSON.stringify(SourceDEDataResult));
         }
         if(key == 'Adventure') {
+          console.log(key + ' : ' + typeof(SourceDEDataResult));
           console.log(key + ' : ' + JSON.stringify(SourceDEDataResult));
         }
         if(key == 'IGO_PRODUCTS') {
+          console.log(key + ' : ' + typeof(SourceDEDataResult));
           console.log(key + ' : ' + JSON.stringify(SourceDEDataResult));
         }
         for(var key1 in SourceDEDataResult) {
