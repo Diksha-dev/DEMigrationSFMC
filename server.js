@@ -298,7 +298,7 @@ app.post('/Authenticate', (req, res) => {
           await getDEData(key);
           //console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp2));
         }
-        console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap.DEDataMap));
+        //console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap.DEDataMap));
 
         
         
@@ -568,6 +568,7 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
+      console.log('DEListMap Last : ' + DEListMap)
 
       for (var key in DEListMap) {
         DEListMap[key].FieldCount = DEListMap[key].DEFieldMap.length;
