@@ -300,6 +300,7 @@ app.post('/Authenticate', (req, res) => {
           temp.push(temp2);
           console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp2));
         }
+        console.log('DEFieldAndDataMap.DEDataMap : ' + JSON.stringify(DEFieldAndDataMap.DEDataMap));
 
         
         
@@ -371,22 +372,13 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = JSON.parse(SourceDEDataResult);
         SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-        
-        console.log('SourceDEDataResult in function : ' + JSON.stringify(SourceDEDataResult));
 
+
+
+        DEFieldAndDataMap.DEDataMap[key] = [];
         for(var key1 in SourceDEDataResult) {
-          console.log('key : ' + JSON.stringify(key));
-          if(DEFieldAndDataMap.DEDataMap[key]) {
-            DEFieldAndDataMap.DEDataMap[key].push(SourceDEDataResult[key1].Properties);
-          }
-          else {
-            DEFieldAndDataMap.DEDataMap[key] = SourceDEDataResult[key1].Properties;
-          }
+          DEFieldAndDataMap.DEDataMap[key].push(SourceDEDataResult[key1].Properties);
         }
-
-
-        console.log('DEFieldAndDataMap.DEDataMap : ' + JSON.stringify(DEFieldAndDataMap.DEDataMap));
-        
 
 
         resolve(SourceDEDataResult);
