@@ -368,13 +368,13 @@ app.post('/Authenticate', (req, res) => {
         for(var key1 in SourceDEDataResult) {
 
           if(key == 'TwilioV1') {
-            console.log(key1 + ' : ' + typeof(key1));
+            console.log(key1 + ' TwilioV1: ' + typeof(key1));
           }
           if(key == 'Adventure') {
-            console.log(key1 + ' : ' + typeof(key1));
+            console.log(key1 + ' Adventure: ' + typeof(key1));
           }
           if(key == 'IGO_PRODUCTS') {
-            console.log(key1 + ' : ' + typeof(key1));
+            console.log(key1 + ' IGO_PRODUCTS: ' + typeof(key1));
           }
 
 
