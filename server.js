@@ -298,7 +298,7 @@ app.post('/Authenticate', (req, res) => {
           await getDEData(key);
           //console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp2));
         }
-        console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap));
+        console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap.DEDataMap));
 
         
         
@@ -363,9 +363,9 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = JSON.parse(SourceDEDataResult);
         SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-        DEListMap.DEDataMap[key] = [];
+        DEListMap[key].DEDataMap = [];
         for(var key1 in SourceDEDataResult) {
-          DEListMap.DEDataMap[key].push(SourceDEDataResult[key1].Properties);
+          DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
         }
 
         resolve(SourceDEDataResult);
