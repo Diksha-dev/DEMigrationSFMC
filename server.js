@@ -371,16 +371,10 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = JSON.parse(SourceDEDataResult);
         SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-        resolve(SourceDEDataResult);
+        
+        console.log('SourceDEDataResult in function : ' + JSON.stringify(SourceDEDataResult));
 
-        //console.log('DE-Key : '+ key + ' SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
-
-
-
-
-        /*
         for(var key1 in SourceDEDataResult) {
-          console.log('Dataval : ' + JSON.stringify(SourceDEDataResult[key1]));
           if(DEFieldAndDataMap.DEDataMap[key]) {
             DEFieldAndDataMap.DEDataMap[key].push(SourceDEDataResult[key1]);
           }
@@ -388,8 +382,13 @@ app.post('/Authenticate', (req, res) => {
             DEFieldAndDataMap.DEDataMap[key] = [(SourceDEDataResult[key1])];
           }
         }
+
+
         console.log('DEFieldAndDataMap.DEDataMap : ' + JSON.stringify(DEFieldAndDataMap.DEDataMap));
-        */
+        
+
+
+        resolve(SourceDEDataResult);
 
       });
       
