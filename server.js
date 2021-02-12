@@ -366,14 +366,14 @@ app.post('/Authenticate', (req, res) => {
 
         DEListMap[key].DEDataMap = [];
         for(var key1 in SourceDEDataResult) {
-          if(key1 != 'xsitype' || key1 != 'PartnerKey' || key1 != 'ObjectID' || key1 != 'Type' || key1 != 'Properties') {
+          if(key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
             DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
           }
           else if(key1 != 'Properties') {
             DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
           }
         }
-        
+
         resolve(SourceDEDataResult);
       });
     })      
