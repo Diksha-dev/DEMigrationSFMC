@@ -136,7 +136,7 @@
                 success: function (data) {
                     //console.log('data : ' + JSON.stringify(data));
                     SourceListDEResult = data;
-                    var tds = "", DEDes = '', i = 1;
+                    var tds = "", DEDes = '', i = 0;
                     for (var key in SourceListDEResult) {
                         if (JSON.stringify(SourceListDEResult[key].DEDescription) == '{}') {
                             DEDes = '';
