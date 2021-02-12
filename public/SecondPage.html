@@ -151,7 +151,7 @@
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<input type="checkbox" value="withOutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" name="Sendable" value="withOutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
                                 '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
                                 '</label> ' +
@@ -178,7 +178,7 @@
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<input type="checkbox" value="withOutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" name="NonSendable" value="withOutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
                                 '<span class="slds-form-element__label slds-assistive-text">select row' + i + '</span> ' +
                                 '</label> ' +
@@ -196,7 +196,7 @@
                                 '<td data-label="RecordCount" id="DERecordCount'+i+'">' + SourceListDEResult[key].RecordCount + '</td>' +
                                 '<td data-label="description" id="DEDes'+i+'">' + DEDes + '</td>' +
                                 '<td data-label="sendable" id="DEIsSend'+i+'">' + SourceListDEResult[key].DEIsSendable + '</td>' +
-                                '<td data-label="sendable" id="DEIsTest'+i+'">' + SourceListDEResult[key].DEIsTestable + '</td>' +
+                                '<td data-label="Testable" id="DEIsTest'+i+'">' + SourceListDEResult[key].DEIsTestable + '</td>' +
                                 '<td data-label="sendable" id="DESendDEField'+i+'"></td>' +
                                 '<td data-label="sendable" id="DESendSubField'+i+'"></td>' +
                                 '</tr>';
@@ -212,12 +212,17 @@
     function SendDEIdsToServer() {
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("input");
-        var selectedDE = {};
+        var selectedDE = {
+            "SendableWithoutData" : {},
+            "NonSendableWithoutData" : {},
+            "SendableWithData" : {},
+            "NonSendableWithData" : {}
+        };
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
-            if (checkBoxes[i].checked == true) {
+            if (checkBoxes[i].checked == true && checkBoxes[i].name == "sendable" && checkBoxes[i].value == "withOutData") {
                 if(document.getElementById("DESendSubField"+i).innerHTML == "_SubscriberKey" || document.getElementById("DESendSubField"+i).innerHTML == "Subscriber Key" || document.getElementById("DESendSubField"+i).innerHTML == "SubscriberKey") {
-                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
+                    selectedDE.SendableWithoutData[document.getElementById("DEExtKey"+i).innerHTML] = {
                         "DEName" : document.getElementById("DEName"+i).innerHTML,
                         "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
                         "DEDes" : document.getElementById("DEDes"+i).innerHTML,
@@ -228,7 +233,7 @@
                     };
                 }
                 else if(document.getElementById("DESendSubField"+i).innerHTML == "_SubscriberID" || document.getElementById("DESendSubField"+i).innerHTML == "Subscriber ID" || document.getElementById("DESendSubField"+i).innerHTML == "SubscriberID") {
-                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
+                    selectedDE.SendableWithoutData[document.getElementById("DEExtKey"+i).innerHTML] = {
                         "DEName" : document.getElementById("DEName"+i).innerHTML,
                         "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
                         "DEDes" : document.getElementById("DEDes"+i).innerHTML,
@@ -239,7 +244,7 @@
                     };
                 }
                 else {
-                    selectedDE[document.getElementById("DEExtKey"+i).innerHTML] = {
+                    selectedDE.SendableWithoutData[document.getElementById("DEExtKey"+i).innerHTML] = {
                         "DEName" : document.getElementById("DEName"+i).innerHTML,
                         "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
                         "DEDes" : document.getElementById("DEDes"+i).innerHTML,
@@ -250,6 +255,60 @@
                     };
                 }
                     
+            }
+            else if(checkBoxes[i].checked == true && checkBoxes[i].name == "NonSendable" && checkBoxes[i].value == "withOutData") {
+                selectedDE.NonSendableWithoutData[document.getElementById("DEExtKey"+i).innerHTML] = {
+                    "DEName" : document.getElementById("DEName"+i).innerHTML,
+                    "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                    "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                    "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
+                    "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML
+                };
+            }
+            if (checkBoxes[i].checked == true && checkBoxes[i].name == "sendable" && checkBoxes[i].value == "withData") {
+                if(document.getElementById("DESendSubField"+i).innerHTML == "_SubscriberKey" || document.getElementById("DESendSubField"+i).innerHTML == "Subscriber Key" || document.getElementById("DESendSubField"+i).innerHTML == "SubscriberKey") {
+                    selectedDE.SendableWithData[document.getElementById("DEExtKey"+i).innerHTML] = {
+                        "DEName" : document.getElementById("DEName"+i).innerHTML,
+                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
+                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
+                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
+                        "DESendSubField" : "Subscriber Key",
+                    };
+                }
+                else if(document.getElementById("DESendSubField"+i).innerHTML == "_SubscriberID" || document.getElementById("DESendSubField"+i).innerHTML == "Subscriber ID" || document.getElementById("DESendSubField"+i).innerHTML == "SubscriberID") {
+                    selectedDE.SendableWithData[document.getElementById("DEExtKey"+i).innerHTML] = {
+                        "DEName" : document.getElementById("DEName"+i).innerHTML,
+                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
+                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
+                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
+                        "DESendSubField" : "Subscriber ID",
+                    };
+                }
+                else {
+                    selectedDE.SendableWithData[document.getElementById("DEExtKey"+i).innerHTML] = {
+                        "DEName" : document.getElementById("DEName"+i).innerHTML,
+                        "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                        "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                        "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
+                        "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML,
+                        "DESendDEField" : document.getElementById("DESendDEField"+i).innerHTML,
+                        "DESendSubField" : document.getElementById("DESendSubField"+i).innerHTML
+                    };
+                }
+                    
+            }
+            else if(checkBoxes[i].checked == true && checkBoxes[i].name == "NonSendable" && checkBoxes[i].value == "withData") {
+                selectedDE.NonSendableWithData[document.getElementById("DEExtKey"+i).innerHTML] = {
+                    "DEName" : document.getElementById("DEName"+i).innerHTML,
+                    "DEExtKey" : document.getElementById("DEExtKey"+i).innerHTML,
+                    "DEDes" : document.getElementById("DEDes"+i).innerHTML,
+                    "DEIsSend" : document.getElementById("DEIsSend"+i).innerHTML,
+                    "DEIsTest" : document.getElementById("DEIsTest"+i).innerHTML
+                };
             }
         }
         console.log(selectedDE);
