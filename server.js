@@ -266,7 +266,7 @@ app.post('/Authenticate', (req, res) => {
         
         for (var key in SourceDEFieldsResult) {
           if(SourceDEFieldsResult[key].DEExtKey in DEListMap) {
-            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEListMap.push({
+            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEFieldMap.push({
               "FieldName" : SourceDEFieldsResult[key].Name,
               "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
@@ -278,7 +278,7 @@ app.post('/Authenticate', (req, res) => {
             
           }
           else {
-            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEListMap = [{
+            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEFieldMap = [{
               "FieldName" : SourceDEFieldsResult[key].Name,
               "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
