@@ -365,19 +365,19 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
         DEListMap[key].DEDataMap = [];
-        if(key == 'TwilioV1') {
-          console.log(key + ' : ' + typeof(SourceDEDataResult));
-          console.log(key + ' : ' + JSON.stringify(SourceDEDataResult));
-        }
-        if(key == 'Adventure') {
-          console.log(key + ' : ' + typeof(SourceDEDataResult));
-          console.log(key + ' : ' + JSON.stringify(SourceDEDataResult));
-        }
-        if(key == 'IGO_PRODUCTS') {
-          console.log(key + ' : ' + typeof(SourceDEDataResult));
-          console.log(key + ' : ' + JSON.stringify(SourceDEDataResult));
-        }
         for(var key1 in SourceDEDataResult) {
+
+          if(key == 'TwilioV1') {
+            console.log(key1 + ' : ' + typeof(key1));
+          }
+          if(key == 'Adventure') {
+            console.log(key1 + ' : ' + typeof(key1));
+          }
+          if(key == 'IGO_PRODUCTS') {
+            console.log(key1 + ' : ' + typeof(key1));
+          }
+
+
           DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
         }
 
