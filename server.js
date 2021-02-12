@@ -377,10 +377,10 @@ app.post('/Authenticate', (req, res) => {
         for(var key1 in SourceDEDataResult) {
           console.log('key : ' + JSON.stringify(key));
           if(DEFieldAndDataMap.DEDataMap[key]) {
-            DEFieldAndDataMap.DEDataMap[key].push(SourceDEDataResult[key1].Properties.Property);
+            DEFieldAndDataMap.DEDataMap[key].push(SourceDEDataResult[key1].Properties);
           }
           else {
-            DEFieldAndDataMap.DEDataMap[key] = SourceDEDataResult[key1].Properties.Property;
+            DEFieldAndDataMap.DEDataMap[key] = SourceDEDataResult[key1].Properties;
           }
         }
 
