@@ -170,7 +170,9 @@ app.post('/Authenticate', (req, res) => {
                 "DEIsTestable" : SourceListDEResult[key].IsTestable,
                 "DEDescription" : SourceListDEResult[key].Description,
                 "DESendDEField" : SourceListDEResult[key].SendableDataExtensionField.Name,
-                "DESendSubsField" : SourceListDEResult[key].SendableSubscriberField.Name
+                "DESendSubsField" : SourceListDEResult[key].SendableSubscriberField.Name,
+                "DEFieldMap" : {},
+                "DEDataMap" : {}
               };
             }
             else {
@@ -181,7 +183,9 @@ app.post('/Authenticate', (req, res) => {
                 "DEIsTestable" : SourceListDEResult[key].IsTestable,
                 "DEDescription" : SourceListDEResult[key].Description,
                 "DESendDEField" : '',
-                "DESendSubsField" : ''
+                "DESendSubsField" : '',
+                "DEFieldMap" : {},
+                "DEDataMap" : {}
               };
             }
           }
@@ -265,8 +269,8 @@ app.post('/Authenticate', (req, res) => {
 
         
         for (var key in SourceDEFieldsResult) {
-          if(SourceDEFieldsResult[key].DEExtKey in DEFieldAndDataMap.DEFieldMap) {
-            DEFieldAndDataMap.DEFieldMap[SourceDEFieldsResult[key].DEExtKey].push({
+          if(SourceDEFieldsResult[key].DEExtKey in DEListMap.DEFieldMap) {
+            DEListMap.DEFieldMap[SourceDEFieldsResult[key].DEExtKey].push({
               "FieldName" : SourceDEFieldsResult[key].Name,
               "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
@@ -278,7 +282,7 @@ app.post('/Authenticate', (req, res) => {
             
           }
           else {
-            DEFieldAndDataMap.DEFieldMap[SourceDEFieldsResult[key].DEExtKey] = [{
+            DEListMap.DEFieldMap[SourceDEFieldsResult[key].DEExtKey] = [{
               "FieldName" : SourceDEFieldsResult[key].Name,
               "FieldIsRequired" : SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey" : SourceDEFieldsResult[key].IsPrimaryKey,
@@ -293,26 +297,16 @@ app.post('/Authenticate', (req, res) => {
 
 
         //-----------------------------------------
-        var temp = [];
-        //var temp2
-        for(var key in DEFieldAndDataMap.DEFieldMap) {
-          //temp2 = await getDEData(key);
-          //temp.push(temp2);
+
+        for(var key in DEListMap.DEFieldMap) {
           await getDEData(key);
           //console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp2));
         }
-        console.log('DEFieldAndDataMap.DEDataMap : ' + JSON.stringify(DEFieldAndDataMap.DEDataMap));
+        console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap.DEDataMap));
 
         
         
-
-
-        
-
-
-
-        //console.log('DEFieldMap : '+ JSON.stringify(DEFieldMap));
-        resolve(DEFieldAndDataMap.DEFieldMap); 
+        resolve(DEListMap); 
       });
     })
   }
@@ -339,8 +333,8 @@ app.post('/Authenticate', (req, res) => {
                                         '<RetrieveRequest>' +
                                         '<ObjectType>DataExtensionObject[' + key + ']</ObjectType>';
             
-      for(var key1 in DEFieldAndDataMap.DEFieldMap[key]) {
-        DEDataBody = DEDataBody + '<Properties>' + DEFieldAndDataMap.DEFieldMap[key][key1]["FieldName"] + '</Properties>';
+      for(var key1 in DEListMap.DEFieldMap[key]) {
+        DEDataBody = DEDataBody + '<Properties>' + DEListMap.DEFieldMap[key][key1]["FieldName"] + '</Properties>';
       }                            
 
                                             
@@ -373,9 +367,9 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = JSON.parse(SourceDEDataResult);
         SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
-        DEFieldAndDataMap.DEDataMap[key] = [];
+        DEListMap.DEDataMap[key] = [];
         for(var key1 in SourceDEDataResult) {
-          DEFieldAndDataMap.DEDataMap[key].push(SourceDEDataResult[key1].Properties);
+          DEListMap.DEDataMap[key].push(SourceDEDataResult[key1].Properties);
         }
 
         resolve(SourceDEDataResult);
@@ -413,7 +407,7 @@ app.post('/Authenticate', (req, res) => {
   async function insertDEtoDestination() { 
     var DEListBody = '';
     for (var key in selectedDEList) {
-      if(key in DEFieldMap) {
+      if(key in DEListMap.DEFieldMap) {
         DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
                           '<soapenv:Header>' +
@@ -444,91 +438,91 @@ app.post('/Authenticate', (req, res) => {
         }
                                       
         var tempDefaultValue = '';
-        for(var i = 0 ; i< DEFieldMap[key].length ; i++) {
-          if(DEFieldMap[key][i].FieldFieldType == 'Number' || DEFieldMap[key][i].FieldFieldType == 'Date' || DEFieldMap[key][i].FieldFieldType == 'Boolean') {
-            if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
+        for(var i = 0 ; i< DEListMap.DEFieldMap[key].length ; i++) {
+          if(DEListMap.DEFieldMap[key][i].FieldFieldType == 'Number' || DEListMap.DEFieldMap[key][i].FieldFieldType == 'Date' || DEListMap.DEFieldMap[key][i].FieldFieldType == 'Boolean') {
+            if(JSON.stringify(DEListMap.DEFieldMap[key][i].FieldDefaultValue) == '{}') {
               tempDefaultValue = '';
             }
             else {
-              tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
+              tempDefaultValue = DEListMap.DEFieldMap[key][i].FieldDefaultValue;
             }
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                                      '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
-                                      '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
-                                      '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
-                                      '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
-                                      '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                      '<CustomerKey>'+ DEListMap.DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                      '<Name>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Name>' +
+                                      '<Label>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Label>' +
+                                      '<IsRequired>'+ DEListMap.DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                      '<IsPrimaryKey>'+ DEListMap.DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                      '<FieldType>'+ DEListMap.DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<DefaultValue>'+ tempDefaultValue +'</DefaultValue>' +
                                       '</Field>';
           }
-          else if(DEFieldMap[key][i].FieldFieldType == 'EmailAddress'){
+          else if(DEListMap.DEFieldMap[key][i].FieldFieldType == 'EmailAddress'){
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                                      '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
-                                      '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
-                                      '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
-                                      '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
-                                      '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                      '<CustomerKey>'+ DEListMap.DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                      '<Name>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Name>' +
+                                      '<Label>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Label>' +
+                                      '<IsRequired>'+ DEListMap.DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                      '<IsPrimaryKey>'+ DEListMap.DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                      '<FieldType>'+ DEListMap.DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>254</MaxLength>' +
                                       '</Field>';
           }
-          else if(DEFieldMap[key][i].FieldFieldType == 'Phone'){
+          else if(DEListMap.DEFieldMap[key][i].FieldFieldType == 'Phone'){
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                                      '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
-                                      '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
-                                      '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
-                                      '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
-                                      '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                      '<CustomerKey>'+ DEListMap.DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                      '<Name>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Name>' +
+                                      '<Label>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Label>' +
+                                      '<IsRequired>'+ DEListMap.DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                      '<IsPrimaryKey>'+ DEListMap.DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                      '<FieldType>'+ DEListMap.DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>50</MaxLength>' +
                                       '</Field>';
           }
-          else if(DEFieldMap[key][i].FieldFieldType == 'Decimal'){
-            if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
+          else if(DEListMap.DEFieldMap[key][i].FieldFieldType == 'Decimal'){
+            if(JSON.stringify(DEListMap.DEFieldMap[key][i].FieldDefaultValue) == '{}') {
               tempDefaultValue = '';
             }
             else {
-              tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
+              tempDefaultValue = DEListMap.DEFieldMap[key][i].FieldDefaultValue;
             }
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                                      '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
-                                      '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
-                                      '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
-                                      '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
-                                      '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
-                                      '<MaxLength>'+ DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
-                                      '<Scale>'+ DEFieldMap[key][i].FieldScale +'</Scale>' +
+                                      '<CustomerKey>'+ DEListMap.DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                      '<Name>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Name>' +
+                                      '<Label>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Label>' +
+                                      '<IsRequired>'+ DEListMap.DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                      '<IsPrimaryKey>'+ DEListMap.DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                      '<FieldType>'+ DEListMap.DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                      '<MaxLength>'+ DEListMap.DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
+                                      '<Scale>'+ DEListMap.DEFieldMap[key][i].FieldScale +'</Scale>' +
                                       '<DefaultValue>'+ tempDefaultValue +'</DefaultValue>' +
                                     '</Field>';
           }
-          else if(DEFieldMap[key][i].FieldFieldType == 'Locale'){
+          else if(DEListMap.DEFieldMap[key][i].FieldFieldType == 'Locale'){
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                                      '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
-                                      '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
-                                      '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
-                                      '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
-                                      '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                      '<CustomerKey>'+ DEListMap.DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                      '<Name>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Name>' +
+                                      '<Label>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Label>' +
+                                      '<IsRequired>'+ DEListMap.DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                      '<IsPrimaryKey>'+ DEListMap.DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                      '<FieldType>'+ DEListMap.DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
                                       '<MaxLength>5</MaxLength>' +
                                     '</Field>';
           }
-          else if(DEFieldMap[key][i].FieldFieldType == 'Text'){
-            if(JSON.stringify(DEFieldMap[key][i].FieldDefaultValue) == '{}') {
+          else if(DEListMap.DEFieldMap[key][i].FieldFieldType == 'Text'){
+            if(JSON.stringify(DEListMap.DEFieldMap[key][i].FieldDefaultValue) == '{}') {
               tempDefaultValue = '';
             }
             else {
-              tempDefaultValue = DEFieldMap[key][i].FieldDefaultValue;
+              tempDefaultValue = DEListMap.DEFieldMap[key][i].FieldDefaultValue;
             }
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                                      '<CustomerKey>'+ DEFieldMap[key][i].FieldName +'</CustomerKey>' +
-                                      '<Name>'+ DEFieldMap[key][i].FieldName +'</Name>' +
-                                      '<Label>'+ DEFieldMap[key][i].FieldName +'</Label>' +
-                                      '<IsRequired>'+ DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
-                                      '<IsPrimaryKey>'+ DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
-                                      '<FieldType>'+ DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
-                                      '<MaxLength>'+ DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
+                                      '<CustomerKey>'+ DEListMap.DEFieldMap[key][i].FieldName +'</CustomerKey>' +
+                                      '<Name>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Name>' +
+                                      '<Label>'+ DEListMap.DEFieldMap[key][i].FieldName +'</Label>' +
+                                      '<IsRequired>'+ DEListMap.DEFieldMap[key][i].FieldIsRequired +'</IsRequired>' +
+                                      '<IsPrimaryKey>'+ DEListMap.DEFieldMap[key][i].FieldIsPrimaryKey +'</IsPrimaryKey>' +
+                                      '<FieldType>'+ DEListMap.DEFieldMap[key][i].FieldFieldType +'</FieldType>' +
+                                      '<MaxLength>'+ DEListMap.DEFieldMap[key][i].FieldMaxLength +'</MaxLength>' +
                                       '<DefaultValue>'+ tempDefaultValue +'</DefaultValue>' +
                                       '</Field>';
           }
@@ -577,10 +571,10 @@ app.post('/Authenticate', (req, res) => {
   app.post("/DEListShowAPI", async (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfDE();
-      DEFieldMap = await getSourceDEFieldsAndData();
+      DEListMap = await getSourceDEFieldsAndData();
 
       for (var key in DEListMap) {
-        DEListMap[key].FieldCount = DEFieldMap[key].length;
+        DEListMap[key].FieldCount = DEListMap.DEFieldMap[key].length;
       }
 
       res.send(DEListMap);
