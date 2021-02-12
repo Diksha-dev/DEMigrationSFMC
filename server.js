@@ -366,19 +366,12 @@ app.post('/Authenticate', (req, res) => {
 
         DEListMap[key].DEDataMap = [];
         for(var key1 in SourceDEDataResult) {
-
-          if(key == 'TwilioV1') {
-            console.log(key1 + ' TwilioV1: ' + typeof(key1));
+          if(key1 == 'xsitype' || key1 == 'PartnerKey' || key1 == 'ObjectID' || key1 == 'Type' || key1 == 'Properties') {
+            DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
           }
-          if(key == 'Adventure') {
-            console.log(key1 + ' Adventure: ' + typeof(key1));
+          else {
+            DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
           }
-          if(key == 'IGO_PRODUCTS') {
-            console.log(key1 + ' IGO_PRODUCTS: ' + typeof(key1));
-          }
-
-
-          DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
         }
 
         resolve(SourceDEDataResult);
