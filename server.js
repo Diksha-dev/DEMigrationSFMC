@@ -7,6 +7,7 @@ var request = require('request');
 const { stringify } = require("querystring");
 let xmlParser = require('xml2json');
 var Set = require("collections/set");
+const { log } = require("console");
 
 app.get("*", (req, res) => {
   const FirstPage = path.join(__dirname, 'public', 'index.html');
@@ -364,7 +365,13 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
         DEListMap[key].DEDataMap = [];
+        if(key == 'TwilioV1') {
+          
+          console.log('DEListMap.DEDataMap : ' + JSON.stringify(SourceDEDataResult));
+        }
         for(var key1 in SourceDEDataResult) {
+          console.log(key1);
+          console.log(SourceDEDataResult[key1]);
           DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
         }
 
@@ -568,7 +575,7 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
-      console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
+     // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
 
       for (var key in DEListMap) {
         DEListMap[key].FieldCount = DEListMap[key].DEFieldMap.length;
