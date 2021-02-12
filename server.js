@@ -568,7 +568,7 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
-      console.log('DEListMap Last : ' + DEListMap)
+      console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
 
       for (var key in DEListMap) {
         DEListMap[key].FieldCount = DEListMap[key].DEFieldMap.length;
