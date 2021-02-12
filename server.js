@@ -572,6 +572,7 @@ app.post('/Authenticate', (req, res) => {
 
       for (var key in DEListMap) {
         DEListMap[key].FieldCount = DEListMap[key].DEFieldMap.length;
+        DEListMap[key].RecordCount = DEListMap[key].DEDataMap.length;
       }
 
       res.send(DEListMap);

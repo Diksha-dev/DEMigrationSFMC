@@ -81,11 +81,7 @@
                 <thead>
                     <tr class="slds-text-heading--label">
                         <th class="slds-cell-shrink" scope="col">
-                            <label class="slds-checkbox" for="select-all">
-                                <input name="checkbox" type="checkbox" id="select-all"/> 
-                                <span class="slds-checkbox--faux"></span>
-                                <span class="slds-form-element__label slds-assistive-text">select all</span>
-                            </label>
+                            <span class="slds-truncate">Select DE</span>
                         </th>
                         <th class="slds-is-sortable" scope="col">
                             <span class="slds-truncate">Name</span>
@@ -95,6 +91,9 @@
                         </th>
                         <th scope="col">
                             <span class="slds-truncate">Field Count</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate">Record Count</span>
                         </th>
                         <th scope="col">
                             <span class="slds-truncate">Description</span>
@@ -157,6 +156,7 @@
                                 '<th data-label="name" role="row" id="DEName'+i+'">' + SourceListDEResult[key].DEName + '</th> ' +
                                 '<td data-label="external-key" id="DEExtKey'+i+'">' + SourceListDEResult[key].DECustomerKey + '</td> ' +
                                 '<td data-label="FieldCount" id="DEFieldCount'+i+'">' + SourceListDEResult[key].FieldCount + '</td>' +
+                                '<td data-label="RecordCount" id="DERecordCount'+i+'">' + SourceListDEResult[key].RecordCount + '</td>' +
                                 '<td data-label="description" id="DEDes'+i+'">' + DEDes + '</td>' +
                                 '<td data-label="sendable" id="DEIsSend'+i+'">' + SourceListDEResult[key].DEIsSendable + '</td>' +
                                 '<td data-label="Testable" id="DEIsTest'+i+'">' + SourceListDEResult[key].DEIsTestable + '</td>' +
@@ -176,6 +176,7 @@
                                 '<th data-label="name" role="row" id="DEName'+i+'">' + SourceListDEResult[key].DEName + '</th> ' +
                                 '<td data-label="external-key" id="DEExtKey'+i+'">' + SourceListDEResult[key].DECustomerKey + '</td> ' +
                                 '<td data-label="FieldCount" id="DEFieldCount'+i+'">' + SourceListDEResult[key].FieldCount + '</td>' +
+                                '<td data-label="RecordCount" id="DERecordCount'+i+'">' + SourceListDEResult[key].RecordCount + '</td>' +
                                 '<td data-label="description" id="DEDes'+i+'">' + DEDes + '</td>' +
                                 '<td data-label="sendable" id="DEIsSend'+i+'">' + SourceListDEResult[key].DEIsSendable + '</td>' +
                                 '<td data-label="sendable" id="DEIsTest'+i+'">' + SourceListDEResult[key].DEIsTestable + '</td>' +
