@@ -83,6 +83,9 @@
                         <th class="slds-cell-shrink" scope="col">
                             <span class="slds-truncate">Send DE</span>
                         </th>
+                        <th class="slds-cell-shrink" scope="col">
+                            <span class="slds-truncate">With Data</span>
+                        </th>
                         <th class="slds-is-sortable" scope="col">
                             <span class="slds-truncate">Name</span>
                         </th>
@@ -138,11 +141,24 @@
                     SourceListDEResult = data;
                     var tds = "", DEDes = '';
                     for (var key in SourceListDEResult) {
+                        if (JSON.stringify(SourceListDEResult[key].DEDescription) == '{}') {
+                            DEDes = '';
+                        }
+                        else {
+                            DEDes = SourceListDEResult[key].DEDescription;
+                        }
                         if(SourceListDEResult[key].DEIsSendable == 'true') {
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<input type="checkbox" value="withoutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" value="WithoutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<span class="slds-checkbox--faux"></span> ' +
+                                '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
+                                '</label> ' +
+                                '</td>' +
+                                '<td class="slds-row-select"> ' +
+                                '<label class="slds-checkbox"> ' +
+                                '<input type="checkbox" value="WithData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
                                 '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
                                 '</label> ' +
@@ -162,7 +178,14 @@
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<input type="checkbox" value="withoutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" value="WithoutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<span class="slds-checkbox--faux"></span> ' +
+                                '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
+                                '</label> ' +
+                                '</td>' +
+                                '<td class="slds-row-select"> ' +
+                                '<label class="slds-checkbox"> ' +
+                                '<input type="checkbox" value="WithData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
                                 '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
                                 '</label> ' +
@@ -191,7 +214,8 @@
         var selectedDE = {};
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
-            if (checkBoxes[i].checked == true && checkBoxes[i].value == "withoutData") {
+            if (checkBoxes[i].checked == true && checkBoxes[i].value == "WithoutData") {
+                console.log('in without : ' + checkBoxes[i].value);
                 if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberKey" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber Key" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberKey") {
                     selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
                         "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
@@ -226,6 +250,9 @@
                     };
                 }
                     
+            }
+            else if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
+                console.log('in with : ' + checkBoxes[i].value);
             }
         }
         console.log(selectedDE);

@@ -400,17 +400,16 @@ app.post('/Authenticate', (req, res) => {
 
 
 
+
+
+
+
+
+
   async function insertDEtoDestination() { 
     var DEListBody = '';
     for (var key in selectedDEList) {
       if(key in DEListMap) {
-        var DEDes = '';
-        if (JSON.stringify(DEListMap[key].DEDescription) == '{}') {
-          DEDes = '';
-        }
-        else {
-          DEDes = DEListMap[key].DEDescription;
-        }
         DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
                           '<soapenv:Header>' +
@@ -420,19 +419,19 @@ app.post('/Authenticate', (req, res) => {
                               '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
                                   '<Options/>' +
                                   '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-                                      '<CustomerKey>'+ key + 'testFzl' +'</CustomerKey>' +
-                                      '<Name>'+ DEListMap[key].DEName + 'testFzl' +'</Name>' +
-                                      '<Description>'+ DEListMap[key].DEDes +'</Description>' +
-                                      '<IsSendable>'+ DEListMap[key].DEIsSendable +'</IsSendable>' +
-                                      '<IsTestable>'+ DEListMap[key].DEIsTestable +'</IsTestable>';
-        if(DEListMap[key].DEIsSendable == 'true') {
+                                      '<CustomerKey>'+ selectedDEList[key].DEExtKey + 'testFzl' +'</CustomerKey>' +
+                                      '<Name>'+ selectedDEList[key].DEName + 'testFzl' +'</Name>' +
+                                      '<Description>'+ selectedDEList[key].DEDes +'</Description>' +
+                                      '<IsSendable>'+ selectedDEList[key].DEIsSend +'</IsSendable>' +
+                                      '<IsTestable>'+ selectedDEList[key].DEIsTest +'</IsTestable>';
+        if(selectedDEList[key].DEIsSend == 'true') {
           DEListBody = DEListBody + '<SendableDataExtensionField>' +
                                       '<PartnerKey xsi:nil="true"/>' +
                                       '<ObjectID xsi:nil="true"/>' +
-                                      '<Name>'+ DEListMap[key].DESendDEField +'</Name>' +
+                                      '<Name>'+ selectedDEList[key].DESendDEField +'</Name>' +
                                     '</SendableDataExtensionField>' +
                                     '<SendableSubscriberField>' +
-                                      '<Name>'+ DEListMap[key].DESendSubsField +'</Name>' +
+                                      '<Name>'+ selectedDEList[key].DESendSubField +'</Name>' +
                                     '</SendableSubscriberField>' +
                                   '<Fields>';
         }
@@ -606,7 +605,7 @@ app.post('/Authenticate', (req, res) => {
       selectedDEList = req.body.reqForSelectedDEList;
       console.log('reqForSelectedDEList : '+ JSON.stringify(selectedDEList));
 
-      await insertDEtoDestination();
+      //await insertDEtoDestination();
     }
 
     res.send('reqForSelectedDEList');
