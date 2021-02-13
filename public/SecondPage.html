@@ -215,7 +215,8 @@
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true && checkBoxes[i].value == "WithoutData") {
-                console.log('in without : ' + checkBoxes[i].value);
+                console.log(checkBoxes[i].value + ' : ' + document.getElementById(checkBoxes[i].id + "DEName").innerHTML);
+                
                 if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberKey" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber Key" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberKey") {
                     selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
                         "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
@@ -252,7 +253,7 @@
                     
             }
             else if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
-                console.log('in with : ' + checkBoxes[i].value);
+                console.log(checkBoxes[i].value + ' : ' + document.getElementById(checkBoxes[i].id + "DEName").innerHTML);
             }
         }
         console.log(selectedDE);
