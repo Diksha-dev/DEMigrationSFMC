@@ -221,7 +221,7 @@
         var checkBoxes = grid.getElementsByTagName("input");
         for (var i = 0; i < checkBoxes.length; i++) {
             if(checkBoxes[i].checked == false && checkBoxes[i].value == "WithoutData") {
-                document.getElementsByClassName(checkBoxes[i].id).checked = false;
+                document.getElementsByClassName(checkBoxes[i].id)[0].checked = false;
             }
         }
     }
