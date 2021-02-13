@@ -565,9 +565,9 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-            if (key in selectedDEList.WithoutData) {
+            if (key in selectedDEList.WithData) {
               var temp = await insertDEData(key);
-              console.log('Data Chala DENAME : ' + temp);
+              console.log(key + ' : ' + temp);
             }
 
 
@@ -589,7 +589,6 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEData(key) {
     return new Promise(function (resolve, reject) {
-      console.log('Data chala : ' + selectedDEList.WithoutData[key].DEName)
       var temp = selectedDEList.WithoutData[key].DEName;
 
       /*
@@ -614,7 +613,7 @@ app.post('/Authenticate', (req, res) => {
         console.log(response.body);
       });
       */
-     resolve(temp);
+      resolve(temp);
     })
   }
 
