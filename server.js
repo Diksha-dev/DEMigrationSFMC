@@ -606,7 +606,7 @@ app.post('/Authenticate', (req, res) => {
       selectedDEList = req.body.reqForSelectedDEList;
       console.log('reqForSelectedDEList : '+ JSON.stringify(selectedDEList));
 
-      //await insertDEtoDestination();
+      await insertDEtoDestination();
     }
 
     res.send('reqForSelectedDEList');
