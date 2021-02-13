@@ -408,6 +408,7 @@ app.post('/Authenticate', (req, res) => {
   async function insertDEtoDestination() {
     var DEListBody = '';
     var DEDataInsertBody = '';
+    var DEInsertResult = [];
     for (var key in selectedDEList.WithoutData) {
       if (key in DEListMap) {
         DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
@@ -551,43 +552,15 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEListOption, async function (error, response) {
             if (error) throw new Error(error);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (key in selectedDEList.WithData) {
-              var temp = await insertDEData(key);
-              console.log(key + ' : ' + temp);
-            }
-
-
-
-
-
-
-
+            DEInsertResult.push(response.body);
+            resolve(DEInsertResult);
           });
         }
       }
     }
   }
 
-
-
-
-
-
-  async function insertDEData(key) {
+  async function insertDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
       var temp = selectedDEList.WithoutData[key].DEName;
 
@@ -669,7 +642,14 @@ app.post('/Authenticate', (req, res) => {
       selectedDEList = req.body.reqForSelectedDEList;
       console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
 
-      await insertDEtoDestination();
+      var DEinsertResult = await insertDEtoDestination();
+
+      if(DEinsertResult) {
+        for(var key in selectedDEList.WithData) {
+          var temp0  = await insertDEDataToDestination(key);
+          console.log(key + ' : ' + temp0);
+        }
+      }
     }
 
     res.send('reqForSelectedDEList');
