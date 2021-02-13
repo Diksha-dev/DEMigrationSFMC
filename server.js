@@ -419,19 +419,19 @@ app.post('/Authenticate', (req, res) => {
                               '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
                                   '<Options/>' +
                                   '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-                                      '<CustomerKey>'+ selectedDEList[key].DEExtKey + 'testFzl' +'</CustomerKey>' +
-                                      '<Name>'+ selectedDEList[key].DEName + 'testFzl' +'</Name>' +
-                                      '<Description>'+ selectedDEList[key].DEDes +'</Description>' +
-                                      '<IsSendable>'+ selectedDEList[key].DEIsSend +'</IsSendable>' +
-                                      '<IsTestable>'+ selectedDEList[key].DEIsTest +'</IsTestable>';
-        if(selectedDEList[key].DEIsSend == 'true') {
+                                      '<CustomerKey>'+ selectedDEList.WithoutData[key].DEExtKey + 'testFzl' +'</CustomerKey>' +
+                                      '<Name>'+ selectedDEList.WithoutData[key].DEName + 'testFzl' +'</Name>' +
+                                      '<Description>'+ selectedDEList.WithoutData[key].DEDes +'</Description>' +
+                                      '<IsSendable>'+ selectedDEList.WithoutData[key].DEIsSend +'</IsSendable>' +
+                                      '<IsTestable>'+ selectedDEList.WithoutData[key].DEIsTest +'</IsTestable>';
+        if(selectedDEList.WithoutData[key].DEIsSend == 'true') {
           DEListBody = DEListBody + '<SendableDataExtensionField>' +
                                       '<PartnerKey xsi:nil="true"/>' +
                                       '<ObjectID xsi:nil="true"/>' +
-                                      '<Name>'+ selectedDEList[key].DESendDEField +'</Name>' +
+                                      '<Name>'+ selectedDEList.WithoutData[key].DESendDEField +'</Name>' +
                                     '</SendableDataExtensionField>' +
                                     '<SendableSubscriberField>' +
-                                      '<Name>'+ selectedDEList[key].DESendSubField +'</Name>' +
+                                      '<Name>'+ selectedDEList.WithoutData[key].DESendSubField +'</Name>' +
                                     '</SendableSubscriberField>' +
                                   '<Fields>';
         }
