@@ -212,10 +212,10 @@
         var checkBoxes = grid.getElementsByTagName("input");
         for (var i = 0; i < checkBoxes.length; i++) {
             if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
-                document.getElementById(checkBoxes[i].id).innerHTML = true;
+                document.getElementById(checkBoxes[i].id).checked = true;
             }
             else if(checkBoxes[i].checked == false && checkBoxes[i].value == "WithData") {
-                document.getElementById(checkBoxes[i].id).innerHTML = false;
+                document.getElementById(checkBoxes[i].id).checked = false;
             }
         }
     }
