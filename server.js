@@ -298,7 +298,7 @@ app.post('/Authenticate', (req, res) => {
         for(var key in DEListMap) {
           await getDEData(key);
         }
-        console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap.DEDataMap));
+        
 
         
         
@@ -535,24 +535,22 @@ app.post('/Authenticate', (req, res) => {
                             '</CreateRequest>' +
                         '</soapenv:Body>' +
                       '</soapenv:Envelope>';
-      }
+      
 
-      //console.log('DEListBody : ' + DEListBody);
-      if(DEListBody != '') {
-        var DEListOption = {
-          'method': 'POST',
-          'url': DestinationSoapURL + 'Service.asmx',
-          'headers': {
-            'Content-Type': 'text/xml',
-            'SoapAction': 'Create',
-            'Authorization': 'Bearer ' + DestinationAccessToken
-          },
-          body: DEListBody
-        };
-        request(DEListOption, function (error, response) {
-          if (error) throw new Error(error);
-
-
+        //console.log('DEListBody : ' + DEListBody);
+        if(DEListBody != '') {
+          var DEListOption = {
+            'method': 'POST',
+            'url': DestinationSoapURL + 'Service.asmx',
+            'headers': {
+              'Content-Type': 'text/xml',
+              'SoapAction': 'Create',
+              'Authorization': 'Bearer ' + DestinationAccessToken
+            },
+            body: DEListBody
+          };
+          request(DEListOption, function (error, response) {
+            if (error) throw new Error(error);
 
 
 
@@ -564,41 +562,43 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-          
-          if(key in selectedDEList.WithoutData) {
-            console.log('Data chala : ' + selectedDEList.WithoutData[key].DEName)
 
-            DEDataInsertBody = '{"items":[';
-            for(var key1 in DEListMap[key].DEFieldMap) {
-              //DEDataInsertBody = DEDataInsertBody + '{"' + DEListMap[key].DEFieldMap[key1].FieldName + '"' : ;
-            }
+
             
-            var DEDataInsertOption = {
-              'method': 'POST',
-              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
-              'headers': {
-                'Authorization': 'Bearer ' + DestinationAccessToken,
-                'Content-Type': 'application/json'
-              },
-              //body: JSON.stringify({"items":[{"SubscriberKey":"01","EmailAddress":"test01@test.com","Lastname":"Test","Date Test":"02/08/2021","Decimal Test":12.22},{"SubscriberKey":"02","EmailAddress":"test02@test.com","Lastname":"Test","Date Test":"02/08/2021","Decimal Test":"12.12"}]})
+            if(key in selectedDEList.WithoutData) {
+              console.log('Data chala : ' + selectedDEList.WithoutData[key].DEName)
 
-            };
-            /*
-            request(DEDataInsertOption, function (error, response) {
-              if (error) throw new Error(error);
-              console.log(response.body);
-            });
-            */
+              DEDataInsertBody = '{"items":[';
+              for(var key1 in DEListMap[key].DEFieldMap) {
+                //DEDataInsertBody = DEDataInsertBody + '{"' + DEListMap[key].DEFieldMap[key1].FieldName + '"' : ;
+              }
+              
+              var DEDataInsertOption = {
+                'method': 'POST',
+                'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+                'headers': {
+                  'Authorization': 'Bearer ' + DestinationAccessToken,
+                  'Content-Type': 'application/json'
+                },
+                //body: JSON.stringify({"items":[{"SubscriberKey":"01","EmailAddress":"test01@test.com","Lastname":"Test","Date Test":"02/08/2021","Decimal Test":12.22},{"SubscriberKey":"02","EmailAddress":"test02@test.com","Lastname":"Test","Date Test":"02/08/2021","Decimal Test":"12.12"}]})
+
+              };
+              /*
+              request(DEDataInsertOption, function (error, response) {
+                if (error) throw new Error(error);
+                console.log(response.body);
+              });
+              */
 
 
 
 
 
-          }
+            }
 
-        });
+          });
+        }
       }
-      DEListBody = '';
     }
   }
 
@@ -618,6 +618,7 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
+      console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap.DEDataMap));
      // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
 
       for (var key in DEListMap) {
