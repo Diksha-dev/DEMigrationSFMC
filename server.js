@@ -564,13 +564,22 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
-      var temp = selectedDEList.WithoutData[key].DEName;
 
-      /*
-      DEDataInsertBody = '{"items":[';
-      for (var key1 in DEListMap[key].DEFieldMap) {
-        //DEDataInsertBody = DEDataInsertBody + '{"' + DEListMap[key].DEFieldMap[key1].FieldName + '"' : ;
+      
+      
+      if(DEListMap[key].DEDataMap.length != 0) {
+        for(var key1 in DEListMap[key].DEDataMap) {
+          for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
+            if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value) != '{}') {
+              DEDataInsertBody = DEDataInsertBody + '{ "' + DEListMap[key].DEDataMap[key1].Property[key2].Name + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value + '" },';
+            }
+          }
+        }
       }
+      DEDataInsertBody = DEDataInsertBody.slice(0, -1);
+      DEDataInsertBody = '{"items":[' + DEDataInsertBody + ']}';
+
+      console.log('DEDataInsertBody : ' + DEDataInsertBody);
 
       var DEDataInsertOption = {
         'method': 'POST',
@@ -579,16 +588,21 @@ app.post('/Authenticate', (req, res) => {
           'Authorization': 'Bearer ' + DestinationAccessToken,
           'Content-Type': 'application/json'
         },
-        //body: JSON.stringify({"items":[{"SubscriberKey":"01","EmailAddress":"test01@test.com","Lastname":"Test","Date Test":"02/08/2021","Decimal Test":12.22},{"SubscriberKey":"02","EmailAddress":"test02@test.com","Lastname":"Test","Date Test":"02/08/2021","Decimal Test":"12.12"}]})
+        body: DEDataInsertBody 
 
       };
       
       request(DEDataInsertOption, function (error, response) {
         if (error) throw new Error(error);
         console.log(response.body);
+        
+
+
+
+        resolve(response.body);
       });
-      */
-      resolve(temp);
+      
+      
     })
   }
 
