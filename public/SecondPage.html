@@ -138,17 +138,11 @@
                     SourceListDEResult = data;
                     var tds = "", DEDes = '';
                     for (var key in SourceListDEResult) {
-                        if (JSON.stringify(SourceListDEResult[key].DEDescription) == '{}') {
-                            DEDes = '';
-                        }
-                        else {
-                            DEDes = SourceListDEResult[key].DEDescription;
-                        }
                         if(SourceListDEResult[key].DEIsSendable == 'true') {
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<input type="checkbox" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" value="withoutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
                                 '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
                                 '</label> ' +
@@ -168,7 +162,7 @@
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<input type="checkbox" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" value="withoutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
                                 '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
                                 '</label> ' +
@@ -197,7 +191,7 @@
         var selectedDE = {};
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
-            if (checkBoxes[i].checked == true) {
+            if (checkBoxes[i].checked == true && checkBoxes[i].value == "withoutData") {
                 if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberKey" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber Key" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberKey") {
                     selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
                         "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
