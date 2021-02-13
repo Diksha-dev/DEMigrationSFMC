@@ -408,7 +408,6 @@ app.post('/Authenticate', (req, res) => {
   async function insertDEtoDestination() {
     return new Promise(function (resolve, reject) {
       var DEListBody = '';
-      var DEDataInsertBody = '';
       var DEInsertResult = [];
       for (var key in selectedDEList.WithoutData) {
         if (key in DEListMap) {
@@ -566,7 +565,7 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(function (resolve, reject) {
 
       
-      
+      var DEDataInsertBody = '';
       if(DEListMap[key].DEDataMap.length != 0) {
         for(var key1 in DEListMap[key].DEDataMap) {
           for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
