@@ -578,7 +578,7 @@ app.post('/Authenticate', (req, res) => {
 
         var DEDataInsertOption = {
           'method': 'POST',
-          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + 'Adventure' + '/rows',
+          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
           'headers': {
             'Authorization': 'Bearer ' + DestinationAccessToken,
             'Content-Type': 'application/json'
