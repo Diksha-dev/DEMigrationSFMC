@@ -215,7 +215,12 @@
                 document.getElementById(checkBoxes[i].id).checked = true;
             }
             else if(checkBoxes[i].checked == false && checkBoxes[i].value == "WithData") {
-                document.getElementById(checkBoxes[i].id).checked = false;
+                if(document.getElementById(checkBoxes[i].id).checked = true) {
+                    document.getElementById(checkBoxes[i].id).checked = true;
+                }
+                else {
+                    document.getElementById(checkBoxes[i].id).checked = false;
+                }
             }
         }
     }
