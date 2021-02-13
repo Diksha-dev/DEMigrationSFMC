@@ -232,7 +232,7 @@
         var checkBoxes = grid.getElementsByTagName("input");
         var selectedDE = {
             WithoutData : {},
-            WithData : []
+            WithData : {}
         };
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
@@ -273,7 +273,9 @@
                     
             }
             if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
-                selectedDE.WithData.push(document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML);
+                selectedDE.WithData[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                    "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML
+                };
             }
         }
         console.log(selectedDE);
