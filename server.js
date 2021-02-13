@@ -298,7 +298,7 @@ app.post('/Authenticate', (req, res) => {
         for (var key in DEListMap) {
           await getDEData(key);
         }
-        console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap));
+        //console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap));
 
 
 
@@ -566,7 +566,7 @@ app.post('/Authenticate', (req, res) => {
 
 
             if (key in selectedDEList.WithoutData) {
-              var temp = await insertDEData();
+              var temp = await insertDEData(key);
               console.log('Data Chala DENAME : ' + temp);
             }
 
@@ -587,7 +587,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-  async function insertDEData() {
+  async function insertDEData(key) {
     return new Promise(function (resolve, reject) {
       console.log('Data chala : ' + selectedDEList.WithoutData[key].DEName)
       var temp = selectedDEList.WithoutData[key].DEName;
