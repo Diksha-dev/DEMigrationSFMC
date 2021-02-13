@@ -578,7 +578,7 @@ app.post('/Authenticate', (req, res) => {
 
         var DEDataInsertOption = {
           'method': 'POST',
-          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + 'Adventure' + '/rows',
           'headers': {
             'Authorization': 'Bearer ' + DestinationAccessToken,
             'Content-Type': 'application/json'
@@ -589,7 +589,6 @@ app.post('/Authenticate', (req, res) => {
           if (error) throw new Error(error);
           console.log(JSON.stringify(error));
           console.log('DATAInsert ResponseBody ' + JSON.stringify(response));
-          console.log('DATAInsert ResponseBody ' + response);
           resolve(response.body);
         });
 
