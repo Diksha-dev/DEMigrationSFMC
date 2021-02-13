@@ -564,7 +564,6 @@ app.post('/Authenticate', (req, res) => {
   async function insertDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
 
-      
       var DEDataInsertBody = '';
       if(DEListMap[key].DEDataMap.length != 0) {
         for(var key1 in DEListMap[key].DEDataMap) {
@@ -574,34 +573,28 @@ app.post('/Authenticate', (req, res) => {
             }
           }
         }
+        DEDataInsertBody = DEDataInsertBody.slice(0, -1);
+        DEDataInsertBody = '{"items":[' + DEDataInsertBody + ']}';
+
+        var DEDataInsertOption = {
+          'method': 'POST',
+          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+          'headers': {
+            'Authorization': 'Bearer ' + DestinationAccessToken,
+            'Content-Type': 'application/json'
+          },
+          body: DEDataInsertBody
+        };
+        request(DEDataInsertOption, function (error, response) {
+          if (error) throw new Error(error);
+          console.log(JSON.stringify(error));
+          console.log(JSON.stringify(response.body));
+          resolve(response.body);
+        });
+
+
+
       }
-      DEDataInsertBody = DEDataInsertBody.slice(0, -1);
-      DEDataInsertBody = '{"items":[' + DEDataInsertBody + ']}';
-
-      console.log('DEDataInsertBody : ' + DEDataInsertBody);
-
-      var DEDataInsertOption = {
-        'method': 'POST',
-        'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
-        'headers': {
-          'Authorization': 'Bearer ' + DestinationAccessToken,
-          'Content-Type': 'application/json'
-        },
-        body: DEDataInsertBody 
-
-      };
-      
-      request(DEDataInsertOption, function (error, response) {
-        if (error) throw new Error(error);
-        console.log(response.body);
-        
-
-
-
-        resolve(response.body);
-      });
-      
-      
     })
   }
 
