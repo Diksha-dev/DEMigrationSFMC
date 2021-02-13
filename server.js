@@ -297,9 +297,8 @@ app.post('/Authenticate', (req, res) => {
 
         for(var key in DEListMap) {
           await getDEData(key);
-          //console.log('DE-Key : '+ key + ', SourceDEDataResult : ' + JSON.stringify(temp2));
         }
-        //console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap.DEDataMap));
+        console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap.DEDataMap));
 
         
         
@@ -408,7 +407,8 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEtoDestination() { 
     var DEListBody = '';
-    for (var key in selectedDEList) {
+    var DEDataInsertBody = '';
+    for (var key in selectedDEList.WithoutData) {
       if(key in DEListMap) {
         DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
                       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
@@ -551,7 +551,51 @@ app.post('/Authenticate', (req, res) => {
         };
         request(DEListOption, function (error, response) {
           if (error) throw new Error(error);
-          console.log(response.body);
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+          if(key in selectedDEList.WithoutData) {
+            console.log('Data chala : ' + selectedDEList.WithData[key].DEName)
+
+            DEDataInsertBody = '{"items":[';
+            for(var key1 in DEListMap[key].DEFieldMap) {
+              //DEDataInsertBody = DEDataInsertBody + '{"' + DEListMap[key].DEFieldMap[key1].FieldName + '"' : ;
+            }
+            
+            var DEDataInsertOption = {
+              'method': 'POST',
+              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+              'headers': {
+                'Authorization': 'Bearer ' + DestinationAccessToken,
+                'Content-Type': 'application/json'
+              },
+              //body: JSON.stringify({"items":[{"SubscriberKey":"01","EmailAddress":"test01@test.com","Lastname":"Test","Date Test":"02/08/2021","Decimal Test":12.22},{"SubscriberKey":"02","EmailAddress":"test02@test.com","Lastname":"Test","Date Test":"02/08/2021","Decimal Test":"12.12"}]})
+
+            };
+            /*
+            request(DEDataInsertOption, function (error, response) {
+              if (error) throw new Error(error);
+              console.log(response.body);
+            });
+            */
+
+
+
+
+
+          }
+
         });
       }
       DEListBody = '';

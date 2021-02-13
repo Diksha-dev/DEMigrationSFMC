@@ -230,14 +230,15 @@
     function SendDEIdsToServer() {
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("input");
-        var selectedDE = {};
+        var selectedDE = {
+            WithoutData : {},
+            WithData : []
+        };
         var mapKeyTemp;
         for (var i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i].checked == true && checkBoxes[i].value == "WithoutData") {
-                console.log(checkBoxes[i].value + ' : ' + document.getElementById(checkBoxes[i].id + "DEName").innerHTML);
-                
                 if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberKey" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber Key" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberKey") {
-                    selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                    selectedDE.WithoutData[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
                         "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
                         "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
                         "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
@@ -248,7 +249,7 @@
                     };
                 }
                 else if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberID" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber ID" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberID") {
-                    selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                    selectedDE.WithoutData[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
                         "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
                         "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
                         "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
@@ -259,7 +260,7 @@
                     };
                 }
                 else {
-                    selectedDE[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                    selectedDE.WithoutData[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
                         "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
                         "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
                         "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
@@ -271,8 +272,8 @@
                 }
                     
             }
-            else if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
-                console.log(checkBoxes[i].value + ' : ' + document.getElementById(checkBoxes[i].id + "DEName").innerHTML);
+            if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
+                selectedDE.WithData.push(document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML);
             }
         }
         console.log(selectedDE);
