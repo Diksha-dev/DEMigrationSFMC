@@ -221,6 +221,7 @@
         var checkBoxes = grid.getElementsByTagName("input");
         for (var i = 0; i < checkBoxes.length; i++) {
             if(checkBoxes[i].checked == false && checkBoxes[i].value == "WithoutData") {
+                console.log('chala tha');
                 document.getElementById(checkBoxes[i].id).checked = false;
             }
         }
