@@ -566,7 +566,7 @@ app.post('/Authenticate', (req, res) => {
 
           
           if(key in selectedDEList.WithoutData) {
-            console.log('Data chala : ' + selectedDEList.WithData[key].DEName)
+            console.log('Data chala : ' + selectedDEList.WithoutData[key].DEName)
 
             DEDataInsertBody = '{"items":[';
             for(var key1 in DEListMap[key].DEFieldMap) {
