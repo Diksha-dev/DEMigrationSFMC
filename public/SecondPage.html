@@ -151,7 +151,7 @@
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<input type="checkbox" value="WithoutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" value="WithoutData" onchange="isWithoutData()" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
                                 '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
                                 '</label> ' +
@@ -178,7 +178,7 @@
                             tds = tds + '<tr class="slds-hint-parent"> ' +
                                 '<td class="slds-row-select"> ' +
                                 '<label class="slds-checkbox"> ' +
-                                '<input type="checkbox" value="WithoutData" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<input type="checkbox" value="WithoutData" onchange="isWithoutData()" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
                                 '<span class="slds-checkbox--faux"></span> ' +
                                 '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
                                 '</label> ' +
@@ -213,6 +213,15 @@
         for (var i = 0; i < checkBoxes.length; i++) {
             if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
                 document.getElementById(checkBoxes[i].id).checked = true;
+            }
+        }
+    }
+    function isWithoutData() {
+        var grid = document.getElementById("DEDataTableId");
+        var checkBoxes = grid.getElementsByTagName("input");
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if(checkBoxes[i].checked == false && checkBoxes[i].value == "WithoutData") {
+                document.getElementById(checkBoxes[i].id).checked = false;
             }
         }
     }
