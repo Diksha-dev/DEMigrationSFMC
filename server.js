@@ -588,7 +588,8 @@ app.post('/Authenticate', (req, res) => {
         request(DEDataInsertOption, function (error, response) {
           if (error) throw new Error(error);
           console.log(JSON.stringify(error));
-          console.log(JSON.stringify(response.body));
+          console.log('DATAInsert ResponseBody ' + JSON.stringify(response));
+          console.log('DATAInsert ResponseBody ' + response);
           resolve(response.body);
         });
 
