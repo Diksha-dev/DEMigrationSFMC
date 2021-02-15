@@ -420,8 +420,8 @@ app.post('/Authenticate', (req, res) => {
             '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
             '<Options/>' +
             '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-            '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + 'testFzl' + '</CustomerKey>' +
-            '<Name>' + selectedDEList.WithoutData[key].DEName + 'testFzl' + '</Name>' +
+            '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '-testFzl' + '</CustomerKey>' +
+            '<Name>' + selectedDEList.WithoutData[key].DEName + '-testFzl' + '</Name>' +
             '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
             '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
             '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
@@ -565,7 +565,9 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(function (resolve, reject) {
 
       var DEDataInsertBody = '';
+      
       if(DEListMap[key].DEDataMap.length != 0) {
+        /*
         for(var key1 in DEListMap[key].DEDataMap) {
           for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
             if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value) != '{}') {
@@ -575,6 +577,9 @@ app.post('/Authenticate', (req, res) => {
         }
         DEDataInsertBody = DEDataInsertBody.slice(0, -1);
         DEDataInsertBody = '{"items":[' + DEDataInsertBody + ']}';
+        */
+
+       DEDataInsertBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test03@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "04" ,  "EmailAddress" : "test04@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
 
         console.log(key + ' : Body : ' + DEDataInsertBody);
         console.log(key + ' : url : ' + DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows');
