@@ -247,7 +247,7 @@ app.post('/Authenticate', (req, res) => {
         SourceDEFieldsResult = response.body;
 
         xml2jsParser.parseString(SourceDEFieldsResult, function (err, result) {
-          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceDEFieldsResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
 
@@ -259,16 +259,16 @@ app.post('/Authenticate', (req, res) => {
 
         var FieldSet = new Set();
         for (var key in SourceDEFieldsResult) {
-          if (SourceDEFieldsResult[key].DataExtension.CustomerKey in DEListMap) {
+          if (SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0] in DEListMap) {
             FieldSet.add(JSON.stringify({
-              "DEExtKey": SourceDEFieldsResult[key].DataExtension.CustomerKey,
-              "Name": SourceDEFieldsResult[key].Name,
-              "IsRequired": SourceDEFieldsResult[key].IsRequired,
-              "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey,
-              "FieldType": SourceDEFieldsResult[key].FieldType,
-              "MaxLength": SourceDEFieldsResult[key].MaxLength,
-              "Scale": SourceDEFieldsResult[key].Scale,
-              "DefaultValue": SourceDEFieldsResult[key].DefaultValue
+              "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+              "Name": SourceDEFieldsResult[key].Name[0],
+              "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+              "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+              "FieldType": SourceDEFieldsResult[key].FieldType[0],
+              "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
+              "Scale": SourceDEFieldsResult[key].Scale[0],
+              "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
             }));
           }
         }
@@ -373,10 +373,16 @@ app.post('/Authenticate', (req, res) => {
         //console.log('DE Data' + response.body);
 
         SourceDEDataResult = response.body;
-        SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
-        SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
-        SourceDEDataResult = JSON.parse(SourceDEDataResult);
-        SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+
+        xml2jsParser.parseString(SourceDEDataResult, function (err, result) {
+          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+        });
+        
+        //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
+        //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
+        //SourceDEDataResult = JSON.parse(SourceDEDataResult);
+        //SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
         DEListMap[key].DEDataMap = [];
         for (var key1 in SourceDEDataResult) {
