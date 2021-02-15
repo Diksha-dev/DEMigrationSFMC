@@ -413,7 +413,7 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = response.body;
 
         xml2jsParser.parseString(SourceDEDataResult, function (err, result) {
-          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
         
@@ -424,13 +424,16 @@ app.post('/Authenticate', (req, res) => {
 
         DEListMap[key].DEDataMap = [];
         for (var key1 in SourceDEDataResult) {
-          if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
+          DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
+          
+          /*if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
             DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
           }
           else if (key1 == 'Properties') {
             DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
-          }
+          }*/
         }
+        console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
 
         resolve(SourceDEDataResult);
       });
@@ -628,8 +631,8 @@ app.post('/Authenticate', (req, res) => {
       if(DEListMap[key].DEDataMap.length != 0) {
         for(var key1 in DEListMap[key].DEDataMap) {
           for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
-            if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value) != '{}') {
-              DEDataInsertBody = DEDataInsertBody + '{ "' + DEListMap[key].DEDataMap[key1].Property[key2].Name + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value + '" },';
+            if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
+              DEDataInsertBody = DEDataInsertBody + '{ "' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] + '" },';
             }
           }
         }
