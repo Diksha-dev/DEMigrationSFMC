@@ -159,12 +159,9 @@ app.post('/Authenticate', (req, res) => {
 
 
         xml2jsParser.parseString(SourceListDEResult, function (err, result) {
-          //console.dir(result['soap:Envelope']['soap:Body']);
-          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
-
-        
 
         //SourceListDEResult = SourceListDEResult.replace(/:/g, "");
         //SourceListDEResult = xmlParser.toJson(SourceListDEResult);
@@ -248,10 +245,16 @@ app.post('/Authenticate', (req, res) => {
         if (error) throw new Error(error);
 
         SourceDEFieldsResult = response.body;
-        SourceDEFieldsResult = SourceDEFieldsResult.replace(/:/g, "");
-        SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
-        SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
-        SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+
+        xml2jsParser.parseString(SourceDEFieldsResult, function (err, result) {
+          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          SourceDEFieldsResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+        });
+
+        //SourceDEFieldsResult = SourceDEFieldsResult.replace(/:/g, "");
+        //SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
+        //SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
+        //SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
         //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
         var FieldSet = new Set();
