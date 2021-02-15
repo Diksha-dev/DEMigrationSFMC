@@ -582,11 +582,11 @@ app.post('/Authenticate', (req, res) => {
        DEDataInsertBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test03@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "04" ,  "EmailAddress" : "test04@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
 
         console.log(key + ' : Body : ' + DEDataInsertBody);
-        console.log(key + ' : url : ' + DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows');
+        console.log(key + ' : url : ' + DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '-testFzl' + '/rows');
 
         var DEDataInsertOption = {
           'method': 'POST',
-          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '-testFzl' + '/rows',
           'headers': {
             'Authorization': 'Bearer ' + DestinationAccessToken,
             'Content-Type': 'application/json'
