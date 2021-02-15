@@ -553,6 +553,7 @@ app.post('/Authenticate', (req, res) => {
             request(DEListOption, async function (error, response) {
               if (error) throw new Error(error);
               DEInsertResult.push(response.body);
+              console.log('first : 1');
               resolve(DEInsertResult);
             });
           }
@@ -563,7 +564,7 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
-
+      console.log('Second : 2');
       var DEDataInsertBody = '';
       
       if(DEListMap[key].DEDataMap.length != 0) {
@@ -579,7 +580,7 @@ app.post('/Authenticate', (req, res) => {
         DEDataInsertBody = '{"items":[' + DEDataInsertBody + ']}';
         */
 
-       DEDataInsertBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test03@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "04" ,  "EmailAddress" : "test04@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
+       DEDataInsertBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test01@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "02" ,  "EmailAddress" : "test02@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
 
         console.log(key + ' : Body : ' + DEDataInsertBody);
         console.log(key + ' : url : ' + DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows');
@@ -595,6 +596,7 @@ app.post('/Authenticate', (req, res) => {
         };
         request(DEDataInsertOption, function (error, response) {
           if (error) throw new Error(error);
+          console.log('Third : 3');
           console.log(JSON.stringify(error));
           console.log('DATAInsert ResponseBody ' + JSON.stringify(response));
           resolve(response.body);
@@ -663,7 +665,7 @@ app.post('/Authenticate', (req, res) => {
       if(DEinsertResult) {
         for(var key in selectedDEList.WithData) {
           var temp0  = await insertDEDataToDestination(key);
-          console.log(key + ' : ' + temp0);
+          //console.log(key + ' : ' + temp0);
         }
       }
     }
