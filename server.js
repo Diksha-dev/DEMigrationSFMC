@@ -260,16 +260,30 @@ app.post('/Authenticate', (req, res) => {
         var FieldSet = new Set();
         for (var key in SourceDEFieldsResult) {
           if (SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0] in DEListMap) {
-            FieldSet.add(JSON.stringify({
-              "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
-              "Name": SourceDEFieldsResult[key].Name[0],
-              "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
-              "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
-              "FieldType": SourceDEFieldsResult[key].FieldType[0],
-              "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
-              "Scale": SourceDEFieldsResult[key].Scale[0],
-              "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
-            }));
+            if('Scale' in SourceDEFieldsResult[key]) {
+              FieldSet.add(JSON.stringify({
+                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+                "Name": SourceDEFieldsResult[key].Name[0],
+                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldType": SourceDEFieldsResult[key].FieldType[0],
+                "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
+                "Scale": SourceDEFieldsResult[key].Scale[0],
+                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
+              }));
+            }
+            else {
+              FieldSet.add(JSON.stringify({
+                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+                "Name": SourceDEFieldsResult[key].Name[0],
+                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldType": SourceDEFieldsResult[key].FieldType[0],
+                "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
+                "Scale": "",
+                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
+              }));
+            }
           }
         }
         //console.log('IGO_PROFILES-FieldSet : ' + [...FieldSet]);
