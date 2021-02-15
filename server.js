@@ -420,8 +420,8 @@ app.post('/Authenticate', (req, res) => {
             '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
             '<Options/>' +
             '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-            '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '-testFzl' + '</CustomerKey>' +
-            '<Name>' + selectedDEList.WithoutData[key].DEName + '-testFzl' + '</Name>' +
+            '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '</CustomerKey>' +
+            '<Name>' + selectedDEList.WithoutData[key].DEName + '</Name>' +
             '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
             '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
             '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
@@ -582,11 +582,11 @@ app.post('/Authenticate', (req, res) => {
        DEDataInsertBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test03@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "04" ,  "EmailAddress" : "test04@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
 
         console.log(key + ' : Body : ' + DEDataInsertBody);
-        console.log(key + ' : url : ' + DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '-testFzl' + '/rows');
+        console.log(key + ' : url : ' + DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows');
 
         var DEDataInsertOption = {
           'method': 'POST',
-          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '-testFzl' + '/rows',
+          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
           'headers': {
             'Authorization': 'Bearer ' + DestinationAccessToken,
             'Content-Type': 'application/json'
