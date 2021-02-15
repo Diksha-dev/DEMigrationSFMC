@@ -160,14 +160,15 @@ app.post('/Authenticate', (req, res) => {
 
         xml2jsParser.parseString(SourceListDEResult, function (err, result) {
           console.dir(result['soap:Envelope']['soap:Body']);
-          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body']));
+          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body']['RetrieveResponseMsg']['Results']));
         });
 
+        SourceListDEResult = result['soap:Envelope']['soap:Body']['RetrieveResponseMsg']['Results'];
 
-        SourceListDEResult = SourceListDEResult.replace(/:/g, "");
-        SourceListDEResult = xmlParser.toJson(SourceListDEResult);
-        SourceListDEResult = JSON.parse(SourceListDEResult);
-        SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+        //SourceListDEResult = SourceListDEResult.replace(/:/g, "");
+        //SourceListDEResult = xmlParser.toJson(SourceListDEResult);
+        //SourceListDEResult = JSON.parse(SourceListDEResult);
+        //SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
 
         var DEListMap = {};
