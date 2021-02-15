@@ -260,7 +260,7 @@ app.post('/Authenticate', (req, res) => {
         var FieldSet = new Set();
         for (var key in SourceDEFieldsResult) {
           if (SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0] in DEListMap) {
-            if('Scale' in SourceDEFieldsResult[key]) {
+            if('Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
               FieldSet.add(JSON.stringify({
                 "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
                 "Name": SourceDEFieldsResult[key].Name[0],
@@ -272,7 +272,7 @@ app.post('/Authenticate', (req, res) => {
                 "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
               }));
             }
-            else {
+            else if(!'Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
               FieldSet.add(JSON.stringify({
                 "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
                 "Name": SourceDEFieldsResult[key].Name[0],
@@ -281,6 +281,30 @@ app.post('/Authenticate', (req, res) => {
                 "FieldType": SourceDEFieldsResult[key].FieldType[0],
                 "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
                 "Scale": "",
+                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
+              }));
+            }
+            else if('Scale' in SourceDEFieldsResult[key] && !'MaxLength' in SourceDEFieldsResult[key]) {
+              FieldSet.add(JSON.stringify({
+                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+                "Name": SourceDEFieldsResult[key].Name[0],
+                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldType": SourceDEFieldsResult[key].FieldType[0],
+                "MaxLength": '',
+                "Scale": SourceDEFieldsResult[key].Scale[0],
+                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
+              }));
+            }
+            else {
+              FieldSet.add(JSON.stringify({
+                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+                "Name": SourceDEFieldsResult[key].Name[0],
+                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldType": SourceDEFieldsResult[key].FieldType[0],
+                "MaxLength": '',
+                "Scale": '',
                 "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
               }));
             }
