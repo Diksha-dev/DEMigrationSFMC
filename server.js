@@ -576,6 +576,9 @@ app.post('/Authenticate', (req, res) => {
         DEDataInsertBody = DEDataInsertBody.slice(0, -1);
         DEDataInsertBody = '{"items":[' + DEDataInsertBody + ']}';
 
+        console.log(key + ' : Body : ' + DEDataInsertBody);
+        console.log(key + ' : url : ' + DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows');
+
         var DEDataInsertOption = {
           'method': 'POST',
           'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
