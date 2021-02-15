@@ -8,6 +8,8 @@ const { stringify } = require("querystring");
 let xmlParser = require('xml2json');
 var Set = require("collections/set");
 const { log } = require("console");
+var xml2js = require('xml2js');
+var xml2jsParser = new xml2js.Parser();
 
 app.get("*", (req, res) => {
   const FirstPage = path.join(__dirname, 'public', 'index.html');
@@ -154,6 +156,14 @@ app.post('/Authenticate', (req, res) => {
       request(ListDEOption, function (error, response) {
         if (error) throw new Error(error);
         SourceListDEResult = response.body;
+
+
+        xml2jsParser.parseString(SourceListDEResult, function (err, result) {
+          console.dir(result['soap:Envelope']['soap:Body']);
+          console.log('mera result : ' + result['soap:Envelope']['soap:Body']);
+        });
+
+
         SourceListDEResult = SourceListDEResult.replace(/:/g, "");
         SourceListDEResult = xmlParser.toJson(SourceListDEResult);
         SourceListDEResult = JSON.parse(SourceListDEResult);
@@ -553,7 +563,6 @@ app.post('/Authenticate', (req, res) => {
             request(DEListOption, async function (error, response) {
               if (error) throw new Error(error);
               DEInsertResult.push(response.body);
-              console.log('first : 1');
               resolve(DEInsertResult);
             });
           }
@@ -564,11 +573,10 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
-      console.log('Second : 2');
+
       var DEDataInsertBody = '';
       
       if(DEListMap[key].DEDataMap.length != 0) {
-        /*
         for(var key1 in DEListMap[key].DEDataMap) {
           for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
             if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value) != '{}') {
@@ -578,12 +586,11 @@ app.post('/Authenticate', (req, res) => {
         }
         DEDataInsertBody = DEDataInsertBody.slice(0, -1);
         DEDataInsertBody = '{"items":[' + DEDataInsertBody + ']}';
-        */
+        
 
-       DEDataInsertBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test01@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "02" ,  "EmailAddress" : "test02@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
+        //DEDataInsertBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test01@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "02" ,  "EmailAddress" : "test02@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
 
-        console.log(key + ' : Body : ' + DEDataInsertBody);
-        console.log(key + ' : url : ' + DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows');
+        //console.log(key + ' : Body : ' + DEDataInsertBody);
 
         var DEDataInsertOption = {
           'method': 'POST',
@@ -596,7 +603,6 @@ app.post('/Authenticate', (req, res) => {
         };
         request(DEDataInsertOption, function (error, response) {
           if (error) throw new Error(error);
-          console.log('Third : 3');
           console.log(JSON.stringify(error));
           console.log('DATAInsert ResponseBody ' + JSON.stringify(response));
           resolve(response.body);
@@ -665,7 +671,7 @@ app.post('/Authenticate', (req, res) => {
       if(DEinsertResult) {
         for(var key in selectedDEList.WithData) {
           var temp0  = await insertDEDataToDestination(key);
-          //console.log(key + ' : ' + temp0);
+          console.log(key + ' : ' + temp0);
         }
       }
     }
