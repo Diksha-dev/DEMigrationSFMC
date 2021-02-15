@@ -160,7 +160,7 @@ app.post('/Authenticate', (req, res) => {
 
         xml2jsParser.parseString(SourceListDEResult, function (err, result) {
           console.dir(result['soap:Envelope']['soap:Body']);
-          console.log('mera result : ' + result['soap:Envelope']['soap:Body']);
+          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body']));
         });
 
 
