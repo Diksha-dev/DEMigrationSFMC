@@ -161,9 +161,10 @@ app.post('/Authenticate', (req, res) => {
         xml2jsParser.parseString(SourceListDEResult, function (err, result) {
           //console.dir(result['soap:Envelope']['soap:Body']);
           console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
 
-        SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+        
 
         //SourceListDEResult = SourceListDEResult.replace(/:/g, "");
         //SourceListDEResult = xmlParser.toJson(SourceListDEResult);
@@ -173,27 +174,27 @@ app.post('/Authenticate', (req, res) => {
 
         var DEListMap = {};
         for (var key in SourceListDEResult) {
-          if (SourceListDEResult[key].Name != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name != "_MobileAddress" && SourceListDEResult[key].Name != "_MobileSubscription" && SourceListDEResult[key].Name != "_PushAddress" && SourceListDEResult[key].Name != "_PushTag" && SourceListDEResult[key].Name != "_MobileLineAddressContact" && SourceListDEResult[key].Name != "_MobileLineAddress" && SourceListDEResult[key].Name != "_MobileLineProfile" && SourceListDEResult[key].Name != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name != "_MobileLineSubscription" && SourceListDEResult[key].Name != "MobileLineOrphanContact") {
-            if (SourceListDEResult[key].IsSendable == "true") {
+          if (SourceListDEResult[key].Name[0] != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name[0] != "_MobileAddress" && SourceListDEResult[key].Name[0] != "_MobileSubscription" && SourceListDEResult[key].Name[0] != "_PushAddress" && SourceListDEResult[key].Name[0] != "_PushTag" && SourceListDEResult[key].Name[0] != "_MobileLineAddressContact" && SourceListDEResult[key].Name[0] != "_MobileLineAddress" && SourceListDEResult[key].Name[0] != "_MobileLineProfile" && SourceListDEResult[key].Name[0] != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name[0] != "_MobileLineSubscription" && SourceListDEResult[key].Name[0] != "MobileLineOrphanContact") {
+            if (SourceListDEResult[key].IsSendable[0] == "true") {
               DEListMap[SourceListDEResult[key].CustomerKey] = {
-                "DEName": SourceListDEResult[key].Name,
-                "DECustomerKey": SourceListDEResult[key].CustomerKey,
-                "DEIsSendable": SourceListDEResult[key].IsSendable,
-                "DEIsTestable": SourceListDEResult[key].IsTestable,
-                "DEDescription": SourceListDEResult[key].Description,
-                "DESendDEField": SourceListDEResult[key].SendableDataExtensionField.Name,
-                "DESendSubsField": SourceListDEResult[key].SendableSubscriberField.Name,
+                "DEName": SourceListDEResult[key].Name[0],
+                "DECustomerKey": SourceListDEResult[key].CustomerKey[0],
+                "DEIsSendable": SourceListDEResult[key].IsSendable[0],
+                "DEIsTestable": SourceListDEResult[key].IsTestable[0],
+                "DEDescription": SourceListDEResult[key].Description[0],
+                "DESendDEField": SourceListDEResult[key].SendableDataExtensionField[0].Name[0],
+                "DESendSubsField": SourceListDEResult[key].SendableSubscriberField[0].Name[0],
                 "DEFieldMap": [],
                 "DEDataMap": []
               };
             }
             else {
-              DEListMap[SourceListDEResult[key].CustomerKey] = {
-                "DEName": SourceListDEResult[key].Name,
-                "DECustomerKey": SourceListDEResult[key].CustomerKey,
-                "DEIsSendable": SourceListDEResult[key].IsSendable,
-                "DEIsTestable": SourceListDEResult[key].IsTestable,
-                "DEDescription": SourceListDEResult[key].Description,
+              DEListMap[SourceListDEResult[key].CustomerKey[0]] = {
+                "DEName": SourceListDEResult[key].Name[0],
+                "DECustomerKey": SourceListDEResult[key].CustomerKey[0],
+                "DEIsSendable": SourceListDEResult[key].IsSendable[0],
+                "DEIsTestable": SourceListDEResult[key].IsTestable[0],
+                "DEDescription": SourceListDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
                 "DEFieldMap": [],
