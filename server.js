@@ -339,7 +339,7 @@ app.post('/Authenticate', (req, res) => {
         for (var key in DEListMap) {
           await getDEData(key);
         }
-        console.log('DEListMap : ' + JSON.stringify(DEListMap));
+        //console.log('DEListMap : ' + JSON.stringify(DEListMap));
 
 
 
@@ -639,7 +639,7 @@ app.post('/Authenticate', (req, res) => {
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
                 console.log(key + ' : DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]] : ' + DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]])
-                if(DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
+                if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
                   DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
                 }
                 else {
