@@ -763,7 +763,7 @@ app.post('/Authenticate', (req, res) => {
 
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
-      console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
+      //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
 
       var DEinsertResult = await insertDEtoDestination();
 
