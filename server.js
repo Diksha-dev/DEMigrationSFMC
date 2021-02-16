@@ -421,7 +421,7 @@ app.post('/Authenticate', (req, res) => {
             DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
           }*/
         }
-        console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
+        //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
 
         resolve(SourceDEDataResult);
       });
@@ -638,6 +638,7 @@ app.post('/Authenticate', (req, res) => {
           for(var key1 in DEListMap[key].DEDataMap) {
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
+                console.log('DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]] : ' + DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]])
                 if(DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]].FieldIsPrimaryKey == true || DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]].FieldIsPrimaryKey == "true") {
                   DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
                 }
