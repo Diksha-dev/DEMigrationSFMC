@@ -181,8 +181,8 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListDEResult[key].Description[0],
                 "DESendDEField": SourceListDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListDEResult[key].SendableSubscriberField[0].Name[0],
-                "DEFieldMap": [],
-                "DEDataMap": []
+                "DEFieldMap": {},
+                "DEDataMap": {}
               };
             }
             else {
@@ -194,8 +194,8 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
-                "DEFieldMap": [],
-                "DEDataMap": []
+                "DEFieldMap": {},
+                "DEDataMap": {}
               };
             }
           }
@@ -320,7 +320,7 @@ app.post('/Authenticate', (req, res) => {
 
         for (var key in SourceDEFieldsResult) {
           if (SourceDEFieldsResult[key].DEExtKey in DEListMap) {
-            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEFieldMap.push({
+            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEFieldMap[SourceDEFieldsResult[key].Name] = {
               "FieldName": SourceDEFieldsResult[key].Name,
               "FieldIsRequired": SourceDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey,
@@ -328,19 +328,7 @@ app.post('/Authenticate', (req, res) => {
               "FieldMaxLength": SourceDEFieldsResult[key].MaxLength,
               "FieldScale": SourceDEFieldsResult[key].Scale,
               "FieldDefaultValue": SourceDEFieldsResult[key].DefaultValue
-            });
-
-          }
-          else {
-            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEFieldMap = [{
-              "FieldName": SourceDEFieldsResult[key].Name,
-              "FieldIsRequired": SourceDEFieldsResult[key].IsRequired,
-              "FieldIsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey,
-              "FieldFieldType": SourceDEFieldsResult[key].FieldType,
-              "FieldMaxLength": SourceDEFieldsResult[key].MaxLength,
-              "FieldScale": SourceDEFieldsResult[key].Scale,
-              "FieldDefaultValue": SourceDEFieldsResult[key].DefaultValue
-            }];
+            };
           }
         }
 
@@ -351,7 +339,7 @@ app.post('/Authenticate', (req, res) => {
         for (var key in DEListMap) {
           await getDEData(key);
         }
-        //console.log('DEListMap.DEDataMap : ' + JSON.stringify(DEListMap));
+        console.log('DEListMap : ' + JSON.stringify(DEListMap));
 
 
 
@@ -503,7 +491,7 @@ app.post('/Authenticate', (req, res) => {
           }
 
           var tempDefaultValue = '';
-          for (var i = 0; i < DEListMap[key].DEFieldMap.length; i++) {
+          for (var i in DEListMap[key].DEFieldMap) {
             if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Number' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Date' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Boolean') {
               if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
                 tempDefaultValue = '';
@@ -623,45 +611,102 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
+
+
+
   async function insertDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
-
-      var DEDataInsertBody = '';
-      
+      var DEDataInsertWithoutPrimaryKeyBody = '';
+      var DEDataInsertWithPrimaryKeyBody = '';
+      var PrimaryKeyCheck;
       if(DEListMap[key].DEDataMap.length != 0) {
-        for(var key1 in DEListMap[key].DEDataMap) {
-          for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
-            if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
-              DEDataInsertBody = DEDataInsertBody + '{ "' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] + '" },';
-            }
+
+        for(var key0 in DEListMap[key].DEFieldMap) {
+          if(DEListMap[key].DEFieldMap[key0].FieldIsPrimaryKey == "true" || DEListMap[key].DEFieldMap[key0].FieldIsPrimaryKey == true) {
+            PrimaryKeyCheck = true;
+            break;
+          }
+          else {
+            PrimaryKeyCheck = false;
           }
         }
-        DEDataInsertBody = DEDataInsertBody.slice(0, -1);
-        DEDataInsertBody = '{"items":[' + DEDataInsertBody + ']}';
-        
 
-        //DEDataInsertBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test01@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "02" ,  "EmailAddress" : "test02@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
+        if(PrimaryKeyCheck == true) {
+          var DEDataInsertWithPrimaryKeyBodyForKeys='';
+          var DEDataInsertWithPrimaryKeyBodyForValues='';
 
-        //console.log(key + ' : Body : ' + DEDataInsertBody);
+          for(var key1 in DEListMap[key].DEDataMap) {
+            for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
+              if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
+                if(DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]].FieldIsPrimaryKey == true || DEListMap[key].DEDataMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]].FieldIsPrimaryKey == "true") {
+                  DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
+                }
+                else {
+                  DEDataInsertWithPrimaryKeyBodyForValues = DEDataInsertWithPrimaryKeyBodyForValues + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
+                }
+              }
+            }
+            DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys.slice(0, -1);
+            DEDataInsertWithPrimaryKeyBodyForValues = DEDataInsertWithPrimaryKeyBodyForValues.slice(0, -1);
+            DEDataInsertWithPrimaryKeyBody = DEDataInsertWithPrimaryKeyBody + '{"keys":{' + DEDataInsertWithPrimaryKeyBodyForKeys + '},"values":{' + DEDataInsertWithPrimaryKeyBodyForValues + '}},';
+          }
+          DEDataInsertWithPrimaryKeyBody = DEDataInsertWithPrimaryKeyBody.slice(0, -1);
+          DEDataInsertWithPrimaryKeyBody = '[' + DEDataInsertWithPrimaryKeyBody + ']';
 
-        var DEDataInsertOption = {
-          'method': 'POST',
-          'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
-          'headers': {
-            'Authorization': 'Bearer ' + DestinationAccessToken,
-            'Content-Type': 'application/json'
-          },
-          body: DEDataInsertBody
-        };
-        request(DEDataInsertOption, function (error, response) {
-          if (error) throw new Error(error);
-          console.log(JSON.stringify(error));
-          console.log('DATAInsert ResponseBody ' + JSON.stringify(response));
-          resolve(response.body);
-        });
+          console.log('DEDataInsertWithPrimaryKeyBody : ' + DEDataInsertWithPrimaryKeyBody)
+
+          var DEdataInsertWithPrimaryKeyOptions = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: DEDataInsertWithPrimaryKeyBody
+          };
+          request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
+            if (error) throw new Error(error);
+            console.log('response : ' + JSON.stringify(response));
+          });
 
 
 
+
+
+
+        }
+        else {
+          for(var key1 in DEListMap[key].DEDataMap) {
+            for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
+              if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
+                DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + '{ "' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] + '" },';
+              }
+            }
+          }
+          DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
+          DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
+          
+  
+          //DEDataInsertWithoutPrimaryKeyBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test01@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "02" ,  "EmailAddress" : "test02@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
+  
+          //console.log(key + ' : Body : ' + DEDataInsertWithoutPrimaryKeyBody);
+  
+          var DEDataInsertwithoutPrimarykeyOption = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: DEDataInsertWithoutPrimaryKeyBody
+          };
+          request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
+            if (error) throw new Error(error);
+            console.log(JSON.stringify(error));
+            console.log('DATAInsert ResponseBody ' + JSON.stringify(response));
+            resolve(response.body);
+          });
+        }
       }
     })
   }
@@ -690,7 +735,7 @@ app.post('/Authenticate', (req, res) => {
       // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
 
       for (var key in DEListMap) {
-        DEListMap[key].FieldCount = DEListMap[key].DEFieldMap.length;
+        DEListMap[key].FieldCount = Object.keys(DEListMap[key].DEFieldMap).length;
         DEListMap[key].RecordCount = DEListMap[key].DEDataMap.length;
       }
 
