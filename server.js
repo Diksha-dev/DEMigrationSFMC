@@ -602,6 +602,7 @@ app.post('/Authenticate', (req, res) => {
             };
             request(DEListOption, async function (error, response) {
               if (error) throw new Error(error);
+              console.log('For DEInsert statusCode : ' + response.statusCode + ', Body : ' + response.body);
               DEInsertResult.push(response.body);
               resolve(DEInsertResult);
             });
@@ -666,7 +667,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
-            console.log('response : ' + JSON.stringify(response));
+            console.log('For DataInsert statusCode : ' + response.statusCode + ', Body : ' + response.body);
             resolve(response.body);
           });
 
