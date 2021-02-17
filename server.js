@@ -272,7 +272,7 @@ app.post('/Authenticate', (req, res) => {
                 "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
               }));
             }
-            else if(!'Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
+            else if( ('Scale' in SourceDEFieldsResult[key]) == false && 'MaxLength' in SourceDEFieldsResult[key]) {
               FieldSet.add(JSON.stringify({
                 "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
                 "Name": SourceDEFieldsResult[key].Name[0],
@@ -284,7 +284,7 @@ app.post('/Authenticate', (req, res) => {
                 "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
               }));
             }
-            else if('Scale' in SourceDEFieldsResult[key] && !'MaxLength' in SourceDEFieldsResult[key]) {
+            else if('Scale' in SourceDEFieldsResult[key] && ('MaxLength' in SourceDEFieldsResult[key]) == false) {
               FieldSet.add(JSON.stringify({
                 "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
                 "Name": SourceDEFieldsResult[key].Name[0],
@@ -540,11 +540,13 @@ app.post('/Authenticate', (req, res) => {
                 tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
               }
 
-              console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
+              
               if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
+                console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
                 tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
               }
               else {
+                console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
                 tempMaxLength = 100;
               }
               console.log('Testing 2 : ' + tempMaxLength);
@@ -580,11 +582,12 @@ app.post('/Authenticate', (req, res) => {
                 tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
               }
 
-              console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
               if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
+                console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
                 tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
               }
               else {
+                console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
                 tempMaxLength = 100;
               }
               console.log('Testing 2 : ' + tempMaxLength);
