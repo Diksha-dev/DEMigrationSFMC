@@ -603,7 +603,7 @@ app.post('/Authenticate', (req, res) => {
             };
             request(DEListOption, async function (error, response) {
               if (error) throw new Error(error);
-              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ', Body : ' + response.body);
+              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode);
               DEInsertResult.push(response.body);
               resolve(DEInsertResult);
             });
@@ -657,7 +657,7 @@ app.post('/Authenticate', (req, res) => {
           DEDataInsertWithPrimaryKeyBody = DEDataInsertWithPrimaryKeyBody.slice(0, -1);
           DEDataInsertWithPrimaryKeyBody = '[' + DEDataInsertWithPrimaryKeyBody + ']';
 
-          console.log(DEListMap[key].DEName + ' : DEDataInsertWithPrimaryKeyBody : ' + DEDataInsertWithPrimaryKeyBody)
+          //console.log(DEListMap[key].DEName + ' : DEDataInsertWithPrimaryKeyBody : ' + DEDataInsertWithPrimaryKeyBody)
 
           var DEdataInsertWithPrimaryKeyOptions = {
             'method': 'POST',
@@ -670,7 +670,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
-            console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ', Body : ' + response.body);
+            console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode);
             resolve(response.body);
           });
 
@@ -698,7 +698,7 @@ app.post('/Authenticate', (req, res) => {
   
           //DEDataInsertWithoutPrimaryKeyBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test01@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "02" ,  "EmailAddress" : "test02@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
   
-          console.log(key + ' : DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
+          //console.log(key + ' : DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
   
           var DEDataInsertwithoutPrimarykeyOption = {
             'method': 'POST',
@@ -711,7 +711,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
             if (error) throw new Error(error);
-            console.log('DATAInsert ResponseBody ' + JSON.stringify(response));
+            console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode);
             resolve(response.body);
           });
         }
