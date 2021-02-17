@@ -588,7 +588,8 @@ app.post('/Authenticate', (req, res) => {
             '</soapenv:Envelope>';
 
 
-          console.log('DEListBody : ' + DEListBody);
+          console.log(DEListMap[key].DEName + ' : DEInsertListBody : ' + DEListBody);
+
           if (DEListBody != '') {
             var DEListOption = {
               'method': 'POST',
@@ -602,7 +603,7 @@ app.post('/Authenticate', (req, res) => {
             };
             request(DEListOption, async function (error, response) {
               if (error) throw new Error(error);
-              console.log('For DEInsert statusCode : ' + response.statusCode + ', Body : ' + response.body);
+              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ', Body : ' + response.body);
               DEInsertResult.push(response.body);
               resolve(DEInsertResult);
             });
@@ -623,7 +624,7 @@ app.post('/Authenticate', (req, res) => {
       if(DEListMap[key].DEDataMap.length != 0) {
 
         for(var key0 in DEListMap[key].DEFieldMap) {
-          if(DEListMap[key].DEFieldMap[key0].FieldIsPrimaryKey == "true" || DEListMap[key].DEFieldMap[key0].FieldIsPrimaryKey == true) {
+          if(DEListMap[key].DEFieldMap[key0].FieldIsPrimaryKey == "true") {
             PrimaryKeyCheck = true;
             break;
           }
@@ -654,7 +655,7 @@ app.post('/Authenticate', (req, res) => {
           DEDataInsertWithPrimaryKeyBody = DEDataInsertWithPrimaryKeyBody.slice(0, -1);
           DEDataInsertWithPrimaryKeyBody = '[' + DEDataInsertWithPrimaryKeyBody + ']';
 
-          //console.log('DEDataInsertWithPrimaryKeyBody : ' + DEDataInsertWithPrimaryKeyBody)
+          console.log(DEListMap[key].DEName + ' : DEDataInsertWithPrimaryKeyBody : ' + DEDataInsertWithPrimaryKeyBody)
 
           var DEdataInsertWithPrimaryKeyOptions = {
             'method': 'POST',
@@ -667,7 +668,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
-            console.log('For DataInsert statusCode : ' + response.statusCode + ', Body : ' + response.body);
+            console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ', Body : ' + response.body);
             resolve(response.body);
           });
 
