@@ -681,15 +681,16 @@ app.post('/Authenticate', (req, res) => {
 
         }
         else {
+          var DEDataInsertWithoutPrimaryKeyInnerBody = ''
           for(var key1 in DEListMap[key].DEDataMap) {
-            DEDataInsertWithoutPrimaryKeyBody = '';
+            DEDataInsertWithoutPrimaryKeyInnerBody = '';
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
-                DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + ' "' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] + '" ,';
+                DEDataInsertWithoutPrimaryKeyInnerBody = DEDataInsertWithoutPrimaryKeyInnerBody + ' "' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] + '" ,';
               }
             }
-            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
-            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + '{' + DEDataInsertWithoutPrimaryKeyBody + '},';
+            DEDataInsertWithoutPrimaryKeyInnerBody = DEDataInsertWithoutPrimaryKeyInnerBody.slice(0, -1);
+            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + '{' + DEDataInsertWithoutPrimaryKeyInnerBody + '},';
           }
           DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
           DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
