@@ -682,11 +682,14 @@ app.post('/Authenticate', (req, res) => {
         }
         else {
           for(var key1 in DEListMap[key].DEDataMap) {
+            DEDataInsertWithoutPrimaryKeyBody = '';
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
-                DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + '{ "' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] + '" },';
+                DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + ' "' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] + '" ,';
               }
             }
+            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
+            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + '{' + DEDataInsertWithoutPrimaryKeyBody + '},';
           }
           DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
           DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
