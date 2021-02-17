@@ -539,12 +539,16 @@ app.post('/Authenticate', (req, res) => {
               else {
                 tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
               }
+
+              console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
+              console.log('Testing 2 : ' + JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength));
               if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength) == '{}') {
                 tempMaxLength = '100';
               }
               else {
                 tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
               }
+
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                 '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
                 '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
@@ -575,12 +579,16 @@ app.post('/Authenticate', (req, res) => {
               else {
                 tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
               }
+
+              console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
+              console.log('Testing 2 : ' + JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength));
               if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength) == '{}') {
                 tempMaxLength = '100';
               }
               else {
                 tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
               }
+
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                 '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
                 '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
