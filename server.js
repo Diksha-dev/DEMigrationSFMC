@@ -536,7 +536,7 @@ app.post('/Authenticate', (req, res) => {
                 tempDefaultValue = '';
               }
               else {
-                tempDefaultValue = DDEListMap[key].DEFieldMap[i].FieldDefaultValue;
+                tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
               }
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                 '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
