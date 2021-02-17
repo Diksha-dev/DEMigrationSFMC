@@ -491,7 +491,7 @@ app.post('/Authenticate', (req, res) => {
           }
 
           var tempDefaultValue = '';
-          var tempMaxLength = "100";
+          var tempMaxLength;
           for (var i in DEListMap[key].DEFieldMap) {
             if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Number' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Date' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Boolean') {
               if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
@@ -542,8 +542,8 @@ app.post('/Authenticate', (req, res) => {
 
               console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
               console.log('Testing 2 : ' + JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength));
-              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength) == '{}') {
-                tempMaxLength = '100';
+              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength) == "") {
+                tempMaxLength = 100;
               }
               else {
                 tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
@@ -582,8 +582,8 @@ app.post('/Authenticate', (req, res) => {
 
               console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
               console.log('Testing 2 : ' + JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength));
-              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength) == '{}') {
-                tempMaxLength = '100';
+              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength) == "") {
+                tempMaxLength = 100;
               }
               else {
                 tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
