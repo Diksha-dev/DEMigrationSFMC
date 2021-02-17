@@ -692,7 +692,7 @@ app.post('/Authenticate', (req, res) => {
   
           //DEDataInsertWithoutPrimaryKeyBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test01@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "02" ,  "EmailAddress" : "test02@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
   
-          //console.log(key + ' : Body : ' + DEDataInsertWithoutPrimaryKeyBody);
+          console.log(key + ' : DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
   
           var DEDataInsertwithoutPrimarykeyOption = {
             'method': 'POST',
@@ -705,7 +705,6 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
             if (error) throw new Error(error);
-            console.log(JSON.stringify(error));
             console.log('DATAInsert ResponseBody ' + JSON.stringify(response));
             resolve(response.body);
           });
