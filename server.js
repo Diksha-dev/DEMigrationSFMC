@@ -638,6 +638,8 @@ app.post('/Authenticate', (req, res) => {
           var DEDataInsertWithPrimaryKeyBodyForValues='';
 
           for(var key1 in DEListMap[key].DEDataMap) {
+            DEDataInsertWithPrimaryKeyBodyForKeys='';
+            DEDataInsertWithPrimaryKeyBodyForValues='';
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
                 if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
