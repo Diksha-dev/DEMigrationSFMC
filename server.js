@@ -491,6 +491,7 @@ app.post('/Authenticate', (req, res) => {
           }
 
           var tempDefaultValue = '';
+          var tempMaxLength = "100";
           for (var i in DEListMap[key].DEFieldMap) {
             if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Number' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Date' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Boolean') {
               if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
@@ -538,6 +539,12 @@ app.post('/Authenticate', (req, res) => {
               else {
                 tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
               }
+              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength) == '{}') {
+                tempMaxLength = '100';
+              }
+              else {
+                tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
+              }
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                 '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
                 '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
@@ -545,7 +552,7 @@ app.post('/Authenticate', (req, res) => {
                 '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
                 '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
                 '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
-                '<MaxLength>' + DEListMap[key].DEFieldMap[i].FieldMaxLength + '</MaxLength>' +
+                '<MaxLength>' + tempMaxLength + '</MaxLength>' +
                 '<Scale>' + DEListMap[key].DEFieldMap[i].FieldScale + '</Scale>' +
                 '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
                 '</Field>';
@@ -568,6 +575,12 @@ app.post('/Authenticate', (req, res) => {
               else {
                 tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
               }
+              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldMaxLength) == '{}') {
+                tempMaxLength = '100';
+              }
+              else {
+                tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
+              }
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                 '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
                 '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
@@ -575,7 +588,7 @@ app.post('/Authenticate', (req, res) => {
                 '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
                 '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
                 '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
-                '<MaxLength>' + DEListMap[key].DEFieldMap[i].FieldMaxLength + '</MaxLength>' +
+                '<MaxLength>' + tempMaxLength + '</MaxLength>' +
                 '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
                 '</Field>';
             }
