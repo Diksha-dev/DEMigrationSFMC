@@ -603,7 +603,7 @@ app.post('/Authenticate', (req, res) => {
             };
             request(DEListOption, async function (error, response) {
               if (error) throw new Error(error);
-              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode);
+              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + response.body);
               DEInsertResult.push(response.body);
               resolve(DEInsertResult);
             });
