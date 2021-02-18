@@ -614,16 +614,42 @@ app.post('/Authenticate', (req, res) => {
                 tempDEInsertResult = result['soap:Envelope']['soap:Body'][0]['CreateResponse'][0]['Results'];
               });
 
-              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEInsertResult));
-              FinalResult[key] = {
-                "DEInsert" : {
-                  "Name" : DEListMap[key].DEName,
-                  "StatusCode" : response.statusCode
-                  
-                }
-                
-
-              };
+              //console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEInsertResult));
+              
+              if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
+                FinalResult[key] = {
+                  "DEInsert" : {
+                    "Name" : DEListMap[key].DEName,
+                    "StatusCode" : response.statusCode,
+                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"],
+                    "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
+                  },
+                  "DEDataInsert" : {
+                    "Name" : "-",
+                    "StatusCode" : "-",
+                    "StatusMessage" : "-",
+                    "Description" : "-"
+                  }
+                };
+              }
+              else {
+                FinalResult[key] = {
+                  "DEInsert" : {
+                    "Name" : DEListMap[key].DEName,
+                    "StatusCode" : response.statusCode,
+                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"],
+                    "Description" : tempDEInsertResult[0]["StatusMessage"]
+                  },
+                  "DEDataInsert" : {
+                    "Name" : "-",
+                    "StatusCode" : "-",
+                    "StatusMessage" : "-",
+                    "Description" : "-"
+                  }
+                };
+              }
+              
+              
               console.log('FinalResult : ' + JSON.stringify(FinalResult));
               resolve(FinalResult);
             });
@@ -690,7 +716,54 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
-            console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode);
+
+
+
+
+            var tempDEDataInsertResult;
+              xml2jsParser.parseString(response.body, function (err, result) {
+                tempDEDataInsertResult = result['soap:Envelope']['soap:Body'][0]['CreateResponse'][0]['Results'];
+              });
+
+              console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEDataInsertResult));
+              
+              /*if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
+                FinalResult[key] = {
+                  "DEInsert" : {
+                    "Name" : DEListMap[key].DEName,
+                    "StatusCode" : response.statusCode,
+                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"],
+                    "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
+                  },
+                  "DEDataInsert" : {
+                    "Name" : "-",
+                    "StatusCode" : "-",
+                    "StatusMessage" : "-",
+                    "Description" : "-"
+                  }
+                };
+              }
+              else {
+                FinalResult[key] = {
+                  "DEInsert" : {
+                    "Name" : DEListMap[key].DEName,
+                    "StatusCode" : response.statusCode,
+                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"],
+                    "Description" : tempDEInsertResult[0]["StatusMessage"]
+                  },
+                  "DEDataInsert" : {
+                    "Name" : "-",
+                    "StatusCode" : "-",
+                    "StatusMessage" : "-",
+                    "Description" : "-"
+                  }
+                };
+              }*/
+              
+              
+              //console.log('FinalResult : ' + JSON.stringify(FinalResult));
+
+
             resolve(response.body);
           });
 
