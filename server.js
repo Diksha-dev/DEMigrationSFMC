@@ -88,7 +88,7 @@ app.post('/Authenticate', (req, res) => {
         DestinationSoapURL = body.soap_instance_url;
         //console.log("body : "+ JSON.stringify(body));
       });
-    console.log('auth chala');
+    //console.log('auth chala');
   }
   authTokenForBothSFDC();
 
@@ -125,14 +125,6 @@ app.post('/Authenticate', (req, res) => {
   app.use(express.urlencoded({
     extended: true
   }))
-
-
-
-
-
-
-
-
 
 
 
@@ -206,15 +198,6 @@ app.post('/Authenticate', (req, res) => {
       });
     })
   }
-
-
-
-
-
-
-
-
-
 
   async function getSourceDEFieldsAndData() {
     return new Promise(async function (resolve, reject) {
@@ -335,39 +318,34 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
-
-
-
   async function getDEData(key) {
     return new Promise(function (resolve, reject) {
       var DEDataBody = '';
-      DEDataBody = '<?xml version="1.0" encoding="UTF-8"?>' +
-        '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
-        '<s:Header>' +
-        '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
-        '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
-        '<a:ReplyTo>' +
-        '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
-        '</a:ReplyTo>' +
-        '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx' + '</a:To>' +
-        '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
-        '</s:Header>' +
-        '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-        '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
-        '<RetrieveRequest>' +
-        '<ObjectType>DataExtensionObject[' + key + ']</ObjectType>';
-
+      DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
+                    '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+                      '<s:Header>' +
+                        '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+                        '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
+                        '<a:ReplyTo>' +
+                          '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
+                        '</a:ReplyTo>' +
+                        '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx' + '</a:To>' +
+                        '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
+                      '</s:Header>' +
+                      '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+                        '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+                          '<RetrieveRequest>' +
+                            '<ObjectType>DataExtensionObject[' + key + ']</ObjectType>';
       for (var key1 in DEListMap[key].DEFieldMap) {
         DEDataBody = DEDataBody + '<Properties>' + DEListMap[key].DEFieldMap[key1]["FieldName"] + '</Properties>';
       }
-
-
-      DEDataBody = DEDataBody + '</RetrieveRequest>' +
-        '</RetrieveRequestMsg>' +
-        '</s:Body>' +
-        '</s:Envelope>';
-
-
+      DEDataBody = DEDataBody + '<Options>' +
+                                  '<BatchSize>10</BatchSize>' +
+                                '</Options>' +
+                                '</RetrieveRequest>' +
+                              '</RetrieveRequestMsg>' +
+                            '</s:Body>' +
+                          '</s:Envelope>';
 
       //console.log('DEDataBody : ' + DEDataBody);
       var DEDataOptions = {
@@ -379,24 +357,20 @@ app.post('/Authenticate', (req, res) => {
           'Authorization': 'Bearer ' + SourceAccessToken
         },
         body: DEDataBody
-
       };
+
       request(DEDataOptions, function (error, response) {
         if (error) throw new Error(error);
-        //console.log('DE Data' + response.body);
-
+        console.log(DEListMap[key].DEName + ' : DE Data : ' + JSON.stringify(response));
         SourceDEDataResult = response.body;
-
         xml2jsParser.parseString(SourceDEDataResult, function (err, result) {
           //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
-        
         //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
         //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
         //SourceDEDataResult = JSON.parse(SourceDEDataResult);
         //SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-
         DEListMap[key].DEDataMap = [];
         for (var key1 in SourceDEDataResult) {
           DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
@@ -415,31 +389,6 @@ app.post('/Authenticate', (req, res) => {
       });
     })
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -655,16 +604,12 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
-
-
-
   async function insertDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
       var DEDataInsertWithoutPrimaryKeyBody = '';
       var DEDataInsertWithPrimaryKeyBody = '';
       var PrimaryKeyCheck;
       if(DEListMap[key].DEDataMap.length != 0) {
-
         for(var key0 in DEListMap[key].DEFieldMap) {
           if(DEListMap[key].DEFieldMap[key0].FieldIsPrimaryKey == "true") {
             PrimaryKeyCheck = true;
@@ -674,7 +619,6 @@ app.post('/Authenticate', (req, res) => {
             PrimaryKeyCheck = false;
           }
         }
-
         if(PrimaryKeyCheck == true) {
           var DEDataInsertWithPrimaryKeyBodyForKeys='';
           var DEDataInsertWithPrimaryKeyBodyForValues='';
@@ -698,9 +642,7 @@ app.post('/Authenticate', (req, res) => {
           }
           DEDataInsertWithPrimaryKeyBody = DEDataInsertWithPrimaryKeyBody.slice(0, -1);
           DEDataInsertWithPrimaryKeyBody = '[' + DEDataInsertWithPrimaryKeyBody + ']';
-
           //console.log(DEListMap[key].DEName + ' : DEDataInsertWithPrimaryKeyBody : ' + DEDataInsertWithPrimaryKeyBody)
-
           var DEdataInsertWithPrimaryKeyOptions = {
             'method': 'POST',
             'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
@@ -712,10 +654,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
-
-
               //console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(response));
-
               FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
               FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
               if(response.statusCode == 202 || response.statusCode == 200) {
@@ -726,17 +665,9 @@ app.post('/Authenticate', (req, res) => {
                 FinalResult[key]["DEDataInsert"]["StatusMessage"] = response.body.resultMessages[0];
                 FinalResult[key]["DEDataInsert"]["Description"] = "-";
               }
-              console.log('FinalResult : ' + JSON.stringify(FinalResult));
-
-
+              //console.log('FinalResult : ' + JSON.stringify(FinalResult));
             resolve(FinalResult);
           });
-
-
-
-
-
-
         }
         else {
           var DEDataInsertWithoutPrimaryKeyInnerBody = ''
@@ -752,12 +683,7 @@ app.post('/Authenticate', (req, res) => {
           }
           DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
           DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-          
-  
-          //DEDataInsertWithoutPrimaryKeyBody = '{ "items": [{ "SubscriberKey" : "01" , "EmailAddress" : "test01@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : 12.22 } , { "SubscriberKey" : "02" ,  "EmailAddress" : "test02@test.com" , "Lastname" : "Test" , "Date Test" : "02/08/2021" , "Decimal Test" : "12.12" }] }';
-  
           //console.log(key + ' : DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
-  
           var DEDataInsertwithoutPrimarykeyOption = {
             'method': 'POST',
             'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
@@ -769,7 +695,6 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
             if (error) throw new Error(error);
-
             FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
@@ -780,8 +705,6 @@ app.post('/Authenticate', (req, res) => {
               FinalResult[key]["DEDataInsert"]["StatusMessage"] = response.body.resultMessages[0];
               FinalResult[key]["DEDataInsert"]["Description"] = "-";
             }
-            console.log('FinalResult : ' + JSON.stringify(FinalResult));
-
             resolve(FinalResult);
           });
         }
@@ -793,65 +716,31 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   app.post("/DEListShowAPI", async (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
       // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
-
       for (var key in DEListMap) {
         DEListMap[key].FieldCount = Object.keys(DEListMap[key].DEFieldMap).length;
         DEListMap[key].RecordCount = DEListMap[key].DEDataMap.length;
       }
-
       res.send(DEListMap);
     }
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   app.post("/SelectedDEListInsert", async (req, res) => {
-
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
       //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
-
       for (var key in selectedDEList.WithoutData) {
         FinalResult = await insertDEtoDestination(key);
       }
-
       for(var key in selectedDEList.WithData) {
         FinalResult = await insertDEDataToDestination(key);
       }
-
       console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
-
     res.send(FinalResult);
   });
 
