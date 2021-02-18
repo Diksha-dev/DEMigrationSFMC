@@ -340,7 +340,7 @@ app.post('/Authenticate', (req, res) => {
         DEDataBody = DEDataBody + '<Properties>' + DEListMap[key].DEFieldMap[key1]["FieldName"] + '</Properties>';
       }
       DEDataBody = DEDataBody + '<Options>' +
-                                  '<BatchSize>10</BatchSize>' +
+                                  '<BatchSize>2500</BatchSize>' +
                                 '</Options>' +
                                 '</RetrieveRequest>' +
                               '</RetrieveRequestMsg>' +
@@ -361,12 +361,31 @@ app.post('/Authenticate', (req, res) => {
 
       request(DEDataOptions, function (error, response) {
         if (error) throw new Error(error);
-        console.log(DEListMap[key].DEName + ' : DE Data : ' + JSON.stringify(response));
+        console.log(DEListMap[key].DEName + ' : DE Data : ' + JSON.stringify(response.body));
+
+        var DEDataRequestId;
+
         SourceDEDataResult = response.body;
         xml2jsParser.parseString(SourceDEDataResult, function (err, result) {
           //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID']));
           SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+          DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
         });
+
+        DEDataBody =  '<RetrieveRequest>'/
+                        '<ContinueRequest>'+ DEDataRequestId +'</ContinueRequest>'/
+                        '<Options>'/
+                            '<BatchSize>12</BatchSize>'/
+                        '</Options>'/
+                    '</RetrieveRequest>';
+
+        request(DEDataBody, function (error, response) {
+          if (error) throw new Error(error);
+          console.log('wah bhai wah : ' + response.body);
+        })
+
+        
         //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
         //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
         //SourceDEDataResult = JSON.parse(SourceDEDataResult);
