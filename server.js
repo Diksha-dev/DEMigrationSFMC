@@ -842,7 +842,7 @@ app.post('/Authenticate', (req, res) => {
       //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
 
       for (var key in selectedDEList.WithoutData) {
-        FinalResult = await insertDEtoDestination();
+        FinalResult = await insertDEtoDestination(key);
       }
 
       for(var key in selectedDEList.WithData) {
