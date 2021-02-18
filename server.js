@@ -368,7 +368,7 @@ app.post('/Authenticate', (req, res) => {
         SourceDEDataResult = response.body;
         xml2jsParser.parseString(SourceDEDataResult, function (err, result) {
           //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
-          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID']));
+          console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]));
           SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
         });
@@ -379,6 +379,16 @@ app.post('/Authenticate', (req, res) => {
                             '<BatchSize>12</BatchSize>'/
                         '</Options>'/
                     '</RetrieveRequest>';
+        DEDataOptions = {
+          'method': 'POST',
+          'url': SourceSoapURL + 'Service.asmx',
+          'headers': {
+            'Content-Type': 'text/xml',
+            'SoapAction': 'Retrieve',
+            'Authorization': 'Bearer ' + SourceAccessToken
+          },
+          body: DEDataBody
+        };
 
         request(DEDataBody, function (error, response) {
           if (error) throw new Error(error);
