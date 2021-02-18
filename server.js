@@ -801,7 +801,8 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
             if (error) throw new Error(error);
-            console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode);
+
+            console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(response));
             resolve(response.body);
           });
         }
