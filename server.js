@@ -614,10 +614,14 @@ app.post('/Authenticate', (req, res) => {
                 tempDEInsertResult = result['soap:Envelope']['soap:Body'][0]['CreateResponse'][0]['Results'];
               });
 
-              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + tempDEInsertResult);
-              FinalResult[key]["DEInsert"] = {
-                "Name" : DEListMap[key].DEName,
-                "StatusCode" : response.statusCode,
+              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEInsertResult));
+              FinalResult[key] = {
+                "DEInsert" : {
+                  "Name" : DEListMap[key].DEName,
+                  "StatusCode" : response.statusCode
+                  
+                }
+                
 
               };
               console.log('FinalResult : ' + JSON.stringify(FinalResult));
