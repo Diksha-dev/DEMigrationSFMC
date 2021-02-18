@@ -718,50 +718,18 @@ app.post('/Authenticate', (req, res) => {
             if (error) throw new Error(error);
 
 
+              //console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(response));
 
-
-            
-
-              console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(response));
-              
-              /*if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
-                FinalResult[key] = {
-                  "DEInsert" : {
-                    "Name" : DEListMap[key].DEName,
-                    "StatusCode" : response.statusCode,
-                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"],
-                    "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
-                  },
-                  "DEDataInsert" : {
-                    "Name" : "-",
-                    "StatusCode" : "-",
-                    "StatusMessage" : "-",
-                    "Description" : "-"
-                  }
-                };
+              FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+              FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+              if(response.statusCode == 202 || response.statusCode == 200) {
+                FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+                FinalResult[key]["DEDataInsert"]["Description"] = "Success";
               }
-              else {
-                FinalResult[key] = {
-                  "DEInsert" : {
-                    "Name" : DEListMap[key].DEName,
-                    "StatusCode" : response.statusCode,
-                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"],
-                    "Description" : tempDEInsertResult[0]["StatusMessage"]
-                  },
-                  "DEDataInsert" : {
-                    "Name" : "-",
-                    "StatusCode" : "-",
-                    "StatusMessage" : "-",
-                    "Description" : "-"
-                  }
-                };
-              }*/
-              
-              
-              //console.log('FinalResult : ' + JSON.stringify(FinalResult));
+              console.log('FinalResult : ' + JSON.stringify(FinalResult));
 
 
-            resolve(response.body);
+            resolve(FinalResult);
           });
 
 
@@ -802,8 +770,15 @@ app.post('/Authenticate', (req, res) => {
           request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
             if (error) throw new Error(error);
 
-            console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(response));
-            resolve(response.body);
+            FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if(response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            console.log('FinalResult : ' + JSON.stringify(FinalResult));
+
+            resolve(FinalResult);
           });
         }
       }
