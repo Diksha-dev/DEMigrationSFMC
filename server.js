@@ -621,7 +621,7 @@ app.post('/Authenticate', (req, res) => {
                   "DEInsert" : {
                     "Name" : DEListMap[key].DEName,
                     "StatusCode" : response.statusCode,
-                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"],
+                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
                     "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
                   },
                   "DEDataInsert" : {
@@ -637,8 +637,8 @@ app.post('/Authenticate', (req, res) => {
                   "DEInsert" : {
                     "Name" : DEListMap[key].DEName,
                     "StatusCode" : response.statusCode,
-                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"],
-                    "Description" : tempDEInsertResult[0]["StatusMessage"]
+                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
+                    "Description" : tempDEInsertResult[0]["StatusMessage"][0]
                   },
                   "DEDataInsert" : {
                     "Name" : "-",
@@ -726,6 +726,10 @@ app.post('/Authenticate', (req, res) => {
                 FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
                 FinalResult[key]["DEDataInsert"]["Description"] = "Success";
               }
+              else {
+                FinalResult[key]["DEDataInsert"]["StatusMessage"] = response.body.resultMessages[0];
+                FinalResult[key]["DEDataInsert"]["Description"] = "-";
+              }
               console.log('FinalResult : ' + JSON.stringify(FinalResult));
 
 
@@ -775,6 +779,10 @@ app.post('/Authenticate', (req, res) => {
             if(response.statusCode == 202 || response.statusCode == 200) {
               FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
               FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = response.body.resultMessages[0];
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
             }
             console.log('FinalResult : ' + JSON.stringify(FinalResult));
 
@@ -841,13 +849,12 @@ app.post('/Authenticate', (req, res) => {
 
       if(DEinsertResult) {
         for(var key in selectedDEList.WithData) {
-          var temp0  = await insertDEDataToDestination(key);
-          console.log(key + ' : ' + temp0);
+          await insertDEDataToDestination(key);
         }
       }
     }
 
-    res.send('reqForSelectedDEList');
+    res.send(FinalResult);
   });
 
 
