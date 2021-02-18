@@ -849,7 +849,8 @@ app.post('/Authenticate', (req, res) => {
 
       if(DEinsertResult) {
         for(var key in selectedDEList.WithData) {
-          await insertDEDataToDestination(key);
+          var temp0 = await insertDEDataToDestination(key);
+          console.log('Intezar Khatam : ' + JSON.stringify(temp0));
         }
       }
     }
