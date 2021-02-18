@@ -202,18 +202,6 @@ app.post('/Authenticate', (req, res) => {
         }
         //console.log('DEListMap : ' + JSON.stringify(DEListMap));
         resolve(DEListMap);
-
-        //console.log('Parsed DE List :'+JSON.stringify(SourceListDEResult));
-        /*for (var key in SourceListDEResult) {
-          console.log('key : ' + SourceListDEResult[key].Name);
-          console.log('key : ' + SourceListDEResult[key].CustomerKey);
-          console.log('key : ' + SourceListDEResult[key].IsSendable);
-          console.log('key : ' + SourceListDEResult[key].IsTestable);
-          console.log('key : ' + SourceListDEResult[key].Description);
-          //console.log('key : ' + SourceListDEResult[key].SendableDataExtensionField.Name);
-          //console.log('key : ' + SourceListDEResult[key].SendableSubscriberField.Name);
-          console.log('Next');
-        }*/
       });
     })
   }
@@ -333,15 +321,13 @@ app.post('/Authenticate', (req, res) => {
         }
 
 
-
         //-----------------------------------------
+
 
         for (var key in DEListMap) {
           await getDEData(key);
         }
         //console.log('DEListMap : ' + JSON.stringify(DEListMap));
-
-
 
         resolve(DEListMap);
       });
@@ -420,6 +406,7 @@ app.post('/Authenticate', (req, res) => {
           else if (key1 == 'Properties') {
             DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
           }*/
+          
         }
         //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
 
