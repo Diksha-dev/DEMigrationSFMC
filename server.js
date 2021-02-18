@@ -720,12 +720,9 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-            var tempDEDataInsertResult;
-              xml2jsParser.parseString(response.body, function (err, result) {
-                tempDEDataInsertResult = result['soap:Envelope']['soap:Body'][0]['CreateResponse'][0]['Results'];
-              });
+            
 
-              console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEDataInsertResult));
+              console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(response));
               
               /*if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
                 FinalResult[key] = {
