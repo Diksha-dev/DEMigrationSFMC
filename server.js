@@ -446,214 +446,210 @@ app.post('/Authenticate', (req, res) => {
   async function insertDEtoDestination() {
     return new Promise(function (resolve, reject) {
       var DEListBody = '';
-      for (var key in selectedDEList.WithoutData) {
-        if (key in DEListMap) {
-          DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
-            '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
-            '<soapenv:Header>' +
-            '<fueloauth>' + DestinationAccessToken + '</fueloauth>' +
-            '</soapenv:Header>' +
-            '<soapenv:Body>' +
-            '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
-            '<Options/>' +
-            '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-            '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '</CustomerKey>' +
-            '<Name>' + selectedDEList.WithoutData[key].DEName + '</Name>' +
-            '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
-            '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
-            '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
-          if (selectedDEList.WithoutData[key].DEIsSend == 'true') {
-            DEListBody = DEListBody + '<SendableDataExtensionField>' +
-              '<PartnerKey xsi:nil="true"/>' +
-              '<ObjectID xsi:nil="true"/>' +
-              '<Name>' + selectedDEList.WithoutData[key].DESendDEField + '</Name>' +
-              '</SendableDataExtensionField>' +
-              '<SendableSubscriberField>' +
-              '<Name>' + selectedDEList.WithoutData[key].DESendSubField + '</Name>' +
-              '</SendableSubscriberField>' +
-              '<Fields>';
+      if (key in DEListMap) {
+        DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
+          '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
+          '<soapenv:Header>' +
+          '<fueloauth>' + DestinationAccessToken + '</fueloauth>' +
+          '</soapenv:Header>' +
+          '<soapenv:Body>' +
+          '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+          '<Options/>' +
+          '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
+          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '</CustomerKey>' +
+          '<Name>' + selectedDEList.WithoutData[key].DEName + '</Name>' +
+          '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
+          '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
+          '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
+        if (selectedDEList.WithoutData[key].DEIsSend == 'true') {
+          DEListBody = DEListBody + '<SendableDataExtensionField>' +
+            '<PartnerKey xsi:nil="true"/>' +
+            '<ObjectID xsi:nil="true"/>' +
+            '<Name>' + selectedDEList.WithoutData[key].DESendDEField + '</Name>' +
+            '</SendableDataExtensionField>' +
+            '<SendableSubscriberField>' +
+            '<Name>' + selectedDEList.WithoutData[key].DESendSubField + '</Name>' +
+            '</SendableSubscriberField>' +
+            '<Fields>';
+        }
+        else {
+          DEListBody = DEListBody + '<Fields>';
+        }
+
+        var tempDefaultValue = '';
+        var tempMaxLength;
+        for (var i in DEListMap[key].DEFieldMap) {
+          if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Number' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Date' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Boolean') {
+            if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
+              tempDefaultValue = '';
+            }
+            else {
+              tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
+            }
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
+              '</Field>';
           }
-          else {
-            DEListBody = DEListBody + '<Fields>';
+          else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'EmailAddress') {
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>254</MaxLength>' +
+              '</Field>';
           }
-
-          var tempDefaultValue = '';
-          var tempMaxLength;
-          for (var i in DEListMap[key].DEFieldMap) {
-            if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Number' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Date' || DEListMap[key].DEFieldMap[i].FieldFieldType == 'Boolean') {
-              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
-                tempDefaultValue = '';
-              }
-              else {
-                tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
-              }
-              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
-                '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
-                '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
-                '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
-                '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
-                '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
-                '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
-                '</Field>';
-            }
-            else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'EmailAddress') {
-              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
-                '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
-                '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
-                '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
-                '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
-                '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
-                '<MaxLength>254</MaxLength>' +
-                '</Field>';
-            }
-            else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Phone') {
-              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
-                '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
-                '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
-                '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
-                '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
-                '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
-                '<MaxLength>50</MaxLength>' +
-                '</Field>';
-            }
-            else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Decimal') {
-              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
-                tempDefaultValue = '';
-              }
-              else {
-                tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
-              }
-
-              
-              if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
-                tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
-              }
-              else {
-                tempMaxLength = 100;
-              }
-
-              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
-                '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
-                '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
-                '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
-                '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
-                '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
-                '<MaxLength>' + tempMaxLength + '</MaxLength>' +
-                '<Scale>' + DEListMap[key].DEFieldMap[i].FieldScale + '</Scale>' +
-                '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
-                '</Field>';
-            }
-            else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Locale') {
-              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
-                '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
-                '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
-                '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
-                '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
-                '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
-                '<MaxLength>5</MaxLength>' +
-                '</Field>';
-            }
-            else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Text') {
-              if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
-                tempDefaultValue = '';
-              }
-              else {
-                tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
-              }
-
-              if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
-                tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
-              }
-              else {
-                tempMaxLength = 100;
-              }
-
-              DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
-                '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
-                '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
-                '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
-                '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
-                '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
-                '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
-                '<MaxLength>' + tempMaxLength + '</MaxLength>' +
-                '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
-                '</Field>';
-            }
+          else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Phone') {
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>50</MaxLength>' +
+              '</Field>';
           }
+          else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Decimal') {
+            if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
+              tempDefaultValue = '';
+            }
+            else {
+              tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
+            }
 
-          DEListBody = DEListBody + '</Fields>' +
-            '</Objects>' +
-            '</CreateRequest>' +
-            '</soapenv:Body>' +
-            '</soapenv:Envelope>';
+            
+            if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
+              tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
+            }
+            else {
+              tempMaxLength = 100;
+            }
+
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>' + tempMaxLength + '</MaxLength>' +
+              '<Scale>' + DEListMap[key].DEFieldMap[i].FieldScale + '</Scale>' +
+              '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
+              '</Field>';
+          }
+          else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Locale') {
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>5</MaxLength>' +
+              '</Field>';
+          }
+          else if (DEListMap[key].DEFieldMap[i].FieldFieldType == 'Text') {
+            if (JSON.stringify(DEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
+              tempDefaultValue = '';
+            }
+            else {
+              tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
+            }
+
+            if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
+              tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
+            }
+            else {
+              tempMaxLength = 100;
+            }
+
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + DEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + DEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + DEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + DEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>' + tempMaxLength + '</MaxLength>' +
+              '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
+              '</Field>';
+          }
+        }
+
+        DEListBody = DEListBody + '</Fields>' +
+          '</Objects>' +
+          '</CreateRequest>' +
+          '</soapenv:Body>' +
+          '</soapenv:Envelope>';
 
 
-          //console.log(DEListMap[key].DEName + ' : DEInsertListBody : ' + DEListBody);
+        //console.log(DEListMap[key].DEName + ' : DEInsertListBody : ' + DEListBody);
 
-          if (DEListBody != '') {
-            var DEListOption = {
-              'method': 'POST',
-              'url': DestinationSoapURL + 'Service.asmx',
-              'headers': {
-                'Content-Type': 'text/xml',
-                'SoapAction': 'Create',
-                'Authorization': 'Bearer ' + DestinationAccessToken
-              },
-              body: DEListBody
-            };
-            request(DEListOption, async function (error, response) {
-              if (error) throw new Error(error);
+        if (DEListBody != '') {
+          var DEListOption = {
+            'method': 'POST',
+            'url': DestinationSoapURL + 'Service.asmx',
+            'headers': {
+              'Content-Type': 'text/xml',
+              'SoapAction': 'Create',
+              'Authorization': 'Bearer ' + DestinationAccessToken
+            },
+            body: DEListBody
+          };
+          request(DEListOption, async function (error, response) {
+            if (error) throw new Error(error);
 
-              var tempDEInsertResult;
-              xml2jsParser.parseString(response.body, function (err, result) {
-                tempDEInsertResult = result['soap:Envelope']['soap:Body'][0]['CreateResponse'][0]['Results'];
-              });
-
-              //console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEInsertResult));
-              
-              if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
-                FinalResult[key] = {
-                  "DEInsert" : {
-                    "Name" : DEListMap[key].DEName,
-                    "StatusCode" : response.statusCode,
-                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
-                    "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
-                  },
-                  "DEDataInsert" : {
-                    "Name" : "-",
-                    "StatusCode" : "-",
-                    "StatusMessage" : "-",
-                    "Description" : "-"
-                  }
-                };
-              }
-              else {
-                FinalResult[key] = {
-                  "DEInsert" : {
-                    "Name" : DEListMap[key].DEName,
-                    "StatusCode" : response.statusCode,
-                    "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
-                    "Description" : tempDEInsertResult[0]["StatusMessage"][0]
-                  },
-                  "DEDataInsert" : {
-                    "Name" : "-",
-                    "StatusCode" : "-",
-                    "StatusMessage" : "-",
-                    "Description" : "-"
-                  }
-                };
-              }
-              
-              
-              console.log('FinalResult : ' + JSON.stringify(FinalResult));
-              resolve(FinalResult);
+            var tempDEInsertResult;
+            xml2jsParser.parseString(response.body, function (err, result) {
+              tempDEInsertResult = result['soap:Envelope']['soap:Body'][0]['CreateResponse'][0]['Results'];
             });
-          }
+
+            //console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEInsertResult));
+            
+            if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
+              FinalResult[key] = {
+                "DEInsert" : {
+                  "Name" : DEListMap[key].DEName,
+                  "StatusCode" : response.statusCode,
+                  "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
+                  "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
+                },
+                "DEDataInsert" : {
+                  "Name" : "-",
+                  "StatusCode" : "-",
+                  "StatusMessage" : "-",
+                  "Description" : "-"
+                }
+              };
+            }
+            else {
+              FinalResult[key] = {
+                "DEInsert" : {
+                  "Name" : DEListMap[key].DEName,
+                  "StatusCode" : response.statusCode,
+                  "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
+                  "Description" : tempDEInsertResult[0]["StatusMessage"][0]
+                },
+                "DEDataInsert" : {
+                  "Name" : "-",
+                  "StatusCode" : "-",
+                  "StatusMessage" : "-",
+                  "Description" : "-"
+                }
+              };
+            }
+
+            resolve(FinalResult);
+          });
         }
       }
     })
@@ -845,14 +841,15 @@ app.post('/Authenticate', (req, res) => {
       selectedDEList = req.body.reqForSelectedDEList;
       //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
 
-      var DEinsertResult = await insertDEtoDestination();
-
-      if(DEinsertResult) {
-        for(var key in selectedDEList.WithData) {
-          var temp0 = await insertDEDataToDestination(key);
-          console.log('Intezar Khatam : ' + JSON.stringify(temp0));
-        }
+      for (var key in selectedDEList.WithoutData) {
+        FinalResult = await insertDEtoDestination();
       }
+
+      for(var key in selectedDEList.WithData) {
+        FinalResult = await insertDEDataToDestination(key);
+      }
+
+      console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
 
     res.send(FinalResult);
