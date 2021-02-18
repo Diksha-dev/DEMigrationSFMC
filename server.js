@@ -28,7 +28,6 @@ var SourceSoapURL = '';
 var SourceListDEResult;
 var SourceDEFieldsResult;
 var SourceDEDataResult;
-var DEFieldMap = {};
 
 var DestinationAccessToken = '';
 var DestinationRestURL = '';
@@ -47,6 +46,8 @@ app.post('/Authenticate', (req, res) => {
   var DestinationMID = req.body.DestinationMID;
 
   var selectedDEList;
+
+  var FinalResult = {};
 
 
   async function authTokenForBothSFDC() {
@@ -445,7 +446,6 @@ app.post('/Authenticate', (req, res) => {
   async function insertDEtoDestination() {
     return new Promise(function (resolve, reject) {
       var DEListBody = '';
-      var DEInsertResult = [];
       for (var key in selectedDEList.WithoutData) {
         if (key in DEListMap) {
           DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
@@ -529,14 +529,11 @@ app.post('/Authenticate', (req, res) => {
 
               
               if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
-                console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
                 tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
               }
               else {
-                console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
                 tempMaxLength = 100;
               }
-              console.log('Testing 2 : ' + tempMaxLength);
 
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                 '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
@@ -570,14 +567,11 @@ app.post('/Authenticate', (req, res) => {
               }
 
               if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
-                console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
                 tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
               }
               else {
-                console.log('Testing 1 : ' + DEListMap[key].DEFieldMap[i].FieldMaxLength);
                 tempMaxLength = 100;
               }
-              console.log('Testing 2 : ' + tempMaxLength);
 
               DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
                 '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
@@ -599,7 +593,7 @@ app.post('/Authenticate', (req, res) => {
             '</soapenv:Envelope>';
 
 
-          console.log(DEListMap[key].DEName + ' : DEInsertListBody : ' + DEListBody);
+          //console.log(DEListMap[key].DEName + ' : DEInsertListBody : ' + DEListBody);
 
           if (DEListBody != '') {
             var DEListOption = {
@@ -614,9 +608,20 @@ app.post('/Authenticate', (req, res) => {
             };
             request(DEListOption, async function (error, response) {
               if (error) throw new Error(error);
-              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + response.body);
-              DEInsertResult.push(response.body);
-              resolve(DEInsertResult);
+
+              var tempDEInsertResult;
+              xml2jsParser.parseString(response.body, function (err, result) {
+                tempDEInsertResult = result['soap:Envelope']['soap:Body'][0]['CreateResponse'][0]['Results'];
+              });
+
+              console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + tempDEInsertResult);
+              FinalResult[key]["DEInsert"] = {
+                "Name" : DEListMap[key].DEName,
+                "StatusCode" : response.statusCode,
+
+              };
+              console.log('FinalResult : ' + JSON.stringify(FinalResult));
+              resolve(FinalResult);
             });
           }
         }
