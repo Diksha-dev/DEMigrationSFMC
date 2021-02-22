@@ -434,16 +434,24 @@ app.post('/Authenticate', (req, res) => {
         });
 
         DEListMap[key].DEDataMap = [];
+        console.log('Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
         if(SourceDEDataResult) {
           
           if(SourceDEDataResult.length == 2500) {
             console.log('SourceDEDataResult : ' + SourceDEDataResult.length);
+            console.log('if Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
             var tempLength = SourceDEDataResult.length;
             while(tempLength == 2500) {
+              console.log('while 1 Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
               tempLength = await getMoreData(DEDataRequestId , key);
+              console.log('while 2 Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
             }
+            console.log('if');
+            console.log('if Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
           }
           else {
+            console.log('else');
+            console.log('else Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
             //console.log('Length : ' + SourceDEDataResult.length);
             //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
             //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
@@ -462,6 +470,7 @@ app.post('/Authenticate', (req, res) => {
               
             }
             //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
+            console.log('else Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
           }
         }
         
