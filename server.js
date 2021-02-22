@@ -356,14 +356,22 @@ app.post('/Authenticate', (req, res) => {
       };
       request(DEDataOptions, function (error, response) {
         if (error) throw new Error(error);
-        console.log('wah bhai wah : ' + response.body);
+        //console.log('wah bhai wah : ' + response.body);
 
         xml2jsParser.parseString(response.body, function (err, result) {
-          tempResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+          SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0];
         });
-        tempLength = tempResult.length;
-        SourceDEDataResult.push.apply(SourceDEDataResult, tempResult);
+        if(SourceDEDataResult){
+          tempLength = SourceDEDataResult.length;
+        }
+        else {
+          tempLength = 0;
+        }
+
+        for (var key1 in SourceDEDataResult) {
+          DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
+        }
         resolve(tempLength);
       })
     })
@@ -424,39 +432,39 @@ app.post('/Authenticate', (req, res) => {
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
         });
 
+        DEListMap[key].DEDataMap = [];
         if(SourceDEDataResult) {
           
-          console.log('SourceDEDataResult : ' + SourceDEDataResult.length);
-          var tempLength = SourceDEDataResult.length;
-          var tempResult;
-          while(tempLength == 2500) {
-            tempResult = await getMoreData(DEDataRequestId);
+          if(SourceDEDataResult.length == 2500) {
+            console.log('SourceDEDataResult : ' + SourceDEDataResult.length);
+            var tempLength = SourceDEDataResult.length;
+            while(tempLength == 2500) {
+              tempResult = await getMoreData(DEDataRequestId);
+            }
+          }
+          else {
+            //console.log('Length : ' + SourceDEDataResult.length);
+            //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
+            //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
+            //SourceDEDataResult = JSON.parse(SourceDEDataResult);
+            //SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+            
+            for (var key1 in SourceDEDataResult) {
+              DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
+              
+              /*if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
+                DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
+              }
+              else if (key1 == 'Properties') {
+                DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
+              }*/
+              
+            }
+            //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
           }
         }
         
-
-        
-
-        //console.log('Length : ' + SourceDEDataResult.length);
-        //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
-        //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
-        //SourceDEDataResult = JSON.parse(SourceDEDataResult);
-        //SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-        DEListMap[key].DEDataMap = [];
-        for (var key1 in SourceDEDataResult) {
-          DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
-          
-          /*if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
-            DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
-          }
-          else if (key1 == 'Properties') {
-            DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
-          }*/
-          
-        }
-        //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
-
-        resolve(SourceDEDataResult);
+        resolve(DEListMap[key].DEDataMap);
       });
     })
   }
