@@ -698,11 +698,11 @@ app.post('/Authenticate', (req, res) => {
             DEDataInsertWithPrimaryKeyBodyForValues='';
 
             
-            if(key1 > 2500) {
+            if(key1 > 2499) {
               console.log(key1+1 + ' : dekh : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property));
             }
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
-              if(key1 > 2500) {
+              if(key1 > 2499) {
                 console.log(key1+1 + ' : dekh : ' + JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"]));
               }
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
