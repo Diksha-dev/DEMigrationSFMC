@@ -692,19 +692,19 @@ app.post('/Authenticate', (req, res) => {
           var DEDataInsertWithPrimaryKeyBodyForKeys='';
           var DEDataInsertWithPrimaryKeyBodyForValues='';
 
-          var n = 0;
           console.log('length : ' + DEListMap[key].DEDataMap.length);
           for(var key1 in DEListMap[key].DEDataMap) {
             DEDataInsertWithPrimaryKeyBodyForKeys='';
             DEDataInsertWithPrimaryKeyBodyForValues='';
 
-            if(n > 2499) {
-              console.log(key1 + ' : ' + n + ' : dekh : ' + JSON.stringify(DEListMap[key].DEDataMap[key1]));
-              console.log(key1 + ' : ' + n + ' : dekh : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property));
-            }
             
-            n=n+1;
+            if(key1 > 2500) {
+              console.log(key1+1 + ' : dekh : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property));
+            }
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
+              if(key1 > 2500) {
+                console.log(key1+1 + ' : dekh : ' + JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"]));
+              }
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
                 if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
                   DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
