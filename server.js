@@ -362,6 +362,7 @@ app.post('/Authenticate', (req, res) => {
           SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0];
         });
+        
         if(SourceDEDataResult){
           tempLength = SourceDEDataResult.length;
         }
@@ -433,11 +434,14 @@ app.post('/Authenticate', (req, res) => {
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
         });
 
-        //DEListMap[key].DEDataMap = [];
+        DEListMap[key].DEDataMap = [];
         if(SourceDEDataResult) {
           
           if(SourceDEDataResult.length == 2500) {
             console.log('if');
+            for (var key1 in SourceDEDataResult) {
+              DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]); 
+            }
             var tempLength = SourceDEDataResult.length;
             while(tempLength == 2500) {
               tempLength = await getMoreData(DEDataRequestId , key);
