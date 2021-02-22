@@ -693,10 +693,16 @@ app.post('/Authenticate', (req, res) => {
           var DEDataInsertWithPrimaryKeyBodyForValues='';
 
           var n = 0;
+          console.log('length : ' + DEListMap[key].DEDataMap.length);
           for(var key1 in DEListMap[key].DEDataMap) {
             DEDataInsertWithPrimaryKeyBodyForKeys='';
             DEDataInsertWithPrimaryKeyBodyForValues='';
-            console.log(DEListMap[key].DEName + ' : ' + n + ' : dekh : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property));
+
+            if(n > 2499) {
+              console.log(key1 + ' : ' + n + ' : dekh : ' + JSON.stringify(DEListMap[key].DEDataMap[key1]));
+              console.log(key1 + ' : ' + n + ' : dekh : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property));
+            }
+            
             n=n+1;
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
