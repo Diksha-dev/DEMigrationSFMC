@@ -375,7 +375,7 @@ app.post('/Authenticate', (req, res) => {
 
         if(SourceDEDataResult) {
           
-          console.log('SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
+          console.log('SourceDEDataResult : ' + SourceDEDataResult.length);
           var tempLength = SourceDEDataResult.length;
           var tempResult;
           while(tempLength == 2500) {
