@@ -699,10 +699,6 @@ app.post('/Authenticate', (req, res) => {
             
             
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
-              if(key1 > 2499) {
-                console.log(key1 + ' : dekh 1 : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Name[0]));
-                console.log(key1 + ' : dekh 2 : ' + JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]));
-              }
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
                 if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]) {
                   if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
