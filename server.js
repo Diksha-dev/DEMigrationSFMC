@@ -380,27 +380,28 @@ app.post('/Authenticate', (req, res) => {
           var tempResult;
           while(tempLength == 2500) {
             DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
-                        '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
-                          '<s:Header>' +
-                            '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
-                            '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
-                            '<a:ReplyTo>' +
-                              '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
-                            '</a:ReplyTo>' +
-                            '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
-                            '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
-                          '</s:Header>' +
-                          '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-                            '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
-                              '<RetrieveRequest>' + 
-                                '<ContinueRequest>'+ DEDataRequestId +'</ContinueRequest>' +
-                                '<Options>' + 
-                                    '<BatchSize>2500</BatchSize>' +
-                                '</Options>' +
-                              '</RetrieveRequest>'
-                            '</RetrieveRequestMsg>' +
-                          '</s:Body>' +
-                        '</s:Envelope>';
+                          '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+                              '<s:Header>' +
+                                  '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+                                  '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
+                                  '<a:ReplyTo>' +
+                                      '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
+                                  '</a:ReplyTo>' +
+                                  '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
+                                  '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
+                              '</s:Header>' +
+                              '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+                                  '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+                                      '<RetrieveRequest>' +
+                                          '<ContinueRequest>' + DEDataRequestId + '</ContinueRequest>' +
+                                          '<Options>' +
+                                              '<BatchSize>2500</BatchSize>' +
+                                          '</Options>' +
+                                      '</RetrieveRequest>' +
+                                  '</RetrieveRequestMsg>' +
+                              '</s:Body>' +
+                          '</s:Envelope>';
+
             console.log(key + 'innerBody : ' + DEDataBody);
             DEDataOptions = {
               'method': 'POST',
