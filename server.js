@@ -372,7 +372,7 @@ app.post('/Authenticate', (req, res) => {
         for (var key1 in SourceDEDataResult) {
           DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
         }
-        console.log('wah bhai wah : ');
+        console.log('wah bhai wah : ' + tempLength);
         resolve(tempLength);
       })
     })
@@ -440,7 +440,7 @@ app.post('/Authenticate', (req, res) => {
             console.log('SourceDEDataResult : ' + SourceDEDataResult.length);
             var tempLength = SourceDEDataResult.length;
             while(tempLength == 2500) {
-              tempResult = await getMoreData(DEDataRequestId , key);
+              tempLength = await getMoreData(DEDataRequestId , key);
             }
           }
           else {
