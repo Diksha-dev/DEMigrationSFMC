@@ -692,12 +692,12 @@ app.post('/Authenticate', (req, res) => {
           var DEDataInsertWithPrimaryKeyBodyForKeys='';
           var DEDataInsertWithPrimaryKeyBodyForValues='';
 
-          console.log(DEListMap[key].DEName + ' : DEDATA Baad Wala : ' + JSON.stringify(DEListMap[key].DEFieldMap));
-          
+          var n = 0;
           for(var key1 in DEListMap[key].DEDataMap) {
             DEDataInsertWithPrimaryKeyBodyForKeys='';
             DEDataInsertWithPrimaryKeyBodyForValues='';
-            console.log(DEListMap[key].DEName + ' : dekh raha hu : ' + DEListMap[key].DEDataMap[key1].Property);
+            console.log(DEListMap[key].DEName + ' : ' + n + ' : dekh : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property));
+            n=n+1;
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
                 if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
