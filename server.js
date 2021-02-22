@@ -426,7 +426,6 @@ app.post('/Authenticate', (req, res) => {
         DEListMap[key].DEDataMap = [];
         if(SourceDEDataResult) {
           if(SourceDEDataResult.length == 2500) {
-            console.log('if');
             for (var key1 in SourceDEDataResult) {
               DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]); 
             }
@@ -441,7 +440,6 @@ app.post('/Authenticate', (req, res) => {
             //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
             //SourceDEDataResult = JSON.parse(SourceDEDataResult);
             //SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-            console.log('else');
             for (var key1 in SourceDEDataResult) {
               DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
               
@@ -456,7 +454,7 @@ app.post('/Authenticate', (req, res) => {
             //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
           }
         }
-        
+        console.log(DEListMap[key].DEName + ' : DEDATA : ' + JSON.stringify(DEListMap[key].DEDataMap));
         resolve(DEListMap[key].DEDataMap);
       });
     })
@@ -695,6 +693,7 @@ app.post('/Authenticate', (req, res) => {
           var DEDataInsertWithPrimaryKeyBodyForKeys='';
           var DEDataInsertWithPrimaryKeyBodyForValues='';
 
+          console.log(DEListMap[key].DEName + ' : DEDATA Baad Wala : ' + JSON.stringify(DEListMap[key].DEDataMap));
           for(var key1 in DEListMap[key].DEDataMap) {
             DEDataInsertWithPrimaryKeyBodyForKeys='';
             DEDataInsertWithPrimaryKeyBodyForValues='';
