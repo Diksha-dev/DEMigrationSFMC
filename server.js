@@ -372,6 +372,7 @@ app.post('/Authenticate', (req, res) => {
         for (var key1 in SourceDEDataResult) {
           DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
         }
+        console.log('wah bhai wah : ');
         resolve(tempLength);
       })
     })
