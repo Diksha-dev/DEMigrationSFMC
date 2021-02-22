@@ -427,7 +427,7 @@ app.post('/Authenticate', (req, res) => {
 
         
 
-        console.log('Length : ' + SourceDEDataResult.length);
+        //console.log('Length : ' + SourceDEDataResult.length);
         //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
         //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
         //SourceDEDataResult = JSON.parse(SourceDEDataResult);
