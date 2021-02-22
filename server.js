@@ -433,31 +433,23 @@ app.post('/Authenticate', (req, res) => {
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
         });
 
-        DEListMap[key].DEDataMap = [];
-        console.log('Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
+        //DEListMap[key].DEDataMap = [];
         if(SourceDEDataResult) {
           
           if(SourceDEDataResult.length == 2500) {
-            console.log('SourceDEDataResult : ' + SourceDEDataResult.length);
-            console.log('if Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
+            console.log('if');
             var tempLength = SourceDEDataResult.length;
             while(tempLength == 2500) {
-              console.log('while 1 Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
               tempLength = await getMoreData(DEDataRequestId , key);
-              console.log('while 2 Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
             }
-            console.log('if');
-            console.log('if Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
           }
           else {
-            console.log('else');
-            console.log('else Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
             //console.log('Length : ' + SourceDEDataResult.length);
             //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
             //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
             //SourceDEDataResult = JSON.parse(SourceDEDataResult);
             //SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-            
+            console.log('else');
             for (var key1 in SourceDEDataResult) {
               DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
               
@@ -470,7 +462,6 @@ app.post('/Authenticate', (req, res) => {
               
             }
             //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
-            console.log('else Kaam Ki length : ' + DEListMap[key].DEDataMap.length);
           }
         }
         
