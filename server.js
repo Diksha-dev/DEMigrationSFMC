@@ -373,7 +373,7 @@ app.post('/Authenticate', (req, res) => {
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
         });
 
-        console.log('SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
+        console.log('SourceDEDataResult : ' + SourceDEDataResult);
         var tempLength = SourceDEDataResult.length;
         var tempResult;
         while(tempLength == 2500) {
