@@ -454,7 +454,6 @@ app.post('/Authenticate', (req, res) => {
             //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
           }
         }
-        console.log(DEListMap[key].DEName + ' : DEDATA : ' + JSON.stringify(DEListMap[key].DEDataMap));
         resolve(DEListMap[key].DEDataMap);
       });
     })
@@ -693,13 +692,22 @@ app.post('/Authenticate', (req, res) => {
           var DEDataInsertWithPrimaryKeyBodyForKeys='';
           var DEDataInsertWithPrimaryKeyBodyForValues='';
 
-          console.log(DEListMap[key].DEName + ' : DEDATA Baad Wala : ' + JSON.stringify(DEListMap[key].DEDataMap));
+          console.log(DEListMap[key].DEName + ' : DEDATA Baad Wala : ' + JSON.stringify(DEListMap[key].DEFieldMap));
+          
           for(var key1 in DEListMap[key].DEDataMap) {
             DEDataInsertWithPrimaryKeyBodyForKeys='';
             DEDataInsertWithPrimaryKeyBodyForValues='';
             for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
+
+                console.log(DEListMap[key].DEName + ' : DEDATA Baad Wala : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Name[0]));
+                console.log(DEListMap[key].DEName + ' : DEDATA Baad Wala : ' + JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"]));
+                
+
+
                 if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
+                  console.log('if : ' + DEListMap[key].DEName + ' : DEDATA Baad Wala : ' + JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Name[0]));
+                  console.log('if : ' + DEListMap[key].DEName + ' : DEDATA Baad Wala : ' + JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"]));
                   DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
                 }
                 else {
