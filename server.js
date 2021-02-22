@@ -374,7 +374,8 @@ app.post('/Authenticate', (req, res) => {
         });
 
         if(SourceDEDataResult) {
-          console.log('SourceDEDataResult : ' + SourceDEDataResult);
+          
+          console.log('SourceDEDataResult : ' + JSON.stringify(SourceDEDataResult));
           var tempLength = SourceDEDataResult.length;
           var tempResult;
           while(tempLength == 2500) {
@@ -386,7 +387,7 @@ app.post('/Authenticate', (req, res) => {
                             '<a:ReplyTo>' +
                               '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
                             '</a:ReplyTo>' +
-                            '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx' + '</a:To>' +
+                            '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
                             '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
                           '</s:Header>' +
                           '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
@@ -400,6 +401,7 @@ app.post('/Authenticate', (req, res) => {
                             '</RetrieveRequestMsg>' +
                           '</s:Body>' +
                         '</s:Envelope>';
+            console.loh(key + 'innerBody : ' + DEDataBody);
             DEDataOptions = {
               'method': 'POST',
               'url': SourceSoapURL + 'Service.asmx',
