@@ -343,7 +343,6 @@ app.post('/Authenticate', (req, res) => {
                               '</s:Body>' +
                           '</s:Envelope>';
 
-      //console.log(key + 'innerBody : ' + DEDataBody);
       DEDataOptions = {
         'method': 'POST',
         'url': SourceSoapURL + 'Service.asmx',
@@ -356,24 +355,19 @@ app.post('/Authenticate', (req, res) => {
       };
       request(DEDataOptions, function (error, response) {
         if (error) throw new Error(error);
-        //console.log('wah bhai wah : ' + response.body);
-
         xml2jsParser.parseString(response.body, function (err, result) {
           SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0];
         });
-        
         if(SourceDEDataResult){
           tempLength = SourceDEDataResult.length;
         }
         else {
           tempLength = 0;
         }
-
         for (var key1 in SourceDEDataResult) {
           DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
         }
-        console.log('wah bhai wah : ' + tempLength);
         resolve(tempLength);
       })
     })
@@ -408,7 +402,6 @@ app.post('/Authenticate', (req, res) => {
                             '</s:Body>' +
                           '</s:Envelope>';
 
-      //console.log('DEDataBody : ' + DEDataBody);
       var DEDataOptions = {
         'method': 'POST',
         'url': SourceSoapURL + 'Service.asmx',
@@ -422,21 +415,16 @@ app.post('/Authenticate', (req, res) => {
 
       request(DEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
-        //console.log(DEListMap[key].DEName + ' : DE Data : ' + JSON.stringify(response.body));
 
         var DEDataRequestId;
-
         SourceDEDataResult = response.body;
         xml2jsParser.parseString(SourceDEDataResult, function (err, result) {
-          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
-          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]));
           SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
         });
 
         DEListMap[key].DEDataMap = [];
         if(SourceDEDataResult) {
-          
           if(SourceDEDataResult.length == 2500) {
             console.log('if');
             for (var key1 in SourceDEDataResult) {
