@@ -401,7 +401,7 @@ app.post('/Authenticate', (req, res) => {
                             '</RetrieveRequestMsg>' +
                           '</s:Body>' +
                         '</s:Envelope>';
-            console.loh(key + 'innerBody : ' + DEDataBody);
+            console.log(key + 'innerBody : ' + DEDataBody);
             DEDataOptions = {
               'method': 'POST',
               'url': SourceSoapURL + 'Service.asmx',
