@@ -318,7 +318,7 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
-  async function getMoreData(DEDataRequestId) {
+  async function getMoreData(DEDataRequestId , key) {
     return new Promise(async function (resolve, reject) {
       DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
                           '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
@@ -439,7 +439,7 @@ app.post('/Authenticate', (req, res) => {
             console.log('SourceDEDataResult : ' + SourceDEDataResult.length);
             var tempLength = SourceDEDataResult.length;
             while(tempLength == 2500) {
-              tempResult = await getMoreData(DEDataRequestId);
+              tempResult = await getMoreData(DEDataRequestId , key);
             }
           }
           else {
