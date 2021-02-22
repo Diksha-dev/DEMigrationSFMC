@@ -708,7 +708,7 @@ app.post('/Authenticate', (req, res) => {
                 console.log(key1 + ' : dekh 4 : ' + JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"]));
               }
               if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
-                if(JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]) != undefined || JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]) != '{}' || JSON.stringify(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]) != null) {
+                if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]] !== undefined) {
                   if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
                     DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
                   }
