@@ -811,10 +811,10 @@ app.post('/Authenticate', (req, res) => {
       DEListMap = await getSourceDEFieldsAndData();
       // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
       for (var key in DEListMap) {
-        DEListMap[key].FieldCount = Object.keys(DEListMap[key].DEFieldMap).length;
-        DEListMap[key].RecordCount = DEListMap[key].DEDataMap.length;
+        //DEListMap[key].FieldCount = Object.keys(DEListMap[key].DEFieldMap).length;
+        //DEListMap[key].RecordCount = DEListMap[key].DEDataMap.length;
       }
-      res.send(DEListMap);
+      res.send(DEListSend);
     }
   });
 
