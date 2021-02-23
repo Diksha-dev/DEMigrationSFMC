@@ -315,19 +315,7 @@ app.post('/Authenticate', (req, res) => {
         //console.log('DEListMap : ' + JSON.stringify(DEListMap));
 
         
-        for (var key in DEListMap) {
-          DEListSend[key] = {
-            "DEName" : DEListMap[key].DEName,
-            "DECustomerKey" : DEListMap[key].DECustomerKey,
-            "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
-            "RecordCount" : DEListMap[key].DEDataMap.length,
-            "DEDescription" : DEListMap[key].DEDescription,
-            "DEIsSendable" : DEListMap[key].DEIsSendable,
-            "DEIsTestable" : DEListMap[key].DEIsTestable,
-            "DESendDEField" : DEListMap[key].DESendDEField,
-            "DESendSubsField" : DEListMap[key].DESendSubsField
-          };
-        }
+    
 
         resolve(DEListMap);
       });
@@ -448,6 +436,17 @@ app.post('/Authenticate', (req, res) => {
             while(tempLength == 2500) {
               tempLength = await getMoreData(DEDataRequestId , key);
             }
+            DEListSend[key] = {
+              "DEName" : DEListMap[key].DEName,
+              "DECustomerKey" : DEListMap[key].DECustomerKey,
+              "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+              "RecordCount" : DEListMap[key].DEDataMap.length,
+              "DEDescription" : DEListMap[key].DEDescription,
+              "DEIsSendable" : DEListMap[key].DEIsSendable,
+              "DEIsTestable" : DEListMap[key].DEIsTestable,
+              "DESendDEField" : DEListMap[key].DESendDEField,
+              "DESendSubsField" : DEListMap[key].DESendSubsField
+            };
           }
           else {
             //console.log('Length : ' + SourceDEDataResult.length);
@@ -466,8 +465,32 @@ app.post('/Authenticate', (req, res) => {
               }*/
               
             }
+            DEListSend[key] = {
+              "DEName" : DEListMap[key].DEName,
+              "DECustomerKey" : DEListMap[key].DECustomerKey,
+              "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+              "RecordCount" : DEListMap[key].DEDataMap.length,
+              "DEDescription" : DEListMap[key].DEDescription,
+              "DEIsSendable" : DEListMap[key].DEIsSendable,
+              "DEIsTestable" : DEListMap[key].DEIsTestable,
+              "DESendDEField" : DEListMap[key].DESendDEField,
+              "DESendSubsField" : DEListMap[key].DESendSubsField
+            };
             //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
           }
+        }
+        else {
+          DEListSend[key] = {
+            "DEName" : DEListMap[key].DEName,
+            "DECustomerKey" : DEListMap[key].DECustomerKey,
+            "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+            "RecordCount" : DEListMap[key].DEDataMap.length,
+            "DEDescription" : DEListMap[key].DEDescription,
+            "DEIsSendable" : DEListMap[key].DEIsSendable,
+            "DEIsTestable" : DEListMap[key].DEIsTestable,
+            "DESendDEField" : DEListMap[key].DESendDEField,
+            "DESendSubsField" : DEListMap[key].DESendSubsField
+          };
         }
         resolve(DEListMap[key].DEDataMap);
       });
@@ -810,10 +833,10 @@ app.post('/Authenticate', (req, res) => {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
       // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
-      for (var key in DEListMap) {
+      //for (var key in DEListMap) {
         //DEListMap[key].FieldCount = Object.keys(DEListMap[key].DEFieldMap).length;
         //DEListMap[key].RecordCount = DEListMap[key].DEDataMap.length;
-      }
+      //}
       res.send(DEListSend);
     }
   });
