@@ -45,6 +45,7 @@ app.post('/Authenticate', (req, res) => {
   var DestinationAuthBaseURI = req.body.DestinationAuthBaseURI;
   var DestinationMID = req.body.DestinationMID;
 
+  var DEListSend = {};
   var selectedDEList;
 
   var FinalResult = {};
@@ -312,6 +313,21 @@ app.post('/Authenticate', (req, res) => {
           await getDEData(key);
         }
         //console.log('DEListMap : ' + JSON.stringify(DEListMap));
+
+        
+        for (var key in DEListMap) {
+          DEListSend[key] = {
+            "DEName" : DEListMap[key].DEName,
+            "DECustomerKey" : DEListMap[key].DECustomerKey,
+            "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+            "RecordCount" : DEListMap[key].DEDataMap.length,
+            "DEDescription" : DEListMap[key].DEDescription,
+            "DEIsSendable" : DEListMap[key].DEIsSendable,
+            "DEIsTestable" : DEListMap[key].DEIsTestable,
+            "DESendDEField" : DEListMap[key].DESendDEField,
+            "DESendSubsField" : DEListMap[key].DESendSubsField
+          };
+        }
 
         resolve(DEListMap);
       });
@@ -794,20 +810,9 @@ app.post('/Authenticate', (req, res) => {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
       // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
-
-      var DEListSend = {};
       for (var key in DEListMap) {
-        DEListSend[key] = {
-          "DEName" : DEListMap[key].DEName,
-          "DECustomerKey" : DEListMap[key].DECustomerKey,
-          "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
-          "RecordCount" : DEListMap[key].DEDataMap.length,
-          "DEDescription" : DEListMap[key].DEDescription,
-          "DEIsSendable" : DEListMap[key].DEIsSendable,
-          "DEIsTestable" : DEListMap[key].DEIsTestable,
-          "DESendDEField" : DEListMap[key].DESendDEField,
-          "DESendSubsField" : DEListMap[key].DESendSubsField
-        };
+        DEListMap[key].FieldCount = Object.keys(DEListMap[key].DEFieldMap).length;
+        DEListMap[key].RecordCount = DEListMap[key].DEDataMap.length;
       }
       res.send(DEListMap);
     }
