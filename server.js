@@ -175,7 +175,7 @@ app.post('/Authenticate', (req, res) => {
                 "DESendDEField": SourceListDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListDEResult[key].SendableSubscriberField[0].Name[0],
                 "DEFieldMap": {},
-                "DEDataMap": {}
+                "DEDataMap": []
               };
             }
             else {
@@ -188,7 +188,7 @@ app.post('/Authenticate', (req, res) => {
                 "DESendDEField": '',
                 "DESendSubsField": '',
                 "DEFieldMap": {},
-                "DEDataMap": {}
+                "DEDataMap": []
               };
             }
           }
@@ -423,7 +423,6 @@ app.post('/Authenticate', (req, res) => {
           DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
         });
 
-        DEListMap[key].DEDataMap = [];
         if(SourceDEDataResult) {
           if(SourceDEDataResult.length == 2500) {
             for (var key1 in SourceDEDataResult) {
@@ -795,11 +794,22 @@ app.post('/Authenticate', (req, res) => {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
       // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
+
+      var DEListSend = {};
       for (var key in DEListMap) {
-        DEListMap[key].FieldCount = Object.keys(DEListMap[key].DEFieldMap).length;
-        DEListMap[key].RecordCount = DEListMap[key].DEDataMap.length;
+        DEListSend[key] = {
+          "DEName" : DEListMap[key].DEName,
+          "DECustomerKey" : DEListMap[key].DECustomerKey,
+          "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+          "RecordCount" : DEListMap[key].DEDataMap.length,
+          "DEDescription" : DEListMap[key].DEDescription,
+          "DEIsSendable" : DEListMap[key].DEIsSendable,
+          "DEIsTestable" : DEListMap[key].DEIsTestable,
+          "DESendDEField" : DEListMap[key].DESendDEField,
+          "DESendSubsField" : DEListMap[key].DESendSubsField
+        };
       }
-      res.send(DEListMap);
+      res.send(DEListSend);
     }
   });
 
