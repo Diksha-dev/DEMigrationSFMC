@@ -809,7 +809,7 @@ app.post('/Authenticate', (req, res) => {
           "DESendSubsField" : DEListMap[key].DESendSubsField
         };
       }
-      res.send(DEListSend);
+      res.send(DEListMap);
     }
   });
 
