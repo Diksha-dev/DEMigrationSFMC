@@ -838,7 +838,7 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
-      // console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
+      console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
       //DEListSend from getSourceDEFieldsAndData
       res.send(DEListSend);
     }
