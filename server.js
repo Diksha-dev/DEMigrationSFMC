@@ -821,6 +821,12 @@ app.post('/Authenticate', (req, res) => {
           });
         }
       }
+      else {
+        FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+        FinalResult[key]["DEDataInsert"]["StatusCode"] = 200;
+        FinalResult[key]["DEDataInsert"]["StatusMessage"] = "Success";
+        FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
+      }
     })
   }
 
