@@ -838,7 +838,7 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfDE();
       DEListMap = await getSourceDEFieldsAndData();
-      console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
+      //console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
       //DEListSend from getSourceDEFieldsAndData
       res.send(DEListSend);
     }
@@ -857,6 +857,129 @@ app.post('/Authenticate', (req, res) => {
       console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
     res.send(FinalResult);
+  });
+
+
+
+
+
+
+
+
+
+
+  async function getSourceListOfSharedDE() {
+    return new Promise(function (resolve, reject) {
+      authTokenForBothSFDC();
+
+      var SharedDEFolderOption = {
+        'method': 'POST',
+        'url': SourceSoapURL + 'Service.asmx',
+        'headers': {
+          'Content-Type': 'text/xml',
+          'SoapAction': 'Retrieve',
+          'Authorization': 'Bearer ' + SourceAccessToken
+        },
+        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataFolder</ObjectType>\r\n                <Properties>ID</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>ContentType</Properties>\r\n                <Properties>ParentFolder.Name</Properties>\r\n                <Properties>ObjectID</Properties>\r\n                <Properties>ParentFolder.ObjectID</Properties>\r\n\r\n                <ns1:Filter\r\n                     xmlns:ns1="http://exacttarget.com/wsdl/partnerAPI" xsi:type="ns1:SimpleFilterPart">\r\n                     <ns1:Property>ContentType</ns1:Property>\r\n                     <ns1:SimpleOperator>equals</ns1:SimpleOperator>\r\n                     <ns1:Value>shared_dataextension</ns1:Value>\r\n                </ns1:Filter>\r\n\r\n                <QueryAllAccounts>true</QueryAllAccounts>\r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
+
+      };
+      request(SharedDEFolderOption, function (error, response) {
+        if (error) throw new Error(error);
+
+        xml2jsParser.parseString(response.body, function (err, result) {
+          console.log('DATA Folder : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+        });
+
+        for(var key in SourceListDEResult) {
+          console.log(key + ' : CategoryID : ' + SourceListDEResult[key].ID);
+        }
+
+
+      });
+
+
+      var ListDEOption = {
+        'method': 'POST',
+        'url': SourceSoapURL + 'Service.asmx',
+        'headers': {
+          'Content-Type': 'text/xml',
+          'SoapAction': 'Retrieve',
+          'Authorization': 'Bearer ' + SourceAccessToken
+        },
+        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtension</ObjectType>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>DataExtension.ObjectID</Properties>\r\n                <Properties>IsSendable</Properties>\r\n          <Properties>IsTestable</Properties>\r\n             <Properties>SendableSubscriberField.Name</Properties>\r\n        <Properties>SendableDataExtensionField.Name</Properties>\r\n          <Properties>Description</Properties>\r\n                \r\n        \r\n                \r\n        \r\n             \r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
+      };
+      request(ListDEOption, function (error, response) {
+        if (error) throw new Error(error);
+        SourceListDEResult = response.body;
+
+
+        xml2jsParser.parseString(SourceListDEResult, function (err, result) {
+          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+        });
+
+        //SourceListDEResult = SourceListDEResult.replace(/:/g, "");
+        //SourceListDEResult = xmlParser.toJson(SourceListDEResult);
+        //SourceListDEResult = JSON.parse(SourceListDEResult);
+        //SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+
+
+        var DEListMap = {};
+        for (var key in SourceListDEResult) {
+          if (SourceListDEResult[key].Name[0] != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name[0] != "_MobileAddress" && SourceListDEResult[key].Name[0] != "_MobileSubscription" && SourceListDEResult[key].Name[0] != "_PushAddress" && SourceListDEResult[key].Name[0] != "_PushTag" && SourceListDEResult[key].Name[0] != "_MobileLineAddressContact" && SourceListDEResult[key].Name[0] != "_MobileLineAddress" && SourceListDEResult[key].Name[0] != "_MobileLineProfile" && SourceListDEResult[key].Name[0] != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name[0] != "_MobileLineSubscription" && SourceListDEResult[key].Name[0] != "MobileLineOrphanContact") {
+            if (SourceListDEResult[key].IsSendable[0] == "true") {
+              DEListMap[SourceListDEResult[key].CustomerKey] = {
+                "DEName": SourceListDEResult[key].Name[0],
+                "DECustomerKey": SourceListDEResult[key].CustomerKey[0],
+                "DEIsSendable": SourceListDEResult[key].IsSendable[0],
+                "DEIsTestable": SourceListDEResult[key].IsTestable[0],
+                "DEDescription": SourceListDEResult[key].Description[0],
+                "DESendDEField": SourceListDEResult[key].SendableDataExtensionField[0].Name[0],
+                "DESendSubsField": SourceListDEResult[key].SendableSubscriberField[0].Name[0],
+                "DEFieldMap": {},
+                "DEDataMap": []
+              };
+            }
+            else {
+              DEListMap[SourceListDEResult[key].CustomerKey[0]] = {
+                "DEName": SourceListDEResult[key].Name[0],
+                "DECustomerKey": SourceListDEResult[key].CustomerKey[0],
+                "DEIsSendable": SourceListDEResult[key].IsSendable[0],
+                "DEIsTestable": SourceListDEResult[key].IsTestable[0],
+                "DEDescription": SourceListDEResult[key].Description[0],
+                "DESendDEField": '',
+                "DESendSubsField": '',
+                "DEFieldMap": {},
+                "DEDataMap": []
+              };
+            }
+          }
+        }
+        //console.log('DEListMap : ' + JSON.stringify(DEListMap));
+        resolve(DEListMap);
+      });
+    })
+  }
+
+
+
+
+
+
+
+
+
+
+
+  app.post("/SharedDEListShowAPI", async (req, res) => {
+    if (req.body.reqForDEList = 'True') {
+      DEListMap = await getSourceListOfSharedDE();
+      DEListMap = await getSourceDEFieldsAndData();
+      //console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
+      //DEListSend from getSourceDEFieldsAndData
+      res.send(DEListSend);
+    }
   });
 
 

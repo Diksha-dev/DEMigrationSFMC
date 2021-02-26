@@ -63,6 +63,10 @@
                                             </li>
                                             &nbsp;
                                             <li class="slds-nav-vertical__item">
+                                                <button class="slds-nav-vertical__action slds-button" onclick="SharedDEListShow()" style="padding-top:0px;padding-bottom:0px;padding-left:4px;">Shared Data Extension</button>
+                                            </li>
+                                            &nbsp;
+                                            <li class="slds-nav-vertical__item">
                                                 <button class="slds-nav-vertical__action slds-button" onclick="SendDEIdsToServer()" style="padding-top:0px;padding-bottom:0px;padding-left:4px;">Send</button>
                                             </li>
                                         </ul>
@@ -299,6 +303,100 @@
 
 
     }
+
+
+
+
+
+
+
+
+
+    async function SharedDEListShow() {
+        await $.ajax
+            ({
+                url: '/SharedDEListShowAPI',
+                data: {
+                    'reqForDEList': 'True'
+                },
+                type: "POST",
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                success: function (data) {
+                    //console.log('data : ' + JSON.stringify(data));
+                    SourceListDEResult = data;
+                    var tds = "", DEDes = '';
+                    for (var key in SourceListDEResult) {
+                        if (JSON.stringify(SourceListDEResult[key].DEDescription) == '{}') {
+                            DEDes = '';
+                        }
+                        else {
+                            DEDes = SourceListDEResult[key].DEDescription;
+                        }
+                        if(SourceListDEResult[key].DEIsSendable == 'true') {
+                            tds = tds + '<tr class="slds-hint-parent"> ' +
+                                '<td class="slds-row-select"> ' +
+                                '<label class="slds-checkbox"> ' +
+                                '<input type="checkbox" value="WithoutData" onchange="isWithoutData()" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<span class="slds-checkbox--faux"></span> ' +
+                                '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
+                                '</label> ' +
+                                '</td>' +
+                                '<td class="slds-row-select"> ' +
+                                '<label class="slds-checkbox"> ' +
+                                '<input type="checkbox" value="WithData" onchange="isWithData()" id="'+ SourceListDEResult[key].DECustomerKey +'" class="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<span class="slds-checkbox--faux"></span> ' +
+                                '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
+                                '</label> ' +
+                                '</td>' +
+                                '<th data-label="name" role="row" id="' + SourceListDEResult[key].DECustomerKey + 'DEName">' + SourceListDEResult[key].DEName + '</th> ' +
+                                '<td data-label="external-key" id="' + SourceListDEResult[key].DECustomerKey + 'DEExtKey">' + SourceListDEResult[key].DECustomerKey + '</td> ' +
+                                '<td data-label="FieldCount" id="' + SourceListDEResult[key].DECustomerKey + 'DEFieldCount">' + SourceListDEResult[key].FieldCount + '</td>' +
+                                '<td data-label="RecordCount" id="' + SourceListDEResult[key].DECustomerKey + 'DERecordCount">' + SourceListDEResult[key].RecordCount + '</td>' +
+                                '<td data-label="description" id="' + SourceListDEResult[key].DECustomerKey + 'DEDes">' + DEDes + '</td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DEIsSend">' + SourceListDEResult[key].DEIsSendable + '</td>' +
+                                '<td data-label="Testable" id="' + SourceListDEResult[key].DECustomerKey + 'DEIsTest">' + SourceListDEResult[key].DEIsTestable + '</td>' +
+                                '<td data-label="sendable DE Field" id="' + SourceListDEResult[key].DECustomerKey + 'DESendDEField">' + SourceListDEResult[key].DESendDEField + '</td>' +
+                                '<td data-label="sendable Subscriber Field" id="' + SourceListDEResult[key].DECustomerKey + 'DESendSubField">' + SourceListDEResult[key].DESendSubsField + '</td>' +
+                                '</tr>';
+                        }
+                        else {
+                            tds = tds + '<tr class="slds-hint-parent"> ' +
+                                '<td class="slds-row-select"> ' +
+                                '<label class="slds-checkbox"> ' +
+                                '<input type="checkbox" value="WithoutData" onchange="isWithoutData()" id="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<span class="slds-checkbox--faux"></span> ' +
+                                '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
+                                '</label> ' +
+                                '</td>' +
+                                '<td class="slds-row-select"> ' +
+                                '<label class="slds-checkbox"> ' +
+                                '<input type="checkbox" value="WithData" onchange="isWithData()" id="'+ SourceListDEResult[key].DECustomerKey +'" class="'+ SourceListDEResult[key].DECustomerKey +'"/> ' +
+                                '<span class="slds-checkbox--faux"></span> ' +
+                                '<span class="slds-form-element__label slds-assistive-text">select row</span> ' +
+                                '</label> ' +
+                                '</td>' +
+                                '<th data-label="name" role="row" id="' + SourceListDEResult[key].DECustomerKey + 'DEName">' + SourceListDEResult[key].DEName + '</th> ' +
+                                '<td data-label="external-key" id="' + SourceListDEResult[key].DECustomerKey + 'DEExtKey">' + SourceListDEResult[key].DECustomerKey + '</td> ' +
+                                '<td data-label="FieldCount" id="' + SourceListDEResult[key].DECustomerKey + 'DEFieldCount">' + SourceListDEResult[key].FieldCount + '</td>' +
+                                '<td data-label="RecordCount" id="' + SourceListDEResult[key].DECustomerKey + 'DERecordCount">' + SourceListDEResult[key].RecordCount + '</td>' +
+                                '<td data-label="description" id="' + SourceListDEResult[key].DECustomerKey + 'DEDes">' + DEDes + '</td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DEIsSend">' + SourceListDEResult[key].DEIsSendable + '</td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DEIsTest">' + SourceListDEResult[key].DEIsTestable + '</td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DESendDEField"></td>' +
+                                '<td data-label="sendable" id="' + SourceListDEResult[key].DECustomerKey + 'DESendSubField"></td>' +
+                                '</tr>';
+                        }
+                    }
+                    document.getElementById('DEBody').innerHTML = tds;
+                }
+            })
+    }
+
+
+
+
 </script>
 
 </html>
