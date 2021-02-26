@@ -929,10 +929,10 @@ app.post('/Authenticate', (req, res) => {
                                                     '<Property>CategoryID</Property>';
                                                     
         if(CategoryIDList.length == 1) {
-          ListShareDEBody = ListShareDEBody + '<SimpleOperator>IN</SimpleOperator> <Value>' + CategoryIDList[0] + '</Value>';
+          ListShareDEBody = ListShareDEBody + '<SimpleOperator>equals</SimpleOperator> <Value>' + CategoryIDList[0] + '</Value>';
         }
         else {
-          ListShareDEBody = ListShareDEBody + '<SimpleOperator>equals</SimpleOperator>';
+          ListShareDEBody = ListShareDEBody + '<SimpleOperator>IN</SimpleOperator>';
           for(var i = 0 ; i < CategoryIDList.length ; i++) {
             ListShareDEBody = ListShareDEBody + '<Value>' + CategoryIDList[i] + '</Value>';
           }
