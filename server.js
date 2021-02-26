@@ -925,6 +925,7 @@ app.post('/Authenticate', (req, res) => {
                                                 '<Properties>IsTestable</Properties>' +
                                                 '<Properties>SendableSubscriberField.Name</Properties>' +
                                                 '<Properties>SendableDataExtensionField.Name</Properties>' +
+                                                '<Properties>Description</Properties>' +
                                                 '<Properties>CategoryID</Properties>' +
                                                 '<Properties>Client.ID</Properties>' +  
                                                 '<Filter xsi:type="SimpleFilterPart">' +
