@@ -871,6 +871,7 @@ app.post('/Authenticate', (req, res) => {
   async function getSourceListOfSharedDE() {
     return new Promise(function (resolve, reject) {
       authTokenForBothSFDC();
+      var SharedDEFolder;
 
       var SharedDEFolderOption = {
         'method': 'POST',
@@ -888,12 +889,12 @@ app.post('/Authenticate', (req, res) => {
 
         xml2jsParser.parseString(response.body, function (err, result) {
           //console.log('DATA Folder : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
-          SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+          SharedDEFolder = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
 
         var CategoryIDList = [];
-        for(var key in SourceListDEResult) {
-          CategoryIDList.push(SourceListDEResult[key].ID[0]);
+        for(var key in SharedDEFolder) {
+          CategoryIDList.push(SharedDEFolder[key].ID[0]);
         }
         console.log('CategoryID : ' + CategoryIDList);
 
@@ -935,7 +936,8 @@ app.post('/Authenticate', (req, res) => {
                                     '</RetrieveRequestMsg>' +
                                 '</s:Body>' +
                               '</s:Envelope>'; 
-
+        
+        console.log('body : ' + ListShareDEBody);
         var ListSharedDEOption = {
           'method': 'POST',
           'url': SourceSoapURL + 'Service.asmx',
@@ -948,7 +950,7 @@ app.post('/Authenticate', (req, res) => {
         };
         request(ListSharedDEOption, function (error, response) {
           if (error) throw new Error(error);
-
+          console.log(response.body);
           xml2jsParser.parseString(response.body, function (err, result) {
             console.log('Shared DE Result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
             SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
