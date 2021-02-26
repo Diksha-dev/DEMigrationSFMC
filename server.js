@@ -926,11 +926,18 @@ app.post('/Authenticate', (req, res) => {
                                                 '<Properties>CategoryID</Properties>' +
                                                 '<Properties>Client.ID</Properties>' +  
                                                 '<Filter xsi:type="SimpleFilterPart">' +
-                                                    '<Property>CategoryID</Property>' +
-                                                    '<SimpleOperator>IN</SimpleOperator>';
-        for(var i = 0 ; i < CategoryIDList.length ; i++) {
-          ListShareDEBody = ListShareDEBody + '<Value>' + CategoryIDList[i] + '</Value>';
-        }     
+                                                    '<Property>CategoryID</Property>';
+                                                    
+        if(CategoryIDList.length == 1) {
+          ListShareDEBody = ListShareDEBody + '<SimpleOperator>IN</SimpleOperator> <Value>' + CategoryIDList[0] + '</Value>';
+        }
+        else {
+          ListShareDEBody = ListShareDEBody + '<SimpleOperator>equals</SimpleOperator>';
+          for(var i = 0 ; i < CategoryIDList.length ; i++) {
+            ListShareDEBody = ListShareDEBody + '<Value>' + CategoryIDList[i] + '</Value>';
+          }
+        }
+            
         ListShareDEBody = ListShareDEBody + '</Filter>' +
                                           '</RetrieveRequest>' +
                                     '</RetrieveRequestMsg>' +
