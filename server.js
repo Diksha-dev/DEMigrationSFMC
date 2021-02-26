@@ -928,7 +928,7 @@ app.post('/Authenticate', (req, res) => {
                                                 '<Filter xsi:type="SimpleFilterPart">' +
                                                     '<Property>CategoryID</Property>' +
                                                     '<SimpleOperator>IN</SimpleOperator>';
-        for(var i = 0 ; i <= CategoryIDList.length ; i++) {
+        for(var i = 0 ; i < CategoryIDList.length ; i++) {
           ListShareDEBody = ListShareDEBody + '<Value>' + CategoryIDList[i] + '</Value>';
         }     
         ListShareDEBody = ListShareDEBody + '</Filter>' +
