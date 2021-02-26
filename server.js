@@ -29,6 +29,8 @@ var SourceListDEResult;
 var SourceDEFieldsResult;
 var SourceDEDataResult;
 
+var SourceListSharedDEResult;
+
 var DestinationAccessToken = '';
 var DestinationRestURL = '';
 var DestinationSoapURL = '';
@@ -896,7 +898,7 @@ app.post('/Authenticate', (req, res) => {
         for(var key in SharedDEFolder) {
           CategoryIDList.push(SharedDEFolder[key].ID[0]);
         }
-        console.log('CategoryID : ' + CategoryIDList);
+        //console.log('CategoryID : ' + CategoryIDList);
 
 
         var ListShareDEBody = '<?xml version="1.0" encoding="UTF-8"?>' +
@@ -944,7 +946,7 @@ app.post('/Authenticate', (req, res) => {
                                 '</s:Body>' +
                               '</s:Envelope>'; 
         
-        console.log('body : ' + ListShareDEBody);
+        //console.log('body : ' + ListShareDEBody);
         var ListSharedDEOption = {
           'method': 'POST',
           'url': SourceSoapURL + 'Service.asmx',
@@ -957,12 +959,44 @@ app.post('/Authenticate', (req, res) => {
         };
         request(ListSharedDEOption, function (error, response) {
           if (error) throw new Error(error);
-          console.log(response.body);
+          
           xml2jsParser.parseString(response.body, function (err, result) {
-            console.log('Shared DE Result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
-            SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+            //console.log('Shared DE Result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+            SourceListSharedDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
           });
 
+
+          var SharedDEListMap = {};
+          for (var key in SourceListSharedDEResult) {
+            if (SourceListSharedDEResult[key].IsSendable[0] == "true") {
+              SharedDEListMap[SourceListSharedDEResult[key].CustomerKey] = {
+                "DEName": SourceListSharedDEResult[key].Name[0],
+                "DECustomerKey": SourceListSharedDEResult[key].CustomerKey[0],
+                "DEIsSendable": SourceListSharedDEResult[key].IsSendable[0],
+                "DEIsTestable": SourceListSharedDEResult[key].IsTestable[0],
+                "DEDescription": SourceListSharedDEResult[key].Description[0],
+                "DESendDEField": SourceListSharedDEResult[key].SendableDataExtensionField[0].Name[0],
+                "DESendSubsField": SourceListSharedDEResult[key].SendableSubscriberField[0].Name[0],
+                "DEFieldMap": {},
+                "DEDataMap": []
+              };
+            }
+            else {
+              SharedDEListMap[SourceListSharedDEResult[key].CustomerKey[0]] = {
+                "DEName": SourceListSharedDEResult[key].Name[0],
+                "DECustomerKey": SourceListSharedDEResult[key].CustomerKey[0],
+                "DEIsSendable": SourceListSharedDEResult[key].IsSendable[0],
+                "DEIsTestable": SourceListSharedDEResult[key].IsTestable[0],
+                "DEDescription": SourceListSharedDEResult[key].Description[0],
+                "DESendDEField": '',
+                "DESendSubsField": '',
+                "DEFieldMap": {},
+                "DEDataMap": []
+              };
+            }
+          }
+          console.log('SharedDEListMap : ' + JSON.stringify(SharedDEListMap));
+          resolve(SharedDEListMap);
         });
 
 
