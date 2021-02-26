@@ -887,13 +887,79 @@ app.post('/Authenticate', (req, res) => {
         if (error) throw new Error(error);
 
         xml2jsParser.parseString(response.body, function (err, result) {
-          console.log('DATA Folder : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          //console.log('DATA Folder : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
 
+        var CategoryIDList = [];
         for(var key in SourceListDEResult) {
-          console.log(key + ' : CategoryID : ' + SourceListDEResult[key].ID);
+          CategoryIDList.push(SourceListDEResult[key].ID[0]);
         }
+        console.log('CategoryID : ' + CategoryIDList);
+
+
+        var ListShareDEBody = '<?xml version="1.0" encoding="UTF-8"?>' +
+                                '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+                                    '<s:Header>' +
+                                        '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+                                        '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
+                                        '<a:ReplyTo>' +
+                                            '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
+                                        '</a:ReplyTo>' +
+                                        '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
+                                        '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
+                                    '</s:Header>' +
+                                    '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+                                        '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+                                            '<RetrieveRequest>' +
+                                                '<ObjectType>DataExtension</ObjectType>' +
+                                                '<QueryAllAccounts>true</QueryAllAccounts>' +
+                                                '<QueryAllAccountsSpecified>true</QueryAllAccountsSpecified>' +
+                                                '<Properties>CustomerKey</Properties>' +
+                                                '<Properties>Name</Properties>' +
+                                                '<Properties>DataExtension.ObjectID</Properties>' +
+                                                '<Properties>IsSendable</Properties>' +
+                                                '<Properties>IsTestable</Properties>' +
+                                                '<Properties>SendableSubscriberField.Name</Properties>' +
+                                                '<Properties>SendableDataExtensionField.Name</Properties>' +
+                                                '<Properties>CategoryID</Properties>' +
+                                                '<Properties>Client.ID</Properties>' +  
+                                                '<Filter xsi:type="SimpleFilterPart">' +
+                                                    '<Property>CategoryID</Property>' +
+                                                    '<SimpleOperator>IN</SimpleOperator>';
+        for(var i = 0 ; i <= CategoryIDList.length ; i++) {
+          ListShareDEBody = ListShareDEBody + '<Value>' + CategoryIDList[i] + '</Value>';
+        }     
+        ListShareDEBody = ListShareDEBody + '</Filter>' +
+                                          '</RetrieveRequest>' +
+                                    '</RetrieveRequestMsg>' +
+                                '</s:Body>' +
+                              '</s:Envelope>'; 
+
+        var ListSharedDEOption = {
+          'method': 'POST',
+          'url': SourceSoapURL + 'Service.asmx',
+          'headers': {
+            'Content-Type': 'text/xml',
+            'SoapAction': 'Retrieve',
+            'Authorization': 'Bearer ' + SourceAccessToken
+          },
+          body: ListShareDEBody
+        };
+        request(ListSharedDEOption, function (error, response) {
+          if (error) throw new Error(error);
+
+          xml2jsParser.parseString(response.body, function (err, result) {
+            console.log('Shared DE Result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+            SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+          });
+
+        });
+
+
+
+
+
 
 
       });
