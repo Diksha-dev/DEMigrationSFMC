@@ -1067,7 +1067,7 @@ app.post('/Authenticate', (req, res) => {
                                 '</s:Body>' +
                               '</s:Envelope>';
 
-      console.log('ShareDEFieldsBody : ' + ShareDEFieldsBody);
+      //console.log('ShareDEFieldsBody : ' + ShareDEFieldsBody);
       var SharedDEFieldOption = {
         'method': 'POST',
         'url': SourceSoapURL + 'Service.asmx',
@@ -1085,14 +1085,41 @@ app.post('/Authenticate', (req, res) => {
         SourceSharedDEFieldsResult = response.body;
 
         xml2jsParser.parseString(SourceSharedDEFieldsResult, function (err, result) {
-          console.log('mera field result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          //console.log('mera field result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceSharedDEFieldsResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
+
+        for (var key in SourceSharedDEFieldsResult) {
+          if (SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0] in SharedDEListMap) {
+            SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].SharedDEFieldMap[SourceSharedDEFieldsResult[key].Name] = {
+              "FieldName": SourceSharedDEFieldsResult[key].Name,
+              "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired,
+              "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey,
+              "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType,
+              "FieldMaxLength": SourceSharedDEFieldsResult[key].MaxLength,
+              "FieldScale": SourceSharedDEFieldsResult[key].Scale,
+              "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue
+            };
+          }
+        }
+
+        console.log('settled Field : ' + JSON.stringify(SharedDEListMap));
+
+        /*
+        for (var key in DEListMap) {
+          await getDEData(key);
+        }
+        //console.log('DEListMap : ' + JSON.stringify(DEListMap));
+        */
+
+        
+    
+
+        resolve(SharedDEListMap);
+
       });
 
 //--------------------------------
-/*
-      request(ddg, async function (error, response) {
         
 
         //SourceDEFieldsResult = SourceDEFieldsResult.replace(/:/g, "");
@@ -1101,6 +1128,7 @@ app.post('/Authenticate', (req, res) => {
         //SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
         //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
+        /*
         var FieldSet = new Set();
         for (var key in SourceDEFieldsResult) {
           if (SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0] in DEListMap) {
@@ -1160,37 +1188,8 @@ app.post('/Authenticate', (req, res) => {
         for (var val of Array.from(FieldSet)) {
           SourceDEFieldsResult.push(JSON.parse(val));
         }
+        */
 
-
-        for (var key in SourceDEFieldsResult) {
-          if (SourceDEFieldsResult[key].DEExtKey in DEListMap) {
-            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEFieldMap[SourceDEFieldsResult[key].Name] = {
-              "FieldName": SourceDEFieldsResult[key].Name,
-              "FieldIsRequired": SourceDEFieldsResult[key].IsRequired,
-              "FieldIsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey,
-              "FieldFieldType": SourceDEFieldsResult[key].FieldType,
-              "FieldMaxLength": SourceDEFieldsResult[key].MaxLength,
-              "FieldScale": SourceDEFieldsResult[key].Scale,
-              "FieldDefaultValue": SourceDEFieldsResult[key].DefaultValue
-            };
-          }
-        }
-
-
-        //-----------------------------------------
-
-
-        for (var key in DEListMap) {
-          await getDEData(key);
-        }
-        //console.log('DEListMap : ' + JSON.stringify(DEListMap));
-
-        
-    
-
-        resolve(DEListMap);
-      });
-      */
     })
   }
 
@@ -1204,8 +1203,8 @@ app.post('/Authenticate', (req, res) => {
 
   app.post("/SharedDEListShowAPI", async (req, res) => {
     if (req.body.reqForDEList = 'True') {
-      DEListMap = await getSourceListOfSharedDE();
-      DEListMap = await getSourceSharedDEFieldsAndData();
+      SharedDEListMap = await getSourceListOfSharedDE();
+      SharedDEListMap = await getSourceSharedDEFieldsAndData();
       //console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
       //DEListSend from getSourceDEFieldsAndData
       res.send(DEListSend);
