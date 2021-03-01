@@ -1174,11 +1174,14 @@ app.post('/Authenticate', (req, res) => {
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
         if(looplength >= 2) {
           NextUrl = tempResult.links.next;
-          //NextUrl = NextUrl.split('/');
-          //NextUrl = NextUrl[4];
+          NextUrl = NextUrl.split('/');
+          NextUrl = NextUrl[4];
           for(var i = 2 ; i <= looplength ; i++) {
             console.log('for key : ' + i);
             NextUrl = await getMoreSharedDEData(NextUrl , key , i);
+            NextUrl = NextUrl.split('/');
+            NextUrl = NextUrl[4];
+            
           }
           SharedDEListSend[key] = {
             "DEName" : SharedDEListMap[key].DEName,
@@ -1293,11 +1296,11 @@ app.post('/Authenticate', (req, res) => {
 
   async function getMoreSharedDEData(NextUrl , key , i) {
     return new Promise(async function (resolve, reject) {
-      //var url = SourceRestURL + 'data/v1/customobjectdata/token/' + NextUrl + '/rowset?$page=' + i;
-      //console.log('url : ' + url);
+      var url = SourceRestURL + 'data/v1/customobjectdata/token/' + NextUrl + '/rowset?$page=' + i;
+      console.log('url : ' + url);
       var SharedDEMoreDataOptions = {
         'method': 'GET',
-        'url': SourceRestURL + 'data' + NextUrl,
+        'url': url,
         'headers': {
           'Authorization': 'Bearer ' + SourceAccessToken
         }
