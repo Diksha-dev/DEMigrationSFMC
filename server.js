@@ -1175,7 +1175,7 @@ app.post('/Authenticate', (req, res) => {
           "DEName" : SharedDEListMap[key].DEName,
           "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
           "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
-          "RecordCount" : SharedDEListMap[key].DEDataMap.length,
+          "RecordCount" : tempResult.count,
           "DEDescription" : SharedDEListMap[key].DEDescription,
           "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
           "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
