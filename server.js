@@ -1087,58 +1087,22 @@ app.post('/Authenticate', (req, res) => {
           //console.log('mera field result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceSharedDEFieldsResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
-        console.log(JSON.stringify(SourceSharedDEFieldsResult));
+
         for (var key in SourceSharedDEFieldsResult) {
-          console.log('in for : ' + SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]);
           if (SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0] in SharedDEListMap) {
-            if('Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
-              SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
-                "FieldName": SourceSharedDEFieldsResult[key].Name[0],
-                "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
-                "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
-                "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
-                "FieldMaxLength": SourceSharedDEFieldsResult[key].MaxLength[0],
-                "FieldScale": SourceSharedDEFieldsResult[key].Scale[0],
-                "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
-              };
-            }
-            else if( ('Scale' in SourceDEFieldsResult[key]) == false && 'MaxLength' in SourceDEFieldsResult[key]) {
-              SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
-                "FieldName": SourceSharedDEFieldsResult[key].Name[0],
-                "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
-                "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
-                "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
-                "FieldMaxLength": SourceSharedDEFieldsResult[key].MaxLength[0],
-                "FieldScale": "",
-                "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
-              };
-            }
-            else if('Scale' in SourceDEFieldsResult[key] && ('MaxLength' in SourceDEFieldsResult[key]) == false) {
-              SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
-                "FieldName": SourceSharedDEFieldsResult[key].Name[0],
-                "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
-                "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
-                "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
-                "FieldMaxLength": "",
-                "FieldScale": SourceSharedDEFieldsResult[key].Scale[0],
-                "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
-              };
-            }
-            else {
-              SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
-                "FieldName": SourceSharedDEFieldsResult[key].Name[0],
-                "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
-                "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
-                "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
-                "FieldMaxLength": "",
-                "FieldScale": "",
-                "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
-              };
-            }
+            SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
+              "FieldName": SourceSharedDEFieldsResult[key].Name[0],
+              "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
+              "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
+              "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
+              "FieldMaxLength": SourceSharedDEFieldsResult[key].MaxLength[0],
+              "FieldScale": SourceSharedDEFieldsResult[key].Scale[0],
+              "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
+            };
           }
         }
 
-        //console.log('settled Field : ' + JSON.stringify(SharedDEListMap));
+        console.log('settled Field : ' + JSON.stringify(SharedDEListMap));
 
         
         for (var key in SharedDEListMap) {
