@@ -54,6 +54,8 @@ app.post('/Authenticate', (req, res) => {
   var DEListSend = {};
   var selectedDEList;
 
+  var SharedDEListSend = {};
+
   var FinalResult = {};
 
 
@@ -1154,6 +1156,7 @@ app.post('/Authenticate', (req, res) => {
 
   async function getSharedDEData(key) {
     return new Promise( async function (resolve, reject) {
+      var NextUrl;
       var SharedDEDataOptions = {
         'method': 'GET',
         'url': SourceRestURL + 'data/v1/customobjectdata/key/' + key + '/rowset/',
@@ -1164,15 +1167,34 @@ app.post('/Authenticate', (req, res) => {
       request(SharedDEDataOptions, function (error, response) {
         if (error) throw new Error(error);
         //console.log('Data aaya re : ' + response.body);
-        var temp = JSON.parse(response.body);
-        SharedDEListMap[key].DEDataMap = temp.items
-        console.log('Data aaya : ' + temp.items);
-        console.log('count : ' + temp.count + ' : pageSize : ' + temp.pageSize)
-        var looplength = temp.count / temp.pageSize;
-        console.log('ceil beforce : ' + looplength)
-        looplength = Math.ceil(looplength);
-        console.log('ceil after : ' + looplength)
-        resolve(looplength); 
+        var tempResult = JSON.parse(response.body);
+        SharedDEListMap[key].DEDataMap = tempResult.items;
+        var looplength = Math.ceil(looplength);
+
+        SharedDEListSend[key] = {
+          "DEName" : SharedDEListMap[key].DEName,
+          "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
+          "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
+          "RecordCount" : SharedDEListMap[key].DEDataMap.length,
+          "DEDescription" : SharedDEListMap[key].DEDescription,
+          "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
+          "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
+          "DESendDEField" : SharedDEListMap[key].DESendDEField,
+          "DESendSubsField" : SharedDEListMap[key].DESendSubsField
+        };
+
+        /*
+        if(looplength >= 2) {
+          NextUrl = tempResult.links.next;
+          for(var i = 2 ; i <= looplength ; i++) {
+            tempLength = await getMoreSharedDEData(NextUrl , key);
+          }
+        }
+        else {
+          resolve(looplength); 
+        }
+        */
+       resolve(SharedDEListSend); 
       });
 
 //-------------------
@@ -1257,7 +1279,7 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
-  async function getMoreData(DEDataRequestId , key) {
+  async function getMoreSharedDEData(NextUrl , key) {
     return new Promise(async function (resolve, reject) {
       DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
                           '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
@@ -1324,7 +1346,7 @@ app.post('/Authenticate', (req, res) => {
       SharedDEListMap = await getSourceSharedDEFieldsAndData();
       //console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
       //DEListSend from getSourceDEFieldsAndData
-      res.send(DEListSend);
+      res.send(SharedDEListSend);
     }
   });
 
