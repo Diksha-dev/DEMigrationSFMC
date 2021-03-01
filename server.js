@@ -1166,20 +1166,13 @@ app.post('/Authenticate', (req, res) => {
       };
       request(SharedDEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
-        //console.log('Data aaya re : ' + response.body);
         var tempResult = JSON.parse(response.body);
         SharedDEListMap[key].DEDataMap = tempResult.items;
-        //console.log('Data aaya re : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
-
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
         if(looplength >= 2) {
           NextUrl = tempResult.links.next;
-          //NextUrl = NextUrl.split('/');
-          //NextUrl = NextUrl[4];
           for(var i = 2 ; i <= looplength ; i++) {
-            console.log('for key : ' + i);
-            NextUrl = await getMoreSharedDEData(NextUrl , key , i);
-            
+            NextUrl = await getMoreSharedDEData(NextUrl , key);
           }
           SharedDEListSend[key] = {
             "DEName" : SharedDEListMap[key].DEName,
@@ -1209,93 +1202,11 @@ app.post('/Authenticate', (req, res) => {
           resolve(SharedDEListSend); 
         }
       });
-
-//-------------------
-
-      /*request(DEDataOptions, async function (error, response) {
-        if (error) throw new Error(error);
-
-        var DEDataRequestId;
-        SourceDEDataResult = response.body;
-        xml2jsParser.parseString(SourceDEDataResult, function (err, result) {
-          SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
-          DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0]
-        });
-
-        if(SourceDEDataResult) {
-          if(SourceDEDataResult.length == 2500) {
-            for (var key1 in SourceDEDataResult) {
-              DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]); 
-            }
-            var tempLength = SourceDEDataResult.length;
-            while(tempLength == 2500) {
-              tempLength = await getMoreData(DEDataRequestId , key);
-            }
-            DEListSend[key] = {
-              "DEName" : DEListMap[key].DEName,
-              "DECustomerKey" : DEListMap[key].DECustomerKey,
-              "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
-              "RecordCount" : DEListMap[key].DEDataMap.length,
-              "DEDescription" : DEListMap[key].DEDescription,
-              "DEIsSendable" : DEListMap[key].DEIsSendable,
-              "DEIsTestable" : DEListMap[key].DEIsTestable,
-              "DESendDEField" : DEListMap[key].DESendDEField,
-              "DESendSubsField" : DEListMap[key].DESendSubsField
-            };
-          }
-          else {
-            //console.log('Length : ' + SourceDEDataResult.length);
-            //SourceDEDataResult = SourceDEDataResult.replace(/:/g, "");
-            //SourceDEDataResult = xmlParser.toJson(SourceDEDataResult);
-            //SourceDEDataResult = JSON.parse(SourceDEDataResult);
-            //SourceDEDataResult = SourceDEDataResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-            for (var key1 in SourceDEDataResult) {
-              DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
-              
-              //if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
-                //DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
-              //}
-              //else if (key1 == 'Properties') {
-                //DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
-              //}
-              
-            }
-            DEListSend[key] = {
-              "DEName" : DEListMap[key].DEName,
-              "DECustomerKey" : DEListMap[key].DECustomerKey,
-              "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
-              "RecordCount" : DEListMap[key].DEDataMap.length,
-              "DEDescription" : DEListMap[key].DEDescription,
-              "DEIsSendable" : DEListMap[key].DEIsSendable,
-              "DEIsTestable" : DEListMap[key].DEIsTestable,
-              "DESendDEField" : DEListMap[key].DESendDEField,
-              "DESendSubsField" : DEListMap[key].DESendSubsField
-            };
-            //console.log(key + ' : mera result : ' + JSON.stringify(DEListMap[key].DEDataMap));
-          }
-        }
-        else {
-          DEListSend[key] = {
-            "DEName" : DEListMap[key].DEName,
-            "DECustomerKey" : DEListMap[key].DECustomerKey,
-            "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
-            "RecordCount" : DEListMap[key].DEDataMap.length,
-            "DEDescription" : DEListMap[key].DEDescription,
-            "DEIsSendable" : DEListMap[key].DEIsSendable,
-            "DEIsTestable" : DEListMap[key].DEIsTestable,
-            "DESendDEField" : DEListMap[key].DESendDEField,
-            "DESendSubsField" : DEListMap[key].DESendSubsField
-          };
-        }
-        resolve(DEListMap[key].DEDataMap); 
-      });*/
     })
   }
 
-  async function getMoreSharedDEData(NextUrl , key , i) {
+  async function getMoreSharedDEData(NextUrl , key) {
     return new Promise(async function (resolve, reject) {
-      //var url = SourceRestURL + 'data/v1/customobjectdata/token/' + NextUrl + '/rowset?$page=' + i;
-      //console.log('url : ' + url);
       var SharedDEMoreDataOptions = {
         'method': 'GET',
         'url': SourceRestURL + 'data' + NextUrl,
@@ -1305,12 +1216,9 @@ app.post('/Authenticate', (req, res) => {
       };
       request(SharedDEMoreDataOptions, function (error, response) {
         if (error) throw new Error(error);
-        //console.log('Data aaya re : ' + response.body);
         var tempResult1 = JSON.parse(response.body);
         SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap , tempResult1.items);
         NextUrl = tempResult1.links.next;
-        console.log('for key : ' + SharedDEListMap[key].DEDataMap.length);
-
         resolve(NextUrl);
       })
     })
@@ -1328,6 +1236,7 @@ app.post('/Authenticate', (req, res) => {
       SharedDEListMap = await getSourceSharedDEFieldsAndData();
       //console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
       //DEListSend from getSourceDEFieldsAndData
+      console.log('SharedDEListSend : ' + JSON.stringify(SharedDEListSend));
       res.send(SharedDEListSend);
     }
   });
