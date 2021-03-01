@@ -1164,7 +1164,7 @@ app.post('/Authenticate', (req, res) => {
           'Authorization': 'Bearer ' + SourceAccessToken
         }
       };
-      request(SharedDEDataOptions, function (error, response) {
+      request(SharedDEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         //console.log('Data aaya re : ' + response.body);
         var tempResult = JSON.parse(response.body);
