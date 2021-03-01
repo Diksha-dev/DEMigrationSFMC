@@ -1091,7 +1091,7 @@ app.post('/Authenticate', (req, res) => {
 
         for (var key in SourceSharedDEFieldsResult) {
           if (SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0] in SharedDEListMap) {
-            SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].SharedDEFieldMap[SourceSharedDEFieldsResult[key].Name] = {
+            SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name] = {
               "FieldName": SourceSharedDEFieldsResult[key].Name,
               "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired,
               "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey,
