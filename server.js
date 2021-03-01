@@ -1090,15 +1090,53 @@ app.post('/Authenticate', (req, res) => {
 
         for (var key in SourceSharedDEFieldsResult) {
           if (SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0] in SharedDEListMap) {
-            SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
-              "FieldName": SourceSharedDEFieldsResult[key].Name[0],
-              "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
-              "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
-              "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
-              "FieldMaxLength": SourceSharedDEFieldsResult[key].MaxLength[0],
-              "FieldScale": SourceSharedDEFieldsResult[key].Scale[0],
-              "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
-            };
+            if('Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
+              SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
+                "FieldName": SourceSharedDEFieldsResult[key].Name[0],
+                "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
+                "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
+                "FieldMaxLength": SourceSharedDEFieldsResult[key].MaxLength[0],
+                "FieldScale": SourceSharedDEFieldsResult[key].Scale[0],
+                "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
+              };
+            }
+            else if( ('Scale' in SourceDEFieldsResult[key]) == false && 'MaxLength' in SourceDEFieldsResult[key]) {
+              SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
+                "FieldName": SourceSharedDEFieldsResult[key].Name[0],
+                "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
+                "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
+                "FieldMaxLength": SourceSharedDEFieldsResult[key].MaxLength[0],
+                "FieldScale": "",
+                "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
+              };
+            }
+            else if('Scale' in SourceDEFieldsResult[key] && ('MaxLength' in SourceDEFieldsResult[key]) == false) {
+              SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
+                "FieldName": SourceSharedDEFieldsResult[key].Name[0],
+                "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
+                "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
+                "FieldMaxLength": "",
+                "FieldScale": SourceSharedDEFieldsResult[key].Scale[0],
+                "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
+              };
+            }
+            else {
+              SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
+                "FieldName": SourceSharedDEFieldsResult[key].Name[0],
+                "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
+                "FieldIsPrimaryKey": SourceSharedDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldFieldType": SourceSharedDEFieldsResult[key].FieldType[0],
+                "FieldMaxLength": "",
+                "FieldScale": "",
+                "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
+              };
+            }
+
+
+            
           }
         }
 
