@@ -1174,8 +1174,8 @@ app.post('/Authenticate', (req, res) => {
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
         if(looplength >= 2) {
           NextUrl = tempResult.links.next;
-          NextUrl = NextUrl.split('/');
-          NextUrl = NextUrl[4];
+          //NextUrl = NextUrl.split('/');
+          //NextUrl = NextUrl[4];
           for(var i = 2 ; i <= looplength ; i++) {
             console.log('for key : ' + i);
             NextUrl = await getMoreSharedDEData(NextUrl , key , i);
