@@ -1169,7 +1169,7 @@ app.post('/Authenticate', (req, res) => {
         //console.log('Data aaya re : ' + response.body);
         var tempResult = JSON.parse(response.body);
         SharedDEListMap[key].DEDataMap = tempResult.items;
-        var looplength = Math.ceil(looplength);
+        var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
 
         SharedDEListSend[key] = {
           "DEName" : SharedDEListMap[key].DEName,
