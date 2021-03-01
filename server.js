@@ -1297,7 +1297,7 @@ app.post('/Authenticate', (req, res) => {
       console.log('url : ' + url);
       var SharedDEMoreDataOptions = {
         'method': 'GET',
-        'url': NextUrl,
+        'url': SourceRestURL + 'data' + NextUrl,
         'headers': {
           'Authorization': 'Bearer ' + SourceAccessToken
         }
