@@ -1308,7 +1308,7 @@ app.post('/Authenticate', (req, res) => {
         NextUrl = tempResult1.next;
         console.log('for key : ' + SharedDEListMap[key].DEDataMap.length);
 
-        resolve(NextUrl);
+        resolve(SharedDEListMap[key].DEDataMap);
       })
     })
   }
