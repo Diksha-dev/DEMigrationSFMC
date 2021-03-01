@@ -10,6 +10,8 @@ var Set = require("collections/set");
 const { log } = require("console");
 var xml2js = require('xml2js');
 var xml2jsParser = new xml2js.Parser();
+const Math = require("Math");
+
 
 app.get("*", (req, res) => {
   const FirstPage = path.join(__dirname, 'public', 'index.html');
@@ -980,7 +982,7 @@ app.post('/Authenticate', (req, res) => {
                 "DESendDEField": SourceListSharedDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListSharedDEResult[key].SendableSubscriberField[0].Name[0],
                 "DEFieldMap": {},
-                "DEDataMap": []
+                "DEDataMap": ""
               };
             }
             else {
@@ -993,7 +995,7 @@ app.post('/Authenticate', (req, res) => {
                 "DESendDEField": '',
                 "DESendSubsField": '',
                 "DEFieldMap": {},
-                "DEDataMap": []
+                "DEDataMap": ""
               };
             }
           }
@@ -1145,85 +1147,8 @@ app.post('/Authenticate', (req, res) => {
         }
         //console.log('SharedDEListMap : ' + JSON.stringify(SharedDEListMap));
         
-
-        
-    
-
         resolve(SharedDEListMap);
-
       });
-
-//--------------------------------
-        
-
-        //SourceDEFieldsResult = SourceDEFieldsResult.replace(/:/g, "");
-        //SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
-        //SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
-        //SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-        //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
-
-        /*
-        var FieldSet = new Set();
-        for (var key in SourceDEFieldsResult) {
-          if (SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0] in DEListMap) {
-            if('Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
-              FieldSet.add(JSON.stringify({
-                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
-                "Name": SourceDEFieldsResult[key].Name[0],
-                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
-                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
-                "FieldType": SourceDEFieldsResult[key].FieldType[0],
-                "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
-                "Scale": SourceDEFieldsResult[key].Scale[0],
-                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
-              }));
-            }
-            else if( ('Scale' in SourceDEFieldsResult[key]) == false && 'MaxLength' in SourceDEFieldsResult[key]) {
-              FieldSet.add(JSON.stringify({
-                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
-                "Name": SourceDEFieldsResult[key].Name[0],
-                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
-                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
-                "FieldType": SourceDEFieldsResult[key].FieldType[0],
-                "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
-                "Scale": "",
-                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
-              }));
-            }
-            else if('Scale' in SourceDEFieldsResult[key] && ('MaxLength' in SourceDEFieldsResult[key]) == false) {
-              FieldSet.add(JSON.stringify({
-                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
-                "Name": SourceDEFieldsResult[key].Name[0],
-                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
-                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
-                "FieldType": SourceDEFieldsResult[key].FieldType[0],
-                "MaxLength": '',
-                "Scale": SourceDEFieldsResult[key].Scale[0],
-                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
-              }));
-            }
-            else {
-              FieldSet.add(JSON.stringify({
-                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
-                "Name": SourceDEFieldsResult[key].Name[0],
-                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
-                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
-                "FieldType": SourceDEFieldsResult[key].FieldType[0],
-                "MaxLength": '',
-                "Scale": '',
-                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
-              }));
-            }
-          }
-        }
-        //console.log('IGO_PROFILES-FieldSet : ' + [...FieldSet]);
-
-        var SourceDEFieldsResult = [];
-        for (var val of Array.from(FieldSet)) {
-          SourceDEFieldsResult.push(JSON.parse(val));
-        }
-        */
-
     })
   }
 
@@ -1238,7 +1163,10 @@ app.post('/Authenticate', (req, res) => {
       };
       request(SharedDEDataOptions, function (error, response) {
         if (error) throw new Error(error);
-        console.log('Data aaya : ' + response.body);
+        //console.log('Data aaya : ' + response.body);
+        SharedDEListMap[key].DEDataMap = response.body.items
+        var looplength = Math.ceil(response.body.count / response.body.pageSize);
+        console.log('ceil : ' + looplength)
         resolve(response.body); 
       });
 
