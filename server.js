@@ -1238,7 +1238,8 @@ app.post('/Authenticate', (req, res) => {
       };
       request(SharedDEDataOptions, function (error, response) {
         if (error) throw new Error(error);
-        console.log('Data aaya : ' + JSON.stringify(response.body));
+        console.log('Data aaya : ' + response.body);
+        resolve(response.body); 
       });
 
 //-------------------
