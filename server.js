@@ -1087,7 +1087,7 @@ app.post('/Authenticate', (req, res) => {
           //console.log('mera field result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceSharedDEFieldsResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
-
+        console.log(JSON.stringify(SourceSharedDEFieldsResult));
         for (var key in SourceSharedDEFieldsResult) {
           console.log('in for : ' + SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]);
           if (SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0] in SharedDEListMap) {
