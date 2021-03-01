@@ -1305,7 +1305,7 @@ app.post('/Authenticate', (req, res) => {
         var tempResult1 = JSON.parse(response.body);
         SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap , tempResult1.items);
         
-        console.log('for key : ' + key);
+        console.log('for key : ' + SharedDEListMap[key].DEDataMap.length);
 
         resolve(SharedDEListMap[key].DEDataMap);
       })
