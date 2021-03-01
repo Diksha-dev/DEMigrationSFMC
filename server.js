@@ -1179,8 +1179,6 @@ app.post('/Authenticate', (req, res) => {
           for(var i = 2 ; i <= looplength ; i++) {
             console.log('for key : ' + i);
             NextUrl = await getMoreSharedDEData(NextUrl , key , i);
-            NextUrl = NextUrl.split('/');
-            NextUrl = NextUrl[4];
             
           }
           SharedDEListSend[key] = {
@@ -1310,7 +1308,7 @@ app.post('/Authenticate', (req, res) => {
         //console.log('Data aaya re : ' + response.body);
         var tempResult1 = JSON.parse(response.body);
         SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap , tempResult1.items);
-        NextUrl = tempResult1.links.next;
+        
         console.log('for key : ' + SharedDEListMap[key].DEDataMap.length);
 
         resolve(SharedDEListMap[key].DEDataMap);
