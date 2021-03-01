@@ -1090,6 +1090,7 @@ app.post('/Authenticate', (req, res) => {
       });
 
 //--------------------------------
+/*
       request(ddg, async function (error, response) {
         
 
@@ -1188,6 +1189,7 @@ app.post('/Authenticate', (req, res) => {
 
         resolve(DEListMap);
       });
+      */
     })
   }
 
@@ -1202,7 +1204,7 @@ app.post('/Authenticate', (req, res) => {
   app.post("/SharedDEListShowAPI", async (req, res) => {
     if (req.body.reqForDEList = 'True') {
       DEListMap = await getSourceListOfSharedDE();
-      DEListMap = await getSourceDEFieldsAndData();
+      DEListMap = await getSourceSharedDEFieldsAndData();
       //console.log('DEListMap Last : ' + JSON.stringify(DEListMap));
       //DEListSend from getSourceDEFieldsAndData
       res.send(DEListSend);
