@@ -1089,6 +1089,7 @@ app.post('/Authenticate', (req, res) => {
         });
 
         for (var key in SourceSharedDEFieldsResult) {
+          console.log('in for : ' + key);
           if (SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0] in SharedDEListMap) {
             if('Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
               SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
