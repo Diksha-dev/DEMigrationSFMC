@@ -1293,7 +1293,7 @@ app.post('/Authenticate', (req, res) => {
 
   async function getMoreSharedDEData(NextUrl , key , i) {
     return new Promise(async function (resolve, reject) {
-      var url = SourceRestURL + 'data/v1/customobjectdata/token/' + NextUrl + '/rowset?$page=' + i;
+      //var url = SourceRestURL + 'data/v1/customobjectdata/token/' + NextUrl + '/rowset?$page=' + i;
       console.log('url : ' + url);
       var SharedDEMoreDataOptions = {
         'method': 'GET',
