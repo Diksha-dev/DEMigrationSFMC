@@ -1297,7 +1297,7 @@ app.post('/Authenticate', (req, res) => {
       console.log('url : ' + url);
       var SharedDEMoreDataOptions = {
         'method': 'GET',
-        'url': url,
+        'url': NextUrl,
         'headers': {
           'Authorization': 'Bearer ' + SourceAccessToken
         }
@@ -1307,7 +1307,7 @@ app.post('/Authenticate', (req, res) => {
         //console.log('Data aaya re : ' + response.body);
         var tempResult1 = JSON.parse(response.body);
         SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap , tempResult1.items);
-        NextUrl = tempResult1.next;
+        NextUrl = tempResult1.links.next;
         console.log('for key : ' + SharedDEListMap[key].DEDataMap.length);
 
         resolve(SharedDEListMap[key].DEDataMap);
