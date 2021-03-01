@@ -10,7 +10,7 @@ var Set = require("collections/set");
 const { log } = require("console");
 var xml2js = require('xml2js');
 var xml2jsParser = new xml2js.Parser();
-const Math = require("Math");
+const Math = require("mathjs");
 
 
 app.get("*", (req, res) => {

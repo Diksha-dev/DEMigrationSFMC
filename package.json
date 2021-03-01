@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "exprss": "0.0.1-security",
     "http": "0.0.1-security",
+    "mathjs": "^9.2.0",
     "path": "^0.12.7",
     "postcss": "^8.2.4",
     "querystring": "^0.2.0",
