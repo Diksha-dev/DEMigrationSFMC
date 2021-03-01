@@ -1137,7 +1137,7 @@ app.post('/Authenticate', (req, res) => {
           }
         }
 
-        console.log('settled Field : ' + JSON.stringify(SharedDEListMap));
+        //console.log('settled Field : ' + JSON.stringify(SharedDEListMap));
 
         
         for (var key in SharedDEListMap) {
@@ -1243,7 +1243,7 @@ app.post('/Authenticate', (req, res) => {
 
 //-------------------
 
-      request(DEDataOptions, async function (error, response) {
+      /*request(DEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
 
         var DEDataRequestId;
@@ -1283,12 +1283,12 @@ app.post('/Authenticate', (req, res) => {
             for (var key1 in SourceDEDataResult) {
               DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
               
-              /*if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
-                DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
-              }
-              else if (key1 == 'Properties') {
-                DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
-              }*/
+              //if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
+                //DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
+              //}
+              //else if (key1 == 'Properties') {
+                //DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
+              //}
               
             }
             DEListSend[key] = {
@@ -1318,8 +1318,8 @@ app.post('/Authenticate', (req, res) => {
             "DESendSubsField" : DEListMap[key].DESendSubsField
           };
         }
-        resolve(DEListMap[key].DEDataMap);
-      });
+        resolve(DEListMap[key].DEDataMap); 
+      });*/
     })
   }
 
