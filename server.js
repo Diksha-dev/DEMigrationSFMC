@@ -30,6 +30,7 @@ var SourceDEFieldsResult;
 var SourceDEDataResult;
 
 var SourceListSharedDEResult;
+var SourceSharedDEFieldsResult;
 
 var DestinationAccessToken = '';
 var DestinationRestURL = '';
@@ -996,20 +997,77 @@ app.post('/Authenticate', (req, res) => {
               };
             }
           }
-          console.log('SharedDEListMap : ' + JSON.stringify(SharedDEListMap));
+          //console.log('SharedDEListMap : ' + JSON.stringify(SharedDEListMap));
           resolve(SharedDEListMap);
         });
-
-
-
-
-
-
-
       });
+    })
+  }
 
+  async function getSourceSharedDEFieldsAndData() {
+    return new Promise(async function (resolve, reject) {
+      authTokenForBothSFDC();
 
-      var ListDEOption = {
+      var ShareDEFieldsBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
+                    '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+                        '<s:Header>' +
+                            '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+                            '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
+                            '<a:ReplyTo>' +
+                                '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
+                            '</a:ReplyTo>' +
+                            '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
+                            '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
+                        '</s:Header>' +
+                        '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+                            '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+                                '<RetrieveRequest>' +
+                                    '<ObjectType>DataExtensionField</ObjectType>' +
+                                    '<Properties>Client.ID</Properties>' +
+                                    '<Properties>CreatedDate</Properties>' +
+                                    '<Properties>CustomerKey</Properties>' +
+                                    '<Properties>DataExtension.CustomerKey</Properties>' +
+                                    '<Properties>DefaultValue</Properties>' +
+                                    '<Properties>FieldType</Properties>' +
+                                    '<Properties>IsPrimaryKey</Properties>' +
+                                    '<Properties>IsRequired</Properties>' +
+                                    '<Properties>MaxLength</Properties>' +
+                                    '<Properties>ModifiedDate</Properties>' +
+                                    '<Properties>Name</Properties>' +
+                                    '<Properties>ObjectID</Properties>' +
+                                    '<Properties>Ordinal</Properties>' +
+                                    '<Properties>Scale</Properties>' +
+                                    '<Filter xsi:type="SimpleFilterPart">' +
+                                        '<Property>DataExtension.CustomerKey</Property>';
+
+      var tempcheck = true;
+      for(var key in SharedDEListMap) { 
+        if(SharedDEListMap.size == 1) {
+          ShareDEFieldsBody = ShareDEFieldsBody + '<SimpleOperator>equals</SimpleOperator> <Value>' + key + '</Value>';
+          break;
+        }
+        else {
+          if(tempcheck == true) {
+            ShareDEFieldsBody = ShareDEFieldsBody + '<SimpleOperator>IN</SimpleOperator>';
+            tempcheck = false;
+          }
+          ShareDEFieldsBody = ShareDEFieldsBody + '<Value>' + key + '</Value>';
+        }
+      }
+      ShareDEFieldsBody = ShareDEFieldsBody + '</Filter>' +
+                                              '<QueryAllAccounts>true</QueryAllAccounts>' +
+                                              '<Retrieves />' +
+                                              '<Options>' +
+                                                  '<SaveOptions />' +
+                                                  '<IncludeObjects>true</IncludeObjects>' +
+                                              '</Options>' +
+                                          '</RetrieveRequest>' +
+                                    '</RetrieveRequestMsg>' +
+                                '</s:Body>' +
+                              '</s:Envelope>';
+
+      console.log('ShareDEFieldsBody : ' + ShareDEFieldsBody);
+      var SharedDEFieldOption = {
         'method': 'POST',
         'url': SourceSoapURL + 'Service.asmx',
         'headers': {
@@ -1017,62 +1075,121 @@ app.post('/Authenticate', (req, res) => {
           'SoapAction': 'Retrieve',
           'Authorization': 'Bearer ' + SourceAccessToken
         },
-        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtension</ObjectType>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>DataExtension.ObjectID</Properties>\r\n                <Properties>IsSendable</Properties>\r\n          <Properties>IsTestable</Properties>\r\n             <Properties>SendableSubscriberField.Name</Properties>\r\n        <Properties>SendableDataExtensionField.Name</Properties>\r\n          <Properties>Description</Properties>\r\n                \r\n        \r\n                \r\n        \r\n             \r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
+        body: ShareDEFieldsBody
+
       };
-      request(ListDEOption, function (error, response) {
+      request(SharedDEFieldOption, function (error, response) {
         if (error) throw new Error(error);
-        SourceListDEResult = response.body;
 
+        SourceSharedDEFieldsResult = response.body;
 
-        xml2jsParser.parseString(SourceListDEResult, function (err, result) {
-          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
-          SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
+        xml2jsParser.parseString(SourceSharedDEFieldsResult, function (err, result) {
+          console.log('mera field result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          SourceSharedDEFieldsResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
+      });
 
-        //SourceListDEResult = SourceListDEResult.replace(/:/g, "");
-        //SourceListDEResult = xmlParser.toJson(SourceListDEResult);
-        //SourceListDEResult = JSON.parse(SourceListDEResult);
-        //SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+//--------------------------------
+      request(ddg, async function (error, response) {
+        
 
+        //SourceDEFieldsResult = SourceDEFieldsResult.replace(/:/g, "");
+        //SourceDEFieldsResult = xmlParser.toJson(SourceDEFieldsResult);
+        //SourceDEFieldsResult = JSON.parse(SourceDEFieldsResult);
+        //SourceDEFieldsResult = SourceDEFieldsResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
+        //console.log('SourceDEFieldsResult :' + JSON.stringify(SourceDEFieldsResult));
 
-        var DEListMap = {};
-        for (var key in SourceListDEResult) {
-          if (SourceListDEResult[key].Name[0] != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name[0] != "_MobileAddress" && SourceListDEResult[key].Name[0] != "_MobileSubscription" && SourceListDEResult[key].Name[0] != "_PushAddress" && SourceListDEResult[key].Name[0] != "_PushTag" && SourceListDEResult[key].Name[0] != "_MobileLineAddressContact" && SourceListDEResult[key].Name[0] != "_MobileLineAddress" && SourceListDEResult[key].Name[0] != "_MobileLineProfile" && SourceListDEResult[key].Name[0] != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name[0] != "_MobileLineSubscription" && SourceListDEResult[key].Name[0] != "MobileLineOrphanContact") {
-            if (SourceListDEResult[key].IsSendable[0] == "true") {
-              DEListMap[SourceListDEResult[key].CustomerKey] = {
-                "DEName": SourceListDEResult[key].Name[0],
-                "DECustomerKey": SourceListDEResult[key].CustomerKey[0],
-                "DEIsSendable": SourceListDEResult[key].IsSendable[0],
-                "DEIsTestable": SourceListDEResult[key].IsTestable[0],
-                "DEDescription": SourceListDEResult[key].Description[0],
-                "DESendDEField": SourceListDEResult[key].SendableDataExtensionField[0].Name[0],
-                "DESendSubsField": SourceListDEResult[key].SendableSubscriberField[0].Name[0],
-                "DEFieldMap": {},
-                "DEDataMap": []
-              };
+        var FieldSet = new Set();
+        for (var key in SourceDEFieldsResult) {
+          if (SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0] in DEListMap) {
+            if('Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
+              FieldSet.add(JSON.stringify({
+                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+                "Name": SourceDEFieldsResult[key].Name[0],
+                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldType": SourceDEFieldsResult[key].FieldType[0],
+                "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
+                "Scale": SourceDEFieldsResult[key].Scale[0],
+                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
+              }));
+            }
+            else if( ('Scale' in SourceDEFieldsResult[key]) == false && 'MaxLength' in SourceDEFieldsResult[key]) {
+              FieldSet.add(JSON.stringify({
+                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+                "Name": SourceDEFieldsResult[key].Name[0],
+                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldType": SourceDEFieldsResult[key].FieldType[0],
+                "MaxLength": SourceDEFieldsResult[key].MaxLength[0],
+                "Scale": "",
+                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
+              }));
+            }
+            else if('Scale' in SourceDEFieldsResult[key] && ('MaxLength' in SourceDEFieldsResult[key]) == false) {
+              FieldSet.add(JSON.stringify({
+                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+                "Name": SourceDEFieldsResult[key].Name[0],
+                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldType": SourceDEFieldsResult[key].FieldType[0],
+                "MaxLength": '',
+                "Scale": SourceDEFieldsResult[key].Scale[0],
+                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
+              }));
             }
             else {
-              DEListMap[SourceListDEResult[key].CustomerKey[0]] = {
-                "DEName": SourceListDEResult[key].Name[0],
-                "DECustomerKey": SourceListDEResult[key].CustomerKey[0],
-                "DEIsSendable": SourceListDEResult[key].IsSendable[0],
-                "DEIsTestable": SourceListDEResult[key].IsTestable[0],
-                "DEDescription": SourceListDEResult[key].Description[0],
-                "DESendDEField": '',
-                "DESendSubsField": '',
-                "DEFieldMap": {},
-                "DEDataMap": []
-              };
+              FieldSet.add(JSON.stringify({
+                "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
+                "Name": SourceDEFieldsResult[key].Name[0],
+                "IsRequired": SourceDEFieldsResult[key].IsRequired[0],
+                "IsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey[0],
+                "FieldType": SourceDEFieldsResult[key].FieldType[0],
+                "MaxLength": '',
+                "Scale": '',
+                "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
+              }));
             }
           }
         }
+        //console.log('IGO_PROFILES-FieldSet : ' + [...FieldSet]);
+
+        var SourceDEFieldsResult = [];
+        for (var val of Array.from(FieldSet)) {
+          SourceDEFieldsResult.push(JSON.parse(val));
+        }
+
+
+        for (var key in SourceDEFieldsResult) {
+          if (SourceDEFieldsResult[key].DEExtKey in DEListMap) {
+            DEListMap[SourceDEFieldsResult[key].DEExtKey].DEFieldMap[SourceDEFieldsResult[key].Name] = {
+              "FieldName": SourceDEFieldsResult[key].Name,
+              "FieldIsRequired": SourceDEFieldsResult[key].IsRequired,
+              "FieldIsPrimaryKey": SourceDEFieldsResult[key].IsPrimaryKey,
+              "FieldFieldType": SourceDEFieldsResult[key].FieldType,
+              "FieldMaxLength": SourceDEFieldsResult[key].MaxLength,
+              "FieldScale": SourceDEFieldsResult[key].Scale,
+              "FieldDefaultValue": SourceDEFieldsResult[key].DefaultValue
+            };
+          }
+        }
+
+
+        //-----------------------------------------
+
+
+        for (var key in DEListMap) {
+          await getDEData(key);
+        }
         //console.log('DEListMap : ' + JSON.stringify(DEListMap));
+
+        
+    
+
         resolve(DEListMap);
       });
     })
   }
-
-
 
 
 
