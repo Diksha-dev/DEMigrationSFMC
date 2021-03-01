@@ -1134,9 +1134,6 @@ app.post('/Authenticate', (req, res) => {
                 "FieldDefaultValue": SourceSharedDEFieldsResult[key].DefaultValue[0]
               };
             }
-
-
-            
           }
         }
 
