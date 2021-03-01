@@ -1078,7 +1078,7 @@ app.post('/Authenticate', (req, res) => {
         body: ShareDEFieldsBody
 
       };
-      request(SharedDEFieldOption, function (error, response) {
+      request(SharedDEFieldOption, async function (error, response) {
         if (error) throw new Error(error);
 
         SourceSharedDEFieldsResult = response.body;
