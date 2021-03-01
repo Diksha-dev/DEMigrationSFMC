@@ -1169,33 +1169,42 @@ app.post('/Authenticate', (req, res) => {
         //console.log('Data aaya re : ' + response.body);
         var tempResult = JSON.parse(response.body);
         SharedDEListMap[key].DEDataMap = tempResult.items;
-        console.log('Data aaya re : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
+        //console.log('Data aaya re : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
+
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
-
-        SharedDEListSend[key] = {
-          "DEName" : SharedDEListMap[key].DEName,
-          "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
-          "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
-          "RecordCount" : tempResult.count,
-          "DEDescription" : SharedDEListMap[key].DEDescription,
-          "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
-          "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
-          "DESendDEField" : SharedDEListMap[key].DESendDEField,
-          "DESendSubsField" : SharedDEListMap[key].DESendSubsField
-        };
-
-        /*
         if(looplength >= 2) {
           NextUrl = tempResult.links.next;
           for(var i = 2 ; i <= looplength ; i++) {
+            console.log('for key : ' + i);
             tempLength = await getMoreSharedDEData(NextUrl , key);
           }
+          SharedDEListSend[key] = {
+            "DEName" : SharedDEListMap[key].DEName,
+            "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
+            "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
+            "RecordCount" : tempResult.count,
+            "DEDescription" : SharedDEListMap[key].DEDescription,
+            "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
+            "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
+            "DESendDEField" : SharedDEListMap[key].DESendDEField,
+            "DESendSubsField" : SharedDEListMap[key].DESendSubsField
+          };
+          resolve(SharedDEListSend); 
         }
         else {
-          resolve(looplength); 
+          SharedDEListSend[key] = {
+            "DEName" : SharedDEListMap[key].DEName,
+            "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
+            "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
+            "RecordCount" : tempResult.count,
+            "DEDescription" : SharedDEListMap[key].DEDescription,
+            "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
+            "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
+            "DESendDEField" : SharedDEListMap[key].DESendDEField,
+            "DESendSubsField" : SharedDEListMap[key].DESendSubsField
+          };
+          resolve(SharedDEListSend); 
         }
-        */
-       resolve(SharedDEListSend); 
       });
 
 //-------------------
@@ -1282,39 +1291,27 @@ app.post('/Authenticate', (req, res) => {
 
   async function getMoreSharedDEData(NextUrl , key) {
     return new Promise(async function (resolve, reject) {
-      DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
-                          '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
-                              '<s:Header>' +
-                                  '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
-                                  '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
-                                  '<a:ReplyTo>' +
-                                      '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
-                                  '</a:ReplyTo>' +
-                                  '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
-                                  '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
-                              '</s:Header>' +
-                              '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-                                  '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
-                                      '<RetrieveRequest>' +
-                                          '<ContinueRequest>' + DEDataRequestId + '</ContinueRequest>' +
-                                          '<Options>' +
-                                              '<BatchSize>2500</BatchSize>' +
-                                          '</Options>' +
-                                      '</RetrieveRequest>' +
-                                  '</RetrieveRequestMsg>' +
-                              '</s:Body>' +
-                          '</s:Envelope>';
 
-      DEDataOptions = {
-        'method': 'POST',
-        'url': SourceSoapURL + 'Service.asmx',
+      var SharedDEMoreDataOptions = {
+        'method': 'GET',
+        'url': SourceRestURL + 'data' + NextUrl,
         'headers': {
-          'Content-Type': 'text/xml',
-          'SoapAction': 'Retrieve',
           'Authorization': 'Bearer ' + SourceAccessToken
-        },
-        body: DEDataBody
+        }
       };
+      request(SharedDEMoreDataOptions, function (error, response) {
+        if (error) throw new Error(error);
+        //console.log('Data aaya re : ' + response.body);
+        var tempResult1 = JSON.parse(response.body);
+        SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap , tempResult1.items);
+        
+        console.log('for key : ' + key);
+
+        resolve(SharedDEListMap[key].DEDataMap);
+      })
+
+
+
       request(DEDataOptions, function (error, response) {
         if (error) throw new Error(error);
         xml2jsParser.parseString(response.body, function (err, result) {
