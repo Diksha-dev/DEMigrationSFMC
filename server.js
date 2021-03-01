@@ -1309,26 +1309,6 @@ app.post('/Authenticate', (req, res) => {
 
         resolve(SharedDEListMap[key].DEDataMap);
       })
-
-
-
-      request(DEDataOptions, function (error, response) {
-        if (error) throw new Error(error);
-        xml2jsParser.parseString(response.body, function (err, result) {
-          SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
-          DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0];
-        });
-        if(SourceDEDataResult){
-          tempLength = SourceDEDataResult.length;
-        }
-        else {
-          tempLength = 0;
-        }
-        for (var key1 in SourceDEDataResult) {
-          DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
-        }
-        resolve(tempLength);
-      })
     })
   }
 
