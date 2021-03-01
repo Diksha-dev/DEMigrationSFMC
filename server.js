@@ -1164,13 +1164,15 @@ app.post('/Authenticate', (req, res) => {
       request(SharedDEDataOptions, function (error, response) {
         if (error) throw new Error(error);
         //console.log('Data aaya : ' + response.body);
-        SharedDEListMap[key].DEDataMap = response.body.items;
-        console.log('SharedDEListMap[key].DEDataMap : ' + SharedDEListMap[key].DEDataMap);
-        var looplength = 2.34;
+        var temp = response.body;
+        SharedDEListMap[key].DEDataMap = temp.items
+        console.log('Data aaya : ' + temp.items);
+        console.log('count : ' + temp.count + ' : pageSize : ' + temp.pageSize)
+        var looplength = temp.count / temp.pageSize;
         console.log('ceil beforce : ' + looplength)
         looplength = Math.ceil(looplength);
         console.log('ceil after : ' + looplength)
-        resolve(response.body); 
+        resolve(temp); 
       });
 
 //-------------------
