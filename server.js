@@ -31,6 +31,7 @@ var SourceDEDataResult;
 
 var SourceListSharedDEResult;
 var SourceSharedDEFieldsResult;
+var SharedDEListMap = {};
 
 var DestinationAccessToken = '';
 var DestinationRestURL = '';
@@ -968,7 +969,7 @@ app.post('/Authenticate', (req, res) => {
           });
 
 
-          var SharedDEListMap = {};
+          
           for (var key in SourceListSharedDEResult) {
             if (SourceListSharedDEResult[key].IsSendable[0] == "true") {
               SharedDEListMap[SourceListSharedDEResult[key].CustomerKey] = {
