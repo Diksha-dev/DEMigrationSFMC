@@ -1178,7 +1178,7 @@ app.post('/Authenticate', (req, res) => {
           NextUrl = NextUrl[4];
           for(var i = 2 ; i <= looplength ; i++) {
             console.log('for key : ' + i);
-            NextUrl = await getMoreSharedDEData(NextUrl , key , i);
+            await getMoreSharedDEData(NextUrl , key , i);
             
           }
           SharedDEListSend[key] = {
