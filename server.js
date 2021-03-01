@@ -1172,7 +1172,7 @@ app.post('/Authenticate', (req, res) => {
         console.log('ceil beforce : ' + looplength)
         looplength = Math.ceil(looplength);
         console.log('ceil after : ' + looplength)
-        resolve(temp); 
+        resolve(looplength); 
       });
 
 //-------------------
