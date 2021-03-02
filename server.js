@@ -1457,6 +1457,7 @@ app.post('/Authenticate', (req, res) => {
           //console.log('testing : ' + JSON.stringify(DEdataInsertWithPrimaryKeyOptions));
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
+            var temp = response.body;
               FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
               FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
               if(response.statusCode == 202 || response.statusCode == 200) {
@@ -1464,7 +1465,7 @@ app.post('/Authenticate', (req, res) => {
                 FinalResult[key]["DEDataInsert"]["Description"] = "Success";
               }
               else {
-                FinalResult[key]["DEDataInsert"]["StatusMessage"] = response.body.resultMessages[0];
+                FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages[0];
                 FinalResult[key]["DEDataInsert"]["Description"] = "-";
               }
               //console.log('FinalResult : ' + JSON.stringify(FinalResult));
