@@ -332,7 +332,71 @@ app.post('/Authenticate', (req, res) => {
 
   async function getDEData(key) {
     return new Promise( async function (resolve, reject) {
-      var DEDataBody = '';
+
+      var NextUrl;
+      var DEDataOptions = {
+        'method': 'GET',
+        'url': SourceRestURL + 'data/v1/customobjectdata/key/' + key + '/rowset/',
+        'headers': {
+          'Authorization': 'Bearer ' + SourceAccessToken
+        }
+      };
+      request(SharedDEDataOptions, async function (error, response) {
+        if (error) throw new Error(error);
+        var tempResult = JSON.parse(response.body);
+        DEListMap[key].DEDataMap = tempResult.items;
+        var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
+        if(looplength >= 2) {
+          NextUrl = tempResult.links.next;
+          for(var i = 2 ; i <= looplength ; i++) {
+            NextUrl = await getMoreData(NextUrl , key);
+          }
+          //console.log('dekhna h : ' + JSON.stringify(DEListMap[key].DEDataMap));
+          DEListSend[key] = {
+            "DEName" : DEListMap[key].DEName,
+            "DECustomerKey" : DEListMap[key].DECustomerKey,
+            "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+            "RecordCount" : tempResult.count,
+            "DEDescription" : DEListMap[key].DEDescription,
+            "DEIsSendable" : DEListMap[key].DEIsSendable,
+            "DEIsTestable" : DEListMap[key].DEIsTestable,
+            "DESendDEField" : DEListMap[key].DESendDEField,
+            "DESendSubsField" : DEListMap[key].DESendSubsField
+          };
+          resolve(DEListSend); 
+        }
+        else {
+          DEListSend[key] = {
+            "DEName" : DEListMap[key].DEName,
+            "DECustomerKey" : DEListMap[key].DECustomerKey,
+            "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+            "RecordCount" : tempResult.count,
+            "DEDescription" : DEListMap[key].DEDescription,
+            "DEIsSendable" : DEListMap[key].DEIsSendable,
+            "DEIsTestable" : DEListMap[key].DEIsTestable,
+            "DESendDEField" : DEListMap[key].DESendDEField,
+            "DESendSubsField" : DEListMap[key].DESendSubsField
+          };
+          resolve(DEListSend); 
+        }
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*var DEDataBody = '';
       DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
                     '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
                       '<s:Header>' +
@@ -410,12 +474,12 @@ app.post('/Authenticate', (req, res) => {
             for (var key1 in SourceDEDataResult) {
               DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
               
-              /*if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
-                DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
-              }
-              else if (key1 == 'Properties') {
-                DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
-              }*/
+              //if (key1 != 'xsitype' && key1 != 'PartnerKey' && key1 != 'ObjectID' && key1 != 'Type' && key1 != 'Properties') {
+                //DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties);
+              //}
+              //else if (key1 == 'Properties') {
+                //DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
+              //}
               
             }
             DEListSend[key] = {
@@ -447,12 +511,37 @@ app.post('/Authenticate', (req, res) => {
         }
         resolve(DEListMap[key].DEDataMap);
       });
+      */
+
     })
   }
 
-  async function getMoreData(DEDataRequestId , key) {
+  async function getMoreData(NextUrl , key) {
     return new Promise(async function (resolve, reject) {
-      DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
+
+      var DEMoreDataOptions = {
+        'method': 'GET',
+        'url': SourceRestURL + 'data' + NextUrl,
+        'headers': {
+          'Authorization': 'Bearer ' + SourceAccessToken
+        }
+      };
+      request(DEMoreDataOptions, function (error, response) {
+        if (error) throw new Error(error);
+        var tempResult1 = JSON.parse(response.body);
+        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap , tempResult1.items);
+        NextUrl = tempResult1.links.next;
+        resolve(NextUrl);
+      })
+
+
+
+
+
+
+
+
+      /*DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
                           '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
                               '<s:Header>' +
                                   '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
@@ -502,8 +591,13 @@ app.post('/Authenticate', (req, res) => {
         }
         resolve(tempLength);
       })
+      */
+
     })
   }
+
+
+
 
 
   async function insertDEtoDestination(key) {
@@ -720,6 +814,92 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
+
+      if(DEListMap[key].DEDataMap.length != 0) {
+        if(DEListMap[key].DEDataMap[0].keys.size != 0) {
+          //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
+          var DEdataInsertWithPrimaryKeyOptions = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(DEListMap[key].DEDataMap)
+          };
+          request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
+            if (error) throw new Error(error);
+            var temp = response.body;
+              FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+              FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+              if(response.statusCode == 202 || response.statusCode == 200) {
+                FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+                FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+              }
+              else {
+                FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
+                FinalResult[key]["DEDataInsert"]["Description"] = "-";
+              }
+              //console.log('FinalResult : ' + JSON.stringify(FinalResult));
+            resolve(FinalResult);
+          });
+        }
+        else {
+          var DEDataInsertWithoutPrimaryKeyBody = '';
+          for(var key1 in DEListMap[key].DEDataMap) {
+            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
+          }
+          DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
+          DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
+          var DEDataInsertwithoutPrimarykeyOption = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: DEDataInsertWithoutPrimaryKeyBody
+          };
+          request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
+            if (error) throw new Error(error);
+            var temp = response.body;
+            FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if(response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages[0];
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
+            }
+            resolve(FinalResult);
+          });
+        }
+      }
+      else {
+        FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+        FinalResult[key]["DEDataInsert"]["StatusCode"] = "200";
+        FinalResult[key]["DEDataInsert"]["StatusMessage"] = "Success";
+        FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
+        resolve(FinalResult);
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*
       var DEDataInsertWithoutPrimaryKeyBody = '';
       var DEDataInsertWithPrimaryKeyBody = '';
       var PrimaryKeyCheck;
@@ -834,6 +1014,9 @@ app.post('/Authenticate', (req, res) => {
         FinalResult[key]["DEDataInsert"]["StatusMessage"] = "Success";
         FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
       }
+      */
+
+
     })
   }
 
@@ -1490,6 +1673,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
             if (error) throw new Error(error);
+            var temp = response.body;
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
@@ -1497,7 +1681,7 @@ app.post('/Authenticate', (req, res) => {
               FinalResult[key]["DEDataInsert"]["Description"] = "Success";
             }
             else {
-              FinalResult[key]["DEDataInsert"]["StatusMessage"] = response.body.resultMessages[0];
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages[0];
               FinalResult[key]["DEDataInsert"]["Description"] = "-";
             }
             resolve(FinalResult);
