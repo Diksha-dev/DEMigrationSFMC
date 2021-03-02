@@ -1445,6 +1445,7 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(function (resolve, reject) {
       if(SharedDEListMap[key].DEDataMap.length != 0) {
         if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
+          var body = JSON.stringify(SharedDEListMap[key].DEDataMap);
           var DEdataInsertWithPrimaryKeyOptions = {
             'method': 'POST',
             'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
@@ -1452,9 +1453,9 @@ app.post('/Authenticate', (req, res) => {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(SharedDEListMap[key].DEDataMap)
+            body: body
           };
-          //console.log('testing : ' + JSON.stringify(DEdataInsertWithPrimaryKeyOptions));
+          console.log('testing : ' + JSON.stringify(DEdataInsertWithPrimaryKeyOptions));
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
