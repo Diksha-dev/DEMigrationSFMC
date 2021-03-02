@@ -1443,48 +1443,8 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertSharedDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
-      var DEDataInsertWithoutPrimaryKeyBody = '';
-      var DEDataInsertWithPrimaryKeyBody = '';
-      var PrimaryKeyCheck;
-      if(DEListMap[key].DEDataMap.length != 0) {
-        for(var key0 in DEListMap[key].DEFieldMap) {
-          if(DEListMap[key].DEFieldMap[key0].FieldIsPrimaryKey == "true") {
-            PrimaryKeyCheck = true;
-            break;
-          }
-          else {
-            PrimaryKeyCheck = false;
-          }
-        }
-        if(PrimaryKeyCheck == true) {
-          var DEDataInsertWithPrimaryKeyBodyForKeys='';
-          var DEDataInsertWithPrimaryKeyBodyForValues='';
-
-          for(var key1 in DEListMap[key].DEDataMap) {
-            DEDataInsertWithPrimaryKeyBodyForKeys='';
-            DEDataInsertWithPrimaryKeyBodyForValues='';
-
-            
-            
-            for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
-              if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
-                if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]) {
-                  if(DEListMap[key].DEFieldMap[DEListMap[key].DEDataMap[key1].Property[key2].Name[0]]["FieldIsPrimaryKey"] == "true") {
-                    DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
-                  }
-                  else {
-                    DEDataInsertWithPrimaryKeyBodyForValues = DEDataInsertWithPrimaryKeyBodyForValues + '"' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] +'":"' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] +'",';
-                  }
-                }
-              }
-            }
-            DEDataInsertWithPrimaryKeyBodyForKeys = DEDataInsertWithPrimaryKeyBodyForKeys.slice(0, -1);
-            DEDataInsertWithPrimaryKeyBodyForValues = DEDataInsertWithPrimaryKeyBodyForValues.slice(0, -1);
-            DEDataInsertWithPrimaryKeyBody = DEDataInsertWithPrimaryKeyBody + '{"keys":{' + DEDataInsertWithPrimaryKeyBodyForKeys + '},"values":{' + DEDataInsertWithPrimaryKeyBodyForValues + '}},';
-          }
-          DEDataInsertWithPrimaryKeyBody = DEDataInsertWithPrimaryKeyBody.slice(0, -1);
-          DEDataInsertWithPrimaryKeyBody = '[' + DEDataInsertWithPrimaryKeyBody + ']';
-          //console.log(DEListMap[key].DEName + ' : DEDataInsertWithPrimaryKeyBody : ' + DEDataInsertWithPrimaryKeyBody)
+      if(SharedDEListMap[key].DEDataMap.length != 0) {
+        if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
           var DEdataInsertWithPrimaryKeyOptions = {
             'method': 'POST',
             'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
@@ -1492,12 +1452,11 @@ app.post('/Authenticate', (req, res) => {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
             },
-            body: DEDataInsertWithPrimaryKeyBody
+            body: SharedDEListMap[key].DEDataMap
           };
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
-              //console.log(DEListMap[key].DEName + ' : DEDataInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(response));
-              FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+              FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
               FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
               if(response.statusCode == 202 || response.statusCode == 200) {
                 FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
@@ -1512,20 +1471,12 @@ app.post('/Authenticate', (req, res) => {
           });
         }
         else {
-          var DEDataInsertWithoutPrimaryKeyInnerBody = ''
-          for(var key1 in DEListMap[key].DEDataMap) {
-            DEDataInsertWithoutPrimaryKeyInnerBody = '';
-            for(var key2 in DEListMap[key].DEDataMap[key1].Property) {
-              if(JSON.stringify(DEListMap[key].DEDataMap[key1].Property[key2].Value[0]) != '{}') {
-                DEDataInsertWithoutPrimaryKeyInnerBody = DEDataInsertWithoutPrimaryKeyInnerBody + ' "' + DEListMap[key].DEDataMap[key1].Property[key2].Name[0] + '" : "' + DEListMap[key].DEDataMap[key1].Property[key2].Value[0] + '" ,';
-              }
-            }
-            DEDataInsertWithoutPrimaryKeyInnerBody = DEDataInsertWithoutPrimaryKeyInnerBody.slice(0, -1);
-            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + '{' + DEDataInsertWithoutPrimaryKeyInnerBody + '},';
+          var DEDataInsertWithoutPrimaryKeyBody = '';
+          for(var key1 in SharedDEListMap[key].DEDataMap) {
+            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + SharedDEListMap[key].DEDataMap[key1]["values"] + ','; 
           }
           DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
           DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-          //console.log(key + ' : DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
           var DEDataInsertwithoutPrimarykeyOption = {
             'method': 'POST',
             'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
@@ -1537,7 +1488,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
             if (error) throw new Error(error);
-            FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
               FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
@@ -1552,10 +1503,11 @@ app.post('/Authenticate', (req, res) => {
         }
       }
       else {
-        FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+        FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
         FinalResult[key]["DEDataInsert"]["StatusCode"] = "200";
         FinalResult[key]["DEDataInsert"]["StatusMessage"] = "Success";
         FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
+        resolve(FinalResult);
       }
     })
   }
