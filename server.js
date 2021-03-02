@@ -1454,7 +1454,7 @@ app.post('/Authenticate', (req, res) => {
             },
             body: JSON.stringify(SharedDEListMap[key].DEDataMap)
           };
-          console.log('testing : ' + JSON.stringify(DEdataInsertWithPrimaryKeyOptions));
+          //console.log('testing : ' + JSON.stringify(DEdataInsertWithPrimaryKeyOptions));
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
               FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
