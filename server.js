@@ -1174,7 +1174,7 @@ app.post('/Authenticate', (req, res) => {
           for(var i = 2 ; i <= looplength ; i++) {
             NextUrl = await getMoreSharedDEData(NextUrl , key);
           }
-          console.log('dekhna h : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
+          //console.log('dekhna h : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
           SharedDEListSend[key] = {
             "DEName" : SharedDEListMap[key].DEName,
             "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
@@ -1454,6 +1454,7 @@ app.post('/Authenticate', (req, res) => {
             },
             body: SharedDEListMap[key].DEDataMap
           };
+          console.log('testing : ' + JSON.stringify(DEdataInsertWithPrimaryKeyOptions));
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
               FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
