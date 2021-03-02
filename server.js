@@ -1447,7 +1447,7 @@ app.post('/Authenticate', (req, res) => {
         if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
           var DEdataInsertWithPrimaryKeyOptions = {
             'method': 'POST',
-            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
             'headers': {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
@@ -1479,7 +1479,7 @@ app.post('/Authenticate', (req, res) => {
           DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
           var DEDataInsertwithoutPrimarykeyOption = {
             'method': 'POST',
-            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
             'headers': {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
