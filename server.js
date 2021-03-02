@@ -529,7 +529,6 @@ app.post('/Authenticate', (req, res) => {
       };
       request(DEMoreDataOptions, function (error, response) {
         if (error) throw new Error(error);
-        console.log(response.body);
         var tempResult1 = JSON.parse(response.body);
         DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap , tempResult1.items);
         NextUrl = tempResult1.links.next;
@@ -831,18 +830,19 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
+            console.log(response.body)
             var temp = response.body;
-              FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
-              FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
-              if(response.statusCode == 202 || response.statusCode == 200) {
-                FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
-                FinalResult[key]["DEDataInsert"]["Description"] = "Success";
-              }
-              else {
-                FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
-                FinalResult[key]["DEDataInsert"]["Description"] = "-";
-              }
-              //console.log('FinalResult : ' + JSON.stringify(FinalResult));
+            FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if(response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
+            }
+            //console.log('FinalResult : ' + JSON.stringify(FinalResult));
             resolve(FinalResult);
           });
         }
