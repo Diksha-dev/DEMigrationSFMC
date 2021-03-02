@@ -1241,8 +1241,8 @@ app.post('/Authenticate', (req, res) => {
           '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
           '<Options/>' +
           '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '</CustomerKey>' +
-          '<Name>' + selectedDEList.WithoutData[key].DEName + '</Name>' +
+          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + 'test</CustomerKey>' +
+          '<Name>' + selectedDEList.WithoutData[key].DEName + 'test</Name>' +
           '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
           '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
           '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
