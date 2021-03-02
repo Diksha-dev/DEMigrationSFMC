@@ -352,7 +352,7 @@ app.post('/Authenticate', (req, res) => {
           for(var i = 2 ; i <= looplength ; i++) {
             NextUrl = await getMoreData(NextUrl , key);
           }
-          //console.log('dekhna h : ' + JSON.stringify(DEListMap[key].DEDataMap));
+          console.log('dekhna h : ' + JSON.stringify(DEListMap[key].DEDataMap));
           DEListSend[key] = {
             "DEName" : DEListMap[key].DEName,
             "DECustomerKey" : DEListMap[key].DECustomerKey,
