@@ -1242,8 +1242,8 @@ app.post('/Authenticate', (req, res) => {
           '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
           '<Options/>' +
           '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + 'test</CustomerKey>' +
-          '<Name>' + selectedDEList.WithoutData[key].DEName + 'test</Name>' +
+          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '</CustomerKey>' +
+          '<Name>' + selectedDEList.WithoutData[key].DEName + '</Name>' +
           '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
           '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
           '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
@@ -1447,14 +1447,14 @@ app.post('/Authenticate', (req, res) => {
         if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
           var DEdataInsertWithPrimaryKeyOptions = {
             'method': 'POST',
-            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
             'headers': {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
             },
             body: SharedDEListMap[key].DEDataMap
           };
-          console.log('testing : ' + JSON.stringify(DEdataInsertWithPrimaryKeyOptions));
+          //console.log('testing : ' + JSON.stringify(DEdataInsertWithPrimaryKeyOptions));
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
               FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
@@ -1480,7 +1480,7 @@ app.post('/Authenticate', (req, res) => {
           DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
           var DEDataInsertwithoutPrimarykeyOption = {
             'method': 'POST',
-            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
             'headers': {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
