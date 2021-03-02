@@ -30,6 +30,7 @@ var SourceSoapURL = '';
 var SourceListDEResult;
 var SourceDEFieldsResult;
 var SourceDEDataResult;
+var DEListMap = {};
 
 var SourceListSharedDEResult;
 var SourceSharedDEFieldsResult;
@@ -171,7 +172,7 @@ app.post('/Authenticate', (req, res) => {
         //SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
 
-        var DEListMap = {};
+        
         for (var key in SourceListDEResult) {
           if (SourceListDEResult[key].Name[0] != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name[0] != "_MobileAddress" && SourceListDEResult[key].Name[0] != "_MobileSubscription" && SourceListDEResult[key].Name[0] != "_PushAddress" && SourceListDEResult[key].Name[0] != "_PushTag" && SourceListDEResult[key].Name[0] != "_MobileLineAddressContact" && SourceListDEResult[key].Name[0] != "_MobileLineAddress" && SourceListDEResult[key].Name[0] != "_MobileLineProfile" && SourceListDEResult[key].Name[0] != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name[0] != "_MobileLineSubscription" && SourceListDEResult[key].Name[0] != "MobileLineOrphanContact") {
             if (SourceListDEResult[key].IsSendable[0] == "true") {
@@ -341,7 +342,7 @@ app.post('/Authenticate', (req, res) => {
           'Authorization': 'Bearer ' + SourceAccessToken
         }
       };
-      request(SharedDEDataOptions, async function (error, response) {
+      request(DEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
         DEListMap[key].DEDataMap = tempResult.items;
