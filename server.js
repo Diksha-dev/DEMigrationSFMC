@@ -1227,6 +1227,260 @@ app.post('/Authenticate', (req, res) => {
 
 
 
+  
+  async function insertSharedDEtoDestination(key) {
+    return new Promise(function (resolve, reject) {
+      var DEListBody = '';
+      if (key in SharedDEListMap) {
+        DEListBody = '<?xml version="1.0" encoding="UTF-8"?>' +
+          '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
+          '<soapenv:Header>' +
+          '<fueloauth>' + DestinationAccessToken + '</fueloauth>' +
+          '</soapenv:Header>' +
+          '<soapenv:Body>' +
+          '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+          '<Options/>' +
+          '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
+          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '</CustomerKey>' +
+          '<Name>' + selectedDEList.WithoutData[key].DEName + '</Name>' +
+          '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
+          '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
+          '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
+        if (selectedDEList.WithoutData[key].DEIsSend == 'true') {
+          DEListBody = DEListBody + '<SendableDataExtensionField>' +
+            '<PartnerKey xsi:nil="true"/>' +
+            '<ObjectID xsi:nil="true"/>' +
+            '<Name>' + selectedDEList.WithoutData[key].DESendDEField + '</Name>' +
+            '</SendableDataExtensionField>' +
+            '<SendableSubscriberField>' +
+            '<Name>' + selectedDEList.WithoutData[key].DESendSubField + '</Name>' +
+            '</SendableSubscriberField>' +
+            '<Fields>';
+        }
+        else {
+          DEListBody = DEListBody + '<Fields>';
+        }
+
+        var tempDefaultValue = '';
+        var tempMaxLength;
+        for (var i in SharedDEListMap[key].DEFieldMap) {
+          if (SharedDEListMap[key].DEFieldMap[i].FieldFieldType == 'Number' || SharedDEListMap[key].DEFieldMap[i].FieldFieldType == 'Date' || SharedDEListMap[key].DEFieldMap[i].FieldFieldType == 'Boolean') {
+            if (JSON.stringify(SharedDEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
+              tempDefaultValue = '';
+            }
+            else {
+              tempDefaultValue = SharedDEListMap[key].DEFieldMap[i].FieldDefaultValue;
+            }
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + SharedDEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + SharedDEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + SharedDEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
+              '</Field>';
+          }
+          else if (SharedDEListMap[key].DEFieldMap[i].FieldFieldType == 'EmailAddress') {
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + SharedDEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + SharedDEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + SharedDEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>254</MaxLength>' +
+              '</Field>';
+          }
+          else if (SharedDEListMap[key].DEFieldMap[i].FieldFieldType == 'Phone') {
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + SharedDEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + SharedDEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + SharedDEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>50</MaxLength>' +
+              '</Field>';
+          }
+          else if (SharedDEListMap[key].DEFieldMap[i].FieldFieldType == 'Decimal') {
+            if (JSON.stringify(SharedDEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
+              tempDefaultValue = '';
+            }
+            else {
+              tempDefaultValue = SharedDEListMap[key].DEFieldMap[i].FieldDefaultValue;
+            }
+
+            
+            if (SharedDEListMap[key].DEFieldMap[i].FieldMaxLength) {
+              tempMaxLength = SharedDEListMap[key].DEFieldMap[i].FieldMaxLength;
+            }
+            else {
+              tempMaxLength = 100;
+            }
+
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + SharedDEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + SharedDEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + SharedDEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>' + tempMaxLength + '</MaxLength>' +
+              '<Scale>' + SharedDEListMap[key].DEFieldMap[i].FieldScale + '</Scale>' +
+              '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
+              '</Field>';
+          }
+          else if (SharedDEListMap[key].DEFieldMap[i].FieldFieldType == 'Locale') {
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + SharedDEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + SharedDEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + SharedDEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>5</MaxLength>' +
+              '</Field>';
+          }
+          else if (SharedDEListMap[key].DEFieldMap[i].FieldFieldType == 'Text') {
+            if (JSON.stringify(SharedDEListMap[key].DEFieldMap[i].FieldDefaultValue) == '{}') {
+              tempDefaultValue = '';
+            }
+            else {
+              tempDefaultValue = SharedDEListMap[key].DEFieldMap[i].FieldDefaultValue;
+            }
+
+            if (SharedDEListMap[key].DEFieldMap[i].FieldMaxLength) {
+              tempMaxLength = SharedDEListMap[key].DEFieldMap[i].FieldMaxLength;
+            }
+            else {
+              tempMaxLength = 100;
+            }
+
+            DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
+              '<CustomerKey>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
+              '<Name>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
+              '<Label>' + SharedDEListMap[key].DEFieldMap[i].FieldName + '</Label>' +
+              '<IsRequired>' + SharedDEListMap[key].DEFieldMap[i].FieldIsRequired + '</IsRequired>' +
+              '<IsPrimaryKey>' + SharedDEListMap[key].DEFieldMap[i].FieldIsPrimaryKey + '</IsPrimaryKey>' +
+              '<FieldType>' + SharedDEListMap[key].DEFieldMap[i].FieldFieldType + '</FieldType>' +
+              '<MaxLength>' + tempMaxLength + '</MaxLength>' +
+              '<DefaultValue>' + tempDefaultValue + '</DefaultValue>' +
+              '</Field>';
+          }
+        }
+
+        DEListBody = DEListBody + '</Fields>' +
+          '</Objects>' +
+          '</CreateRequest>' +
+          '</soapenv:Body>' +
+          '</soapenv:Envelope>';
+
+
+        //console.log(DEListMap[key].DEName + ' : DEInsertListBody : ' + DEListBody);
+
+        if (DEListBody != '') {
+          var DEListOption = {
+            'method': 'POST',
+            'url': DestinationSoapURL + 'Service.asmx',
+            'headers': {
+              'Content-Type': 'text/xml',
+              'SoapAction': 'Create',
+              'Authorization': 'Bearer ' + DestinationAccessToken
+            },
+            body: DEListBody
+          };
+          request(DEListOption, async function (error, response) {
+            if (error) throw new Error(error);
+
+            var tempDEInsertResult;
+            xml2jsParser.parseString(response.body, function (err, result) {
+              tempDEInsertResult = result['soap:Envelope']['soap:Body'][0]['CreateResponse'][0]['Results'];
+            });
+
+            //console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEInsertResult));
+            
+            if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
+              FinalResult[key] = {
+                "DEInsert" : {
+                  "Name" : SharedDEListMap[key].DEName,
+                  "StatusCode" : response.statusCode,
+                  "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
+                  "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
+                },
+                "DEDataInsert" : {
+                  "Name" : "-",
+                  "StatusCode" : "-",
+                  "StatusMessage" : "-",
+                  "Description" : "-"
+                }
+              };
+            }
+            else {
+              FinalResult[key] = {
+                "DEInsert" : {
+                  "Name" : SharedDEListMap[key].DEName,
+                  "StatusCode" : response.statusCode,
+                  "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
+                  "Description" : tempDEInsertResult[0]["StatusMessage"][0]
+                },
+                "DEDataInsert" : {
+                  "Name" : "-",
+                  "StatusCode" : "-",
+                  "StatusMessage" : "-",
+                  "Description" : "-"
+                }
+              };
+            }
+
+            resolve(FinalResult);
+          });
+        }
+      }
+    })
+  }
+
+  /*var folderResult = {};
+  async function CheckDataFolder() {
+    return new Promise(function (resolve, reject) {
+      var options = {
+        'method': 'POST',
+        'url': DestinationSoapURL + 'Service.asmx',
+        'headers': {
+          'Content-Type': 'text/xml',
+          'SoapAction': 'Retrieve',
+          'Authorization': 'Bearer ' + DestinationAccessToken
+        },
+        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">' + DestinationSoapURL + 'Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + DestinationAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataFolder</ObjectType>\r\n                <Properties>ID</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>ContentType</Properties>\r\n                <Properties>ParentFolder.Name</Properties>\r\n                <Properties>ObjectID</Properties>\r\n                <Properties>ParentFolder.ObjectID</Properties>\r\n\r\n                <ns1:Filter\r\n                     xmlns:ns1="http://exacttarget.com/wsdl/partnerAPI" xsi:type="ns1:SimpleFilterPart">\r\n                     <ns1:Property>ContentType</ns1:Property>\r\n                     <ns1:SimpleOperator>equals</ns1:SimpleOperator>\r\n                     <ns1:Value>shared_dataextension</ns1:Value>\r\n                </ns1:Filter>\r\n\r\n                <QueryAllAccounts>true</QueryAllAccounts>\r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
+
+      };
+      request(options, function (error, response) {
+        if (error) throw new Error(error);
+
+        xml2jsParser.parseString(response.body, function (err, result) {
+          //console.log('mera field result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
+          for(var key in result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']) {
+            folderResult[result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'][key]['Name']] = {
+              "FolderName" : result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'][key]['Name'],
+              "ParentFolderName" : result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'][key]["ParentFolder"]["Name"],
+              "FolderId" : result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'][key]["ID"]
+            }
+          }
+        });
+        console.log('Folder Result : ' + JSON.stringify(folderResult));
+        if("Shared DE" in folderResult) {
+          resolve(folderResult)
+        }
+        else {
+
+        }
+
+      });
+    })
+  }
+*/
+
+
 
 
 
@@ -1241,10 +1495,23 @@ app.post('/Authenticate', (req, res) => {
     }
   });
 
+  app.post("/SelectedSharedDEListInsert", async (req, res) => {
+    if (req.body.reqForSelectedDEList) {
+      selectedDEList = req.body.reqForSelectedDEList;
+      //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
+      for (var key in selectedDEList.WithoutData) {
+        FinalResult = await insertSharedDEtoDestination(key);
+      }
+      for(var key in selectedDEList.WithData) {
+        //FinalResult = await insertSharedDEDataToDestination(key);
+      }
+      console.log('FinalResult : ' + JSON.stringify(FinalResult));
+    }
+    res.send(FinalResult);
+  });
 
 
-
-
+  
 
 
 

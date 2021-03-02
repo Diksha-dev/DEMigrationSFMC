@@ -67,7 +67,11 @@
                                             </li>
                                             &nbsp;
                                             <li class="slds-nav-vertical__item">
-                                                <button class="slds-nav-vertical__action slds-button" onclick="SendDEIdsToServer()" style="padding-top:0px;padding-bottom:0px;padding-left:4px;">Send</button>
+                                                <button class="slds-nav-vertical__action slds-button" onclick="SendDEIdsToServer()" style="padding-top:0px;padding-bottom:0px;padding-left:4px;">Send DE</button>
+                                            </li>
+                                            &nbsp;
+                                            <li class="slds-nav-vertical__item">
+                                                <button class="slds-nav-vertical__action slds-button" onclick="SendSharedDEIdsToServer()" style="padding-top:0px;padding-bottom:0px;padding-left:4px;">Send SharedDE</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -127,6 +131,27 @@
 </body>
 <script>
     var SourceListDEResult;
+    function isWithData() {
+        var grid = document.getElementById("DEDataTableId");
+        var checkBoxes = grid.getElementsByTagName("input");
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
+                document.getElementById(checkBoxes[i].id).checked = true;
+            }
+        }
+    }
+    function isWithoutData() {
+        var grid = document.getElementById("DEDataTableId");
+        var checkBoxes = grid.getElementsByTagName("input");
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if(checkBoxes[i].checked == false && checkBoxes[i].value == "WithoutData") {
+                document.getElementsByClassName(checkBoxes[i].id)[0].checked = false;
+            }
+        }
+    }
+
+
+    
     async function DEListShow() {
         await $.ajax
             ({
@@ -209,26 +234,6 @@
             })
     }
 
-    function isWithData() {
-        var grid = document.getElementById("DEDataTableId");
-        var checkBoxes = grid.getElementsByTagName("input");
-        for (var i = 0; i < checkBoxes.length; i++) {
-            if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
-                document.getElementById(checkBoxes[i].id).checked = true;
-            }
-        }
-    }
-    function isWithoutData() {
-        var grid = document.getElementById("DEDataTableId");
-        var checkBoxes = grid.getElementsByTagName("input");
-        for (var i = 0; i < checkBoxes.length; i++) {
-            if(checkBoxes[i].checked == false && checkBoxes[i].value == "WithoutData") {
-                document.getElementsByClassName(checkBoxes[i].id)[0].checked = false;
-            }
-        }
-    }
-
-
     function SendDEIdsToServer() {
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("input");
@@ -303,12 +308,6 @@
 
 
     }
-
-
-
-
-
-
 
 
 
@@ -394,6 +393,77 @@
             })
     }
 
+    function SendSharedDEIdsToServer() {
+        var grid = document.getElementById("DEDataTableId");
+        var checkBoxes = grid.getElementsByTagName("input");
+        var selectedDE = {
+            WithoutData : {},
+            WithData : {}
+        };
+        var mapKeyTemp;
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked == true && checkBoxes[i].value == "WithoutData") {
+                if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberKey" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber Key" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberKey") {
+                    selectedDE.WithoutData[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                        "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
+                        "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
+                        "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
+                        "DEIsSend" : document.getElementById(checkBoxes[i].id + "DEIsSend").innerHTML,
+                        "DEIsTest" : document.getElementById(checkBoxes[i].id + "DEIsTest").innerHTML,
+                        "DESendDEField" : document.getElementById(checkBoxes[i].id + "DESendDEField").innerHTML,
+                        "DESendSubField" : "Subscriber Key",
+                    };
+                }
+                else if(document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "_SubscriberID" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "Subscriber ID" || document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML == "SubscriberID") {
+                    selectedDE.WithoutData[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                        "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
+                        "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
+                        "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
+                        "DEIsSend" : document.getElementById(checkBoxes[i].id + "DEIsSend").innerHTML,
+                        "DEIsTest" : document.getElementById(checkBoxes[i].id + "DEIsTest").innerHTML,
+                        "DESendDEField" : document.getElementById(checkBoxes[i].id + "DESendDEField").innerHTML,
+                        "DESendSubField" : "Subscriber ID",
+                    };
+                }
+                else {
+                    selectedDE.WithoutData[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                        "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML,
+                        "DEExtKey" : document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML,
+                        "DEDes" : document.getElementById(checkBoxes[i].id + "DEDes").innerHTML,
+                        "DEIsSend" : document.getElementById(checkBoxes[i].id + "DEIsSend").innerHTML,
+                        "DEIsTest" : document.getElementById(checkBoxes[i].id + "DEIsTest").innerHTML,
+                        "DESendDEField" : document.getElementById(checkBoxes[i].id + "DESendDEField").innerHTML,
+                        "DESendSubField" : document.getElementById(checkBoxes[i].id + "DESendSubField").innerHTML
+                    };
+                }    
+            }
+            if(checkBoxes[i].checked == true && checkBoxes[i].value == "WithData") {
+                selectedDE.WithData[document.getElementById(checkBoxes[i].id + "DEExtKey").innerHTML] = {
+                    "DEName" : document.getElementById(checkBoxes[i].id + "DEName").innerHTML
+                };
+            }
+        }
+        console.log(selectedDE);
+        //selectedDE = selectedDE.toString();
+
+
+
+
+        $.ajax
+            ({
+                url: '/SelectedSharedDEListInsert',
+                data: {
+                    'reqForSelectedDEList': selectedDE
+                },
+                type: "POST",
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                success: function (data) {
+                    console.log('data : ' + JSON.stringify(data));
+                }
+            })
+    }
 
 
 
