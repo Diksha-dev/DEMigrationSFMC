@@ -880,7 +880,11 @@ app.post('/Authenticate', (req, res) => {
           }
         }
         else {
-          var loopLength = Math.ceil(DEListMap[key].DEDataMap.length / 10000);
+          var loopLength0 = Math.ceil(DEListMap[key].DEDataMap.length / 10000);
+          console.log(typeof loopLength0);
+          var loopLength = parseInt(loopLength0 , 10);
+          console.log(typeof loopLength);
+
           var recLengthSlice = DEListMap[key].DEDataMap.length / 10000;
           console.log('recLengthSlice : ' + recLengthSlice);
           var ttemp = recLengthSlice.toString().split(".")[1];
