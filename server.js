@@ -882,7 +882,10 @@ app.post('/Authenticate', (req, res) => {
         else {
           var loopLength = Math.ceil(DEListMap[key].DEDataMap.length / 10000);
           var recLengthSlice = DEListMap[key].DEDataMap.length / 10000;
-          var recLenDecimal = parseInt(recLengthSlice.toString().split(".")[1] , 10);
+          console.log('recLengthSlice : ' + recLengthSlice);
+          var ttemp = recLengthSlice.toString().split(".")[1];
+          console.log('ttemp : ' + ttemp)
+          var recLenDecimal = parseInt(ttemp , 10);
           recLengthSlice = recLenDecimal * 10000;
           console.log('recLenDecimal : ' + recLenDecimal + ' , recLengthSlice : ' + recLengthSlice);
 
@@ -897,14 +900,14 @@ app.post('/Authenticate', (req, res) => {
                 if(i == loopLength) {
                   for(var j = recIndex ; j <= recLengthSlice ; j++) {
                     recIndex = recIndex + 1;
-                    body = body + DEListMap[key].DEDataMap[j] + ',';
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
                 else {
                   for(var j = recIndex ; j <= 10000 ; j++) {
                     recIndex = recIndex + 1;
-                    body = body + DEListMap[key].DEDataMap[j] + ',';
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
                   }
                   recIndex = recIndex + 1;
                   body = body.slice(0, -1);
@@ -913,7 +916,7 @@ app.post('/Authenticate', (req, res) => {
               else {
                 for(var j = recIndex ; j <= 10000 ; j++) {
                   recIndex = recIndex + 1;
-                  body = body + DEListMap[key].DEDataMap[j] + ',';
+                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
                 }
                 recIndex = recIndex + 1;
                 body = body.slice(0, -1);
