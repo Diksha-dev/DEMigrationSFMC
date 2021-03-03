@@ -884,6 +884,7 @@ app.post('/Authenticate', (req, res) => {
           var recLengthSlice = DEListMap[key].DEDataMap.length / 10000;
           var recLenDecimal = Number(recLengthSlice.toString().split(".")[1]);
           recLengthSlice = recLenDecimal * 10000;
+          console.log('recLenDecimal : ' + recLenDecimal + ' , recLengthSlice : ' + recLengthSlice);
 
 
           var recIndex = 1;
@@ -919,6 +920,8 @@ app.post('/Authenticate', (req, res) => {
               }
               body = '[' + body + ']';
 
+              console.log('body : ' + body);
+
               var DEdataInsertWithPrimaryKeyOptions = {
                 'method': 'POST',
                 'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
@@ -931,6 +934,7 @@ app.post('/Authenticate', (req, res) => {
               request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
                 if (error) throw new Error(error);
                 var temp = response.body;
+                console.log('DEdataInsertWithPrimaryKeyOptions response : ' + temp);
                 FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
                 FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
                 if(response.statusCode == 202 || response.statusCode == 200) {
@@ -1012,7 +1016,7 @@ app.post('/Authenticate', (req, res) => {
                 resolve(FinalResult);
               });
             }
-
+            
           }
         }
       }
