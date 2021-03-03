@@ -903,6 +903,7 @@ app.post('/Authenticate', (req, res) => {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[a]) + ',';
+                    console.log('DEListMap[key].DEDataMap[a] : ' + JSON.stringify(DEListMap[key].DEDataMap[a]) + ' , a : ' + a);
                   }
                   body = body.slice(0, -1);
                 }
