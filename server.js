@@ -889,7 +889,7 @@ app.post('/Authenticate', (req, res) => {
           }
           console.log('ttemp : ' + ttemp)
           var recLenDecimal = parseInt(ttemp , 10);
-          recLengthSlice = recLenDecimal * 10000;
+          recLengthSlice = recLenDecimal;
           console.log('recLenDecimal : ' + recLenDecimal + ' , recLengthSlice : ' + recLengthSlice);
 
 
@@ -901,6 +901,7 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
+                  console.log('i == loopLength : ' + recIndex);
                   for(var j = recIndex ; j <= recLengthSlice ; j++) {
                     recIndex = recIndex + 1;
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
@@ -916,6 +917,8 @@ app.post('/Authenticate', (req, res) => {
                   body = body.slice(0, -1);
                 }
               }
+
+
               else {
                 for(var j = recIndex ; j <= 10000 ; j++) {
                   recIndex = recIndex + 1;
@@ -926,7 +929,7 @@ app.post('/Authenticate', (req, res) => {
               }
               body = '[' + body + ']';
 
-              console.log('body : ' + body);
+              console.log('body Meri : ' + body);
 
               var DEdataInsertWithPrimaryKeyOptions = {
                 'method': 'POST',
