@@ -864,6 +864,7 @@ app.post('/Authenticate', (req, res) => {
           };
           request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
             if (error) throw new Error(error);
+            console.log(JSON.stringify(response));
             var temp = response.body;
             FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
