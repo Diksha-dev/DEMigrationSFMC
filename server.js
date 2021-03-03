@@ -887,8 +887,9 @@ app.post('/Authenticate', (req, res) => {
             ttemp = 0;
           }
           var recLenDecimal = parseInt(ttemp , 10);
-          var recIndex = 1;
           for(var i = 1 ; i <= loopLength ; i++) {
+
+
             if(DEListMap[key].DEDataMap[0].keys.size != 0) {
               var body = '';
 
@@ -925,7 +926,7 @@ app.post('/Authenticate', (req, res) => {
                 body: body
               };
 
-              await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+              FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
 
               
             }
@@ -953,7 +954,7 @@ app.post('/Authenticate', (req, res) => {
                 body = body.slice(0, -1);
               }
               body = '{"items":[' + body + ']}';
-              console.log('body Meri : ' + body);
+              //console.log('body Meri : ' + body);
 
 
               
@@ -976,9 +977,11 @@ app.post('/Authenticate', (req, res) => {
                 body: body
               };
 
-              await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
+              FinalResult = await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
 
             }
+
+
           }
         }
       }
