@@ -880,20 +880,17 @@ app.post('/Authenticate', (req, res) => {
           }
         }
         else {
-          var loopLength0 = Math.ceil(DEListMap[key].DEDataMap.length / 10000);
-          console.log(typeof loopLength0);
-          var loopLength = parseInt(loopLength0 , 10);
-          console.log(typeof loopLength);
+          var loopLength = Math.ceil(DEListMap[key].DEDataMap.length / 10000);
 
           var recLengthSlice = DEListMap[key].DEDataMap.length / 10000;
-          console.log('recLengthSlice : ' + recLengthSlice);
+          //console.log('recLengthSlice : ' + recLengthSlice);
           var ttemp = recLengthSlice.toString().split(".")[1];
           if(!ttemp) {
             ttemp = 0;
           }
-          console.log('ttemp : ' + ttemp)
+          //console.log('ttemp : ' + ttemp)
           var recLenDecimal = parseInt(ttemp , 10);
-          console.log('recLenDecimal : ' + recLenDecimal);
+          //console.log('recLenDecimal : ' + recLenDecimal);
 
 
           var recIndex = 1;
@@ -904,15 +901,18 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  console.log('i == loopLength : ' + i*10000-9999);
-                  for(var a = i*10000-9999 ; j <= recLenDecimal ; a++) {
+                  console.log('typeof (i*10000-9999)');
+                  console.log(typeof (i*10000-9999));
+                  console.log('i == loopLength : ' + (i*10000-9999));
+                  for(var a = (i*10000-9999) ; j <= recLenDecimal ; a++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[a]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  console.log('first i : ' + i*10000-9999);
-                  for(var b = i*10000-9999 ; j <= 10000 ; b++) {
+                  console.log(typeof (i*10000-9999));
+                  console.log('first i : ' + (i*10000-9999));
+                  for(var b = (i*10000-9999) ; j <= 10000 ; b++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[b]) + ',';
                   }
                   body = body.slice(0, -1);
@@ -1033,7 +1033,7 @@ app.post('/Authenticate', (req, res) => {
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('DEdataInsertWithPrimaryKeyOptions response : ' + temp);
+            console.log('DEdataInsertWithPrimaryKeyOptions response : ' + JSON.stringify(response));
             FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
