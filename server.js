@@ -882,7 +882,7 @@ app.post('/Authenticate', (req, res) => {
         else {
           var loopLength = Math.ceil(DEListMap[key].DEDataMap.length / 10000);
           var recLengthSlice = DEListMap[key].DEDataMap.length / 10000;
-          var recLenDecimal = Number(recLengthSlice.toString().split(".")[1]);
+          var recLenDecimal = parseInt(recLengthSlice.toString().split(".")[1] , 10);
           recLengthSlice = recLenDecimal * 10000;
           console.log('recLenDecimal : ' + recLenDecimal + ' , recLengthSlice : ' + recLengthSlice);
 
