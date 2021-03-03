@@ -863,7 +863,7 @@ app.post('/Authenticate', (req, res) => {
             };
             request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
               if (error) throw new Error(error);
-              console.log(JSON.stringify(response));
+              //console.log(JSON.stringify(response));
               var temp = response.body;
               FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
               FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
@@ -884,6 +884,9 @@ app.post('/Authenticate', (req, res) => {
           var recLengthSlice = DEListMap[key].DEDataMap.length / 10000;
           console.log('recLengthSlice : ' + recLengthSlice);
           var ttemp = recLengthSlice.toString().split(".")[1];
+          if(!ttemp) {
+            ttemp = 0;
+          }
           console.log('ttemp : ' + ttemp)
           var recLenDecimal = parseInt(ttemp , 10);
           recLengthSlice = recLenDecimal * 10000;
@@ -934,23 +937,10 @@ app.post('/Authenticate', (req, res) => {
                 },
                 body: body
               };
-              request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
-                if (error) throw new Error(error);
-                var temp = response.body;
-                console.log('DEdataInsertWithPrimaryKeyOptions response : ' + temp);
-                FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
-                FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
-                if(response.statusCode == 202 || response.statusCode == 200) {
-                  FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
-                  FinalResult[key]["DEDataInsert"]["Description"] = "Success";
-                }
-                else {
-                  FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
-                  FinalResult[key]["DEDataInsert"]["Description"] = "-";
-                }
-                //console.log('FinalResult : ' + JSON.stringify(FinalResult));
-                resolve(FinalResult);
-              });
+
+              await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+
+              
             }
             else {
               var body = '';
@@ -1035,7 +1025,27 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-
+      function insertRecFunc(DEdataInsertWithPrimaryKeyOptions) {
+        return new Promise(function (resolve, reject) {
+          request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
+            if (error) throw new Error(error);
+            var temp = response.body;
+            console.log('DEdataInsertWithPrimaryKeyOptions response : ' + temp);
+            FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if(response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
+            }
+            //console.log('FinalResult : ' + JSON.stringify(FinalResult));
+            resolve(FinalResult);
+          });
+        })
+      }
 
 
 
