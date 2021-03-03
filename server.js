@@ -881,21 +881,14 @@ app.post('/Authenticate', (req, res) => {
         }
         else {
           var loopLength = Math.ceil(DEListMap[key].DEDataMap.length / 10000);
-
           var recLengthSlice = DEListMap[key].DEDataMap.length / 10000;
-          //console.log('recLengthSlice : ' + recLengthSlice);
           var ttemp = recLengthSlice.toString().split(".")[1];
           if(!ttemp) {
             ttemp = 0;
           }
-          //console.log('ttemp : ' + ttemp)
           var recLenDecimal = parseInt(ttemp , 10);
-          //console.log('recLenDecimal : ' + recLenDecimal);
-
-
           var recIndex = 1;
           for(var i = 1 ; i <= loopLength ; i++) {
-
             if(DEListMap[key].DEDataMap[0].keys.size != 0) {
               var body = '';
 
@@ -903,7 +896,6 @@ app.post('/Authenticate', (req, res) => {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]) + ',';
-                    console.log('DEListMap[key].DEDataMap[a] : ' + JSON.stringify(DEListMap[key].DEDataMap[a]) + ' , a : ' + a);
                   }
                   body = body.slice(0, -1);
                 }
@@ -920,10 +912,8 @@ app.post('/Authenticate', (req, res) => {
                 }
                 body = body.slice(0, -1);
               }
-
               body = '[' + body + ']';
-
-              console.log('body Meri : ' + body);
+              //console.log('body Meri : ' + body);
 
               var DEdataInsertWithPrimaryKeyOptions = {
                 'method': 'POST',
@@ -944,30 +934,26 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  for(var j = recIndex ; j <= recLengthSlice ; j++) {
-                    recIndex = recIndex + 1;
-                    body = body + DEListMap[key].DEDataMap[j]["values"] + ',';
+                  for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]["values"]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  for(var j = recIndex ; j <= 10000 ; j++) {
-                    recIndex = recIndex + 1;
-                    body = body + DEListMap[key].DEDataMap[j]["values"] + ',';
+                  for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b-1]["values"]) + ',';
                   }
-                  recIndex = recIndex + 1;
                   body = body.slice(0, -1);
                 }
               }
               else {
-                for(var j = recIndex ; j <= 10000 ; j++) {
-                  recIndex = recIndex + 1;
-                  body = body + DEListMap[key].DEDataMap[j]["values"] + ',';
+                for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
+                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j-1]["values"]) + ',';
                 }
-                recIndex = recIndex + 1;
                 body = body.slice(0, -1);
               }
               body = '{"items":[' + body + ']}';
+              console.log('body Meri : ' + body);
 
 
               
@@ -989,24 +975,10 @@ app.post('/Authenticate', (req, res) => {
                 },
                 body: body
               };
-              request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
-                if (error) throw new Error(error);
-                console.log(JSON.stringify(response));
-                var temp = response.body;
-                FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
-                FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
-                if(response.statusCode == 202 || response.statusCode == 200) {
-                  FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
-                  FinalResult[key]["DEDataInsert"]["Description"] = "Success";
-                }
-                else {
-                  FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages[0];
-                  FinalResult[key]["DEDataInsert"]["Description"] = "-";
-                }
-                resolve(FinalResult);
-              });
+
+              await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
+
             }
-            
           }
         }
       }
@@ -1022,12 +994,12 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-      function insertRecFunc(DEdataInsertWithPrimaryKeyOptions) {
+      function insertRecFunc(ProcessedBody) {
         return new Promise(function (resolve, reject) {
-          request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
+          request(ProcessedBody, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('DEdataInsertWithPrimaryKeyOptions response : ' + response.body);
+            console.log('ProcessedBody response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
