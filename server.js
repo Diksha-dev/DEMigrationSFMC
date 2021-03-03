@@ -907,7 +907,7 @@ app.post('/Authenticate', (req, res) => {
                   body = body.slice(0, -1);
                 }
                 else {
-                  cinsole.log('first i : ' + i*10000-9999);
+                  console.log('first i : ' + i*10000-9999);
                   for(var b = i*10000-9999 ; j <= 10000 ; b++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[b]) + ',';
                   }
