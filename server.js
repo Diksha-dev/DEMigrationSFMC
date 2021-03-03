@@ -901,16 +901,14 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= recLenDecimal ; a++) {
+                  for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[a]) + ',';
-                    console.log('JSON.stringify(DEListMap[key].DEDataMap[a]) : ' + JSON.stringify(DEListMap[key].DEDataMap[a]));
                   }
                   body = body.slice(0, -1);
                 }
                 else {
                   for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[b]) + ',';
-                    console.log('JSON.stringify(DEListMap[key].DEDataMap[b]) : ' + JSON.stringify(DEListMap[key].DEDataMap[b]));
                   }
                   body = body.slice(0, -1);
                 }
