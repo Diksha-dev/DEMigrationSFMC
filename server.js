@@ -889,8 +889,7 @@ app.post('/Authenticate', (req, res) => {
           }
           console.log('ttemp : ' + ttemp)
           var recLenDecimal = parseInt(ttemp , 10);
-          recLengthSlice = recLenDecimal;
-          console.log('recLenDecimal : ' + recLenDecimal + ' , recLengthSlice : ' + recLengthSlice);
+          console.log('recLenDecimal : ' + recLenDecimal);
 
 
           var recIndex = 1;
@@ -901,32 +900,29 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  console.log('i == loopLength : ' + recIndex);
-                  for(var j = recIndex ; j <= recLengthSlice ; j++) {
-                    recIndex = recIndex + 1;
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
+                  console.log('i == loopLength : ' + i*10000-9999);
+                  for(var a = i*10000-9999 ; j <= recLenDecimal ; a++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  for(var j = recIndex ; j <= 10000 ; j++) {
-                    recIndex = recIndex + 1;
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
+                  cinsole.log('first i : ' + i*10000-9999);
+                  for(var b = i*10000-9999 ; j <= 10000 ; b++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b]) + ',';
                   }
-                  recIndex = recIndex + 1;
                   body = body.slice(0, -1);
                 }
               }
 
 
               else {
-                for(var j = recIndex ; j <= 10000 ; j++) {
-                  recIndex = recIndex + 1;
+                for(var j = i*10000-9999 ; j <= 10000 ; j++) {
                   body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
                 }
-                recIndex = recIndex + 1;
                 body = body.slice(0, -1);
               }
+
               body = '[' + body + ']';
 
               console.log('body Meri : ' + body);
