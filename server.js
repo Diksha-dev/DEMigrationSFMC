@@ -902,21 +902,21 @@ app.post('/Authenticate', (req, res) => {
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a]) + ',';
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]) + ',';
                     console.log('DEListMap[key].DEDataMap[a] : ' + JSON.stringify(DEListMap[key].DEDataMap[a]) + ' , a : ' + a);
                   }
                   body = body.slice(0, -1);
                 }
                 else {
                   for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b]) + ',';
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b-1]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
               }
               else {
                 for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
-                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
+                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j-1]) + ',';
                 }
                 body = body.slice(0, -1);
               }
