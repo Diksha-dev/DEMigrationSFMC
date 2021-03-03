@@ -901,14 +901,14 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; j <= recLenDecimal ; a++) {
+                  for(var a = (i*10000-9999) ; a <= recLenDecimal ; a++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[a]) + ',';
                     console.log('JSON.stringify(DEListMap[key].DEDataMap[a]) : ' + JSON.stringify(DEListMap[key].DEDataMap[a]));
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  for(var b = (i*10000-9999) ; j <= 10000 ; b++) {
+                  for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[b]) + ',';
                     console.log('JSON.stringify(DEListMap[key].DEDataMap[b]) : ' + JSON.stringify(DEListMap[key].DEDataMap[b]));
                   }
@@ -916,7 +916,7 @@ app.post('/Authenticate', (req, res) => {
                 }
               }
               else {
-                for(var j = i*10000-9999 ; j <= 10000 ; j++) {
+                for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
                   body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
                 }
                 body = body.slice(0, -1);
@@ -1028,7 +1028,7 @@ app.post('/Authenticate', (req, res) => {
           request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('DEdataInsertWithPrimaryKeyOptions response : ' + JSON.stringify(response));
+            console.log('DEdataInsertWithPrimaryKeyOptions response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
