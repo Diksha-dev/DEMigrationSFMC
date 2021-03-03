@@ -901,25 +901,20 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  console.log('typeof (i*10000-9999)');
-                  console.log(typeof (i*10000-9999));
-                  console.log('i == loopLength : ' + (i*10000-9999));
                   for(var a = (i*10000-9999) ; j <= recLenDecimal ; a++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[a]) + ',';
+                    console.log('JSON.stringify(DEListMap[key].DEDataMap[a]) : ' + JSON.stringify(DEListMap[key].DEDataMap[a]));
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  console.log(typeof (i*10000-9999));
-                  console.log('first i : ' + (i*10000-9999));
                   for(var b = (i*10000-9999) ; j <= 10000 ; b++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[b]) + ',';
+                    console.log('JSON.stringify(DEListMap[key].DEDataMap[b]) : ' + JSON.stringify(DEListMap[key].DEDataMap[b]));
                   }
                   body = body.slice(0, -1);
                 }
               }
-
-
               else {
                 for(var j = i*10000-9999 ; j <= 10000 ; j++) {
                   body = body + JSON.stringify(DEListMap[key].DEDataMap[j]) + ',';
