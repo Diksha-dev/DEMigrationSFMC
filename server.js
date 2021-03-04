@@ -11,13 +11,13 @@ const { log } = require("console");
 var xml2js = require('xml2js');
 var xml2jsParser = new xml2js.Parser();
 const Math = require("mathjs");
+var Blob = require('blob');
 
-if(process.env.NODE_ENV === 'production'){
-  app.get("*", (req, res) => {
-    const FirstPage = path.join(__dirname, 'public', 'index.html');
-    res.sendFile(FirstPage);
-  })
-}
+
+app.get("*", (req, res) => {
+  const FirstPage = path.join(__dirname, 'public', 'index.html');
+  res.sendFile(FirstPage);
+});
 
 app.use(express.urlencoded({
   extended: true
@@ -128,12 +128,10 @@ app.post('/Authenticate', (req, res) => {
   const SecondPage = path.join(__dirname, 'public', 'SecondPage.html');
   res.sendFile(SecondPage);
 
-  if(process.env.NODE_ENV === 'production'){
-    app.get("*", (req, res) => {
-      const SecondPage = path.join(__dirname, 'public', 'SecondPage.html');
-      res.sendFile(SecondPage);
-    })
-  }
+  app.get("*", (req, res) => {
+    const SecondPage = path.join(__dirname, 'public', 'SecondPage.html');
+    res.sendFile(SecondPage);
+  });
 
   app.use(express.urlencoded({
     extended: true
@@ -1774,7 +1772,8 @@ app.post('/Authenticate', (req, res) => {
           for(var i = 1 ; i <= loopLength ; i++) {
 
             if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
-              var body = '';
+              //var body = '';
+              var body = new Blob();
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
@@ -1811,7 +1810,8 @@ app.post('/Authenticate', (req, res) => {
               FinalResult = await insertSharedDERecFunc(DEdataInsertWithPrimaryKeyOptions);
             }
             else {
-              var body = '';
+              //var body = '';
+              var body = new Blob();
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].DEDataMap.length ; a++) {

@@ -23,6 +23,7 @@
   "dependencies": {
     "@salesforce-ux/design-system": "^2.14.1",
     "Math": "0.0.1-security",
+    "blob": "^0.1.0",
     "collections": "^5.1.12",
     "express": "^4.17.1",
     "exprss": "0.0.1-security",
