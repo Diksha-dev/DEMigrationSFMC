@@ -817,6 +817,7 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(async function (resolve, reject) {
       if(DEListMap[key].DEDataMap.length != 0) {
         if(DEListMap[key].DEDataMap.length <= 10000) {
+
           if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
             //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
             var DEdataInsertWithPrimaryKeyOptions = {
@@ -863,46 +864,44 @@ app.post('/Authenticate', (req, res) => {
           var recLenDecimal = parseInt(ttemp , 10);
           for(var i = 1 ; i <= loopLength ; i++) {
 
-            if(Object.keys(DEListMap[key].DEDataMap[0].keys)) {
-              if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
-                var body = '';
-  
-                if(recLenDecimal != 0) {
-                  if(i == loopLength) {
-                    for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
-                      body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]) + ',';
-                    }
-                    body = body.slice(0, -1);
-                  }
-                  else {
-                    for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
-                      body = body + JSON.stringify(DEListMap[key].DEDataMap[b-1]) + ',';
-                    }
-                    body = body.slice(0, -1);
-                  }
-                }
-                else {
-                  for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[j-1]) + ',';
+            if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
+              var body = '';
+
+              if(recLenDecimal != 0) {
+                if(i == loopLength) {
+                  for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
-                body = '[' + body + ']';
-                //console.log('body Meri : ' + body);
-  
-                var DEdataInsertWithPrimaryKeyOptions = {
-                  'method': 'POST',
-                  'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
-                  'headers': {
-                    'Authorization': 'Bearer ' + DestinationAccessToken,
-                    'Content-Type': 'application/json'
-                  },
-                  body: body
-                };
-                FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+                else {
+                  for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b-1]) + ',';
+                  }
+                  body = body.slice(0, -1);
+                }
               }
+              else {
+                for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
+                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j-1]) + ',';
+                }
+                body = body.slice(0, -1);
+              }
+              body = '[' + body + ']';
+              //console.log('body Meri : ' + body);
+
+              var DEdataInsertWithPrimaryKeyOptions = {
+                'method': 'POST',
+                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+                'headers': {
+                  'Authorization': 'Bearer ' + DestinationAccessToken,
+                  'Content-Type': 'application/json'
+                },
+                body: body
+              };
+              FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
             }
-            else if (JSON.stringify(DEListMap[key].DEDataMap[0].keys) == '{}'){
+            else {
               var body = '';
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
