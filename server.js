@@ -345,7 +345,7 @@ app.post('/Authenticate', (req, res) => {
       request(DEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
-        DEListMap[key].DEDataMap = tempResult.items;
+        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap , tempResult.items);
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
         if(looplength >= 2) {
           NextUrl = tempResult.links.next;
@@ -1261,7 +1261,8 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": SourceListSharedDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListSharedDEResult[key].SendableSubscriberField[0].Name[0],
-                "DEFieldMap": {}
+                "DEFieldMap": {},
+                "DEDataMap" : []
               };
             }
             else {
@@ -1273,7 +1274,8 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
-                "DEFieldMap": {}
+                "DEFieldMap": {},
+                "DEDataMap" : []
               };
             }
           }
@@ -1443,7 +1445,7 @@ app.post('/Authenticate', (req, res) => {
       request(SharedDEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
-        SharedDEListMap[key].DEDataMap = tempResult.items;
+        SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap , tempResult.items);
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
         if(looplength >= 2) {
           NextUrl = tempResult.links.next;
@@ -1719,7 +1721,7 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertSharedDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
-      if(SharedDEListMap[key].DEDataMap) {
+      if(SharedDEListMap[key].DEDataMap.length != 0) {
         if(SharedDEListMap[key].DEDataMap.length <= 10000) {
 
           if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
@@ -1863,11 +1865,7 @@ app.post('/Authenticate', (req, res) => {
         FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
         resolve(FinalResult);
       }
-
-
-
-
-
+      
       async function insertSharedDERecFunc(ProcessedBody) {
         return new Promise(function (resolve, reject) {
           request(ProcessedBody, function (error, response) {
@@ -1889,102 +1887,6 @@ app.post('/Authenticate', (req, res) => {
           });
         })
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      /*
-      if(SharedDEListMap[key].DEDataMap.length != 0) {
-        if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
-          console.log('testing : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
-          var DEdataInsertWithPrimaryKeyOptions = {
-            'method': 'POST',
-            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
-            'headers': {
-              'Authorization': 'Bearer ' + DestinationAccessToken,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(SharedDEListMap[key].DEDataMap)
-          };
-          request(DEdataInsertWithPrimaryKeyOptions, function (error, response) {
-            if (error) throw new Error(error);
-            var temp = response.body;
-              FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
-              FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
-              if(response.statusCode == 202 || response.statusCode == 200) {
-                FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
-                FinalResult[key]["DEDataInsert"]["Description"] = "Success";
-              }
-              else {
-                FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
-                FinalResult[key]["DEDataInsert"]["Description"] = "-";
-              }
-              //console.log('FinalResult : ' + JSON.stringify(FinalResult));
-            resolve(FinalResult);
-          });
-        }
-        else {
-          var DEDataInsertWithoutPrimaryKeyBody = '';
-          for(var key1 in SharedDEListMap[key].DEDataMap) {
-            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + SharedDEListMap[key].DEDataMap[key1]["values"] + ','; 
-          }
-          DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
-          DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-          var DEDataInsertwithoutPrimarykeyOption = {
-            'method': 'POST',
-            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
-            'headers': {
-              'Authorization': 'Bearer ' + DestinationAccessToken,
-              'Content-Type': 'application/json'
-            },
-            body: DEDataInsertWithoutPrimaryKeyBody
-          };
-          request(DEDataInsertwithoutPrimarykeyOption, function (error, response) {
-            if (error) throw new Error(error);
-            var temp = response.body;
-            FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
-            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
-            if(response.statusCode == 202 || response.statusCode == 200) {
-              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
-              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
-            }
-            else {
-              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages[0];
-              FinalResult[key]["DEDataInsert"]["Description"] = "-";
-            }
-            resolve(FinalResult);
-          });
-        }
-      }
-      else {
-        FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
-        FinalResult[key]["DEDataInsert"]["StatusCode"] = "200";
-        FinalResult[key]["DEDataInsert"]["StatusMessage"] = "Success";
-        FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
-        resolve(FinalResult);
-      }
-      */
-
-
-
-
     })
   }
 
