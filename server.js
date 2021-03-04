@@ -832,10 +832,9 @@ app.post('/Authenticate', (req, res) => {
             resolve(FinalResult);
           }
           else {
-            console.log('else chala');
             var DEDataInsertWithoutPrimaryKeyBody = '';
             for(var key1 in DEListMap[key].DEDataMap) {
-              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
+              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + JSON.stringify(DEListMap[key].DEDataMap[key1]["values"]) + ','; 
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
