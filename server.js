@@ -1261,8 +1261,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": SourceListSharedDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListSharedDEResult[key].SendableSubscriberField[0].Name[0],
-                "DEFieldMap": {},
-                "DEDataMap": ""
+                "DEFieldMap": {}
               };
             }
             else {
@@ -1274,8 +1273,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
-                "DEFieldMap": {},
-                "DEDataMap": ""
+                "DEFieldMap": {}
               };
             }
           }
