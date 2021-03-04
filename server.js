@@ -818,7 +818,7 @@ app.post('/Authenticate', (req, res) => {
       if(DEListMap[key].DEDataMap.length != 0) {
         if(DEListMap[key].DEDataMap.length <= 10000) {
 
-          console.log('DEListMap[key].DEDataMap[0].keys : ' + DJSON.stringify(DEListMap[key].DEDataMap[0].keys));
+          console.log('DEListMap[key].DEDataMap[0].keys : ' + JSON.stringify(DEListMap[key].DEDataMap[0].keys));
           console.log('DEListMap[key].DEDataMap[0].keys.size : ' + DEListMap[key].DEDataMap[0].keys.size);
           if(DEListMap[key].DEDataMap[0].keys.size) {
             console.log('if chala');
