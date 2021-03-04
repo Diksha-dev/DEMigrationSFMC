@@ -900,7 +900,7 @@ app.post('/Authenticate', (req, res) => {
               };
               FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
             }
-            else if(!DEListMap[key].DEDataMap[0].keys.size) {
+            else if (JSON.stringify(DEListMap[key].DEDataMap[0].keys) == '{}'){
               var body = '';
               console.log('else chala');
               if(recLenDecimal != 0) {
