@@ -817,12 +817,12 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(async function (resolve, reject) {
       if(DEListMap[key].DEDataMap.length != 0) {
         if(DEListMap[key].DEDataMap.length <= 10000) {
-
+          
           console.log('DEListMap[key].DEDataMap[0].keys : ' + JSON.stringify(DEListMap[key].DEDataMap[0].keys));
-          console.log('DEListMap[key].DEDataMap[0].keys.size : ' + DEListMap[key].DEDataMap[0].keys.size);
-          if(DEListMap[key].DEDataMap[0].keys.size) {
+          console.log('Object.keys(DEListMap[key].DEDataMap[0].keys).length : ' + Object.keys(DEListMap[key].DEDataMap[0].keys).length);
+          if(Object.keys(DEListMap[key].DEDataMap[0].keys)) {
             console.log('if chala');
-            if(DEListMap[key].DEDataMap[0].keys.size != 0) {
+            if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
               console.log('2if chala');
               //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
               var DEdataInsertWithPrimaryKeyOptions = {
