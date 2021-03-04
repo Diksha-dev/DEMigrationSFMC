@@ -1719,7 +1719,7 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertSharedDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
-      if(SharedDEListMap[key].DEDataMap != "") {
+      if(SharedDEListMap[key].DEDataMap) {
         if(SharedDEListMap[key].DEDataMap.length <= 10000) {
 
           if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
