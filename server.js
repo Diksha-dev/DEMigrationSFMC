@@ -832,6 +832,7 @@ app.post('/Authenticate', (req, res) => {
             resolve(FinalResult);
           }
           else {
+            console.log('else chala');
             var DEDataInsertWithoutPrimaryKeyBody = '';
             for(var key1 in DEListMap[key].DEDataMap) {
               DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
@@ -970,7 +971,7 @@ app.post('/Authenticate', (req, res) => {
           request(ProcessedBody, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('ProcessedBody response : ' + response.body);
+            //console.log('ProcessedBody response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
