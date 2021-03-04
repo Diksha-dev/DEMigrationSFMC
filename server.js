@@ -861,7 +861,7 @@ app.post('/Authenticate', (req, res) => {
           var recLenDecimal = parseInt(ttemp , 10);
           for(var i = 1 ; i <= loopLength ; i++) {
             console.log('loop chala : ' + i);
-
+            console.log('DEListMap[key].DEDataMap[0].keys.size : ' + DEListMap[key].DEDataMap[0].keys.size);
 
             if(DEListMap[key].DEDataMap[0].keys.size != 0) {
               var body = '';
