@@ -860,6 +860,7 @@ app.post('/Authenticate', (req, res) => {
           }
           var recLenDecimal = parseInt(ttemp , 10);
           for(var i = 1 ; i <= loopLength ; i++) {
+            console.log('loop chala : ' + i);
 
 
             if(DEListMap[key].DEDataMap[0].keys.size != 0) {
@@ -897,14 +898,11 @@ app.post('/Authenticate', (req, res) => {
                 },
                 body: body
               };
-
               FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
-
-              
             }
             else {
               var body = '';
-
+              console.log('else chala');
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
@@ -948,12 +946,8 @@ app.post('/Authenticate', (req, res) => {
                 },
                 body: body
               };
-
               FinalResult = await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
-
             }
-
-
           }
           resolve(FinalResult);
         }
