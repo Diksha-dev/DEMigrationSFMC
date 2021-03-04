@@ -834,12 +834,15 @@ app.post('/Authenticate', (req, res) => {
             }
           }
           else if(JSON.stringify(DEListMap[key].DEDataMap[0].keys) == '{}') {
+            console.log('else chala ');
             var DEDataInsertWithoutPrimaryKeyBody = '';
             for(var key1 in DEListMap[key].DEDataMap) {
               DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
+            console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
+
             var DEDataInsertwithoutPrimarykeyOption = {
               'method': 'POST',
               'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
