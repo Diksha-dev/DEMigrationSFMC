@@ -839,7 +839,7 @@ app.post('/Authenticate', (req, res) => {
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-            console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
+            //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
 
             var DEDataInsertwithoutPrimarykeyOption = {
               'method': 'POST',
@@ -969,7 +969,7 @@ app.post('/Authenticate', (req, res) => {
           request(ProcessedBody, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('ProcessedBody response : ' + response.body);
+            //console.log('ProcessedBody response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
@@ -1728,7 +1728,7 @@ app.post('/Authenticate', (req, res) => {
             //console.log('testing : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
             var DEdataInsertWithPrimaryKeyOptions = {
               'method': 'POST',
-              'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+              'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
               'headers': {
                 'Authorization': 'Bearer ' + DestinationAccessToken,
                 'Content-Type': 'application/json'
@@ -1745,11 +1745,11 @@ app.post('/Authenticate', (req, res) => {
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-            console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
+            //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
 
             var DEDataInsertwithoutPrimarykeyOption = {
               'method': 'POST',
-              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
               'headers': {
                 'Authorization': 'Bearer ' + DestinationAccessToken,
                 'Content-Type': 'application/json'
@@ -1798,7 +1798,7 @@ app.post('/Authenticate', (req, res) => {
 
               var DEdataInsertWithPrimaryKeyOptions = {
                 'method': 'POST',
-                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
                 'headers': {
                   'Authorization': 'Bearer ' + DestinationAccessToken,
                   'Content-Type': 'application/json'
@@ -1845,7 +1845,7 @@ app.post('/Authenticate', (req, res) => {
 
               var DEDataInsertwithoutPrimarykeyOption = {
                 'method': 'POST',
-                'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+                'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
                 'headers': {
                   'Authorization': 'Bearer ' + DestinationAccessToken,
                   'Content-Type': 'application/json'
@@ -1875,7 +1875,7 @@ app.post('/Authenticate', (req, res) => {
           request(ProcessedBody, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('ProcessedBody response : ' + response.body);
+            //console.log('ProcessedBody response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if(response.statusCode == 202 || response.statusCode == 200) {
