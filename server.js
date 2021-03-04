@@ -817,6 +817,7 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(async function (resolve, reject) {
       if(DEListMap[key].DEDataMap.length != 0) {
         if(DEListMap[key].DEDataMap.length <= 10000) {
+          console.log('DEListMap[key].DEDataMap.length <= 10000 ');
           if(DEListMap[key].DEDataMap[0].keys.size) {
             if(DEListMap[key].DEDataMap[0].keys.size != 0) {
               //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
@@ -971,7 +972,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-      function insertRecFunc(ProcessedBody) {
+      async function insertRecFunc(ProcessedBody) {
         return new Promise(function (resolve, reject) {
           request(ProcessedBody, function (error, response) {
             if (error) throw new Error(error);
