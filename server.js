@@ -817,21 +817,23 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(async function (resolve, reject) {
       if(DEListMap[key].DEDataMap.length != 0) {
         if(DEListMap[key].DEDataMap.length <= 10000) {
-          if(DEListMap[key].DEDataMap[0].keys.size != 0) {
-            //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
-            var DEdataInsertWithPrimaryKeyOptions = {
-              'method': 'POST',
-              'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
-              'headers': {
-                'Authorization': 'Bearer ' + DestinationAccessToken,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(DEListMap[key].DEDataMap)
-            };
-            FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
-            resolve(FinalResult);
+          if(DEListMap[key].DEDataMap[0].keys.size) {
+            if(DEListMap[key].DEDataMap[0].keys.size != 0) {
+              //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
+              var DEdataInsertWithPrimaryKeyOptions = {
+                'method': 'POST',
+                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+                'headers': {
+                  'Authorization': 'Bearer ' + DestinationAccessToken,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(DEListMap[key].DEDataMap)
+              };
+              FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+              resolve(FinalResult);
+            }
           }
-          else {
+          else if(JSON.stringify(DEListMap[key].DEDataMap[0].keys) == '{}') {
             var DEDataInsertWithoutPrimaryKeyBody = '';
             for(var key1 in DEListMap[key].DEDataMap) {
               DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
@@ -860,9 +862,9 @@ app.post('/Authenticate', (req, res) => {
           }
           var recLenDecimal = parseInt(ttemp , 10);
           for(var i = 1 ; i <= loopLength ; i++) {
-            console.log('loop chala : ' + i);
-            console.log('DEListMap[key].DEDataMap[0].keys.size : ' + DEListMap[key].DEDataMap[0].keys.size);
-            console.log('DEListMap[key].DEDataMap[0].keys.size : ' + JSON.stringify(DEListMap[key].DEDataMap[0].keys));
+            //console.log('loop chala : ' + i);
+            //console.log('DEListMap[key].DEDataMap[0].keys.size : ' + DEListMap[key].DEDataMap[0].keys.size);
+            //console.log('DEListMap[key].DEDataMap[0].keys.size : ' + JSON.stringify(DEListMap[key].DEDataMap[0].keys));
 
             if(DEListMap[key].DEDataMap[0].keys.size) {
               if(DEListMap[key].DEDataMap[0].keys.size != 0) {
@@ -905,7 +907,6 @@ app.post('/Authenticate', (req, res) => {
             }
             else if (JSON.stringify(DEListMap[key].DEDataMap[0].keys) == '{}'){
               var body = '';
-              console.log('else chala');
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
@@ -927,7 +928,7 @@ app.post('/Authenticate', (req, res) => {
                 body = body.slice(0, -1);
               }
               body = '{"items":[' + body + ']}';
-              console.log('body Meri : ' + body);
+              //console.log('body Meri : ' + body);
 
 
               
@@ -1724,6 +1725,208 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertSharedDEDataToDestination(key) {
     return new Promise(function (resolve, reject) {
+
+
+
+
+
+
+      if(SharedDEListMap[key].DEDataMap.length != 0) {
+        if(SharedDEListMap[key].DEDataMap.length <= 10000) {
+          if(SharedDEListMap[key].DEDataMap[0].keys.size) {
+            if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
+              //console.log('testing : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
+              var DEdataInsertWithPrimaryKeyOptions = {
+                'method': 'POST',
+                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+                'headers': {
+                  'Authorization': 'Bearer ' + DestinationAccessToken,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(SharedDEListMap[key].DEDataMap)
+              };
+              FinalResult = await insertSharedDERecFunc(DEdataInsertWithPrimaryKeyOptions);
+              resolve(FinalResult);
+            }
+          }
+          else if(JSON.stringify(SharedDEListMap[key].DEDataMap[0].keys.size) == '{}') {
+            var DEDataInsertWithoutPrimaryKeyBody = '';
+            for(var key1 in SharedDEListMap[key].DEDataMap) {
+              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + SharedDEListMap[key].DEDataMap[key1]["values"] + ','; 
+            }
+            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
+            DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
+            var DEDataInsertwithoutPrimarykeyOption = {
+              'method': 'POST',
+              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+              'headers': {
+                'Authorization': 'Bearer ' + DestinationAccessToken,
+                'Content-Type': 'application/json'
+              },
+              body: DEDataInsertWithoutPrimaryKeyBody
+            };
+            FinalResult = await insertSharedDERecFunc(DEDataInsertwithoutPrimarykeyOption);
+            resolve(FinalResult);
+          }
+        }
+        else {
+          var loopLength = Math.ceil(SharedDEListMap[key].DEDataMap.length / 10000);
+          var recLengthSlice = SharedDEListMap[key].DEDataMap.length / 10000;
+          var ttemp = recLengthSlice.toString().split(".")[1];
+          if(!ttemp) {
+            ttemp = 0;
+          }
+          var recLenDecimal = parseInt(ttemp , 10);
+          for(var i = 1 ; i <= loopLength ; i++) {
+            //console.log('loop chala : ' + i);
+            //console.log('SharedDEListMap[key].DEDataMap[0].keys.size : ' + SharedDEListMap[key].DEDataMap[0].keys.size);
+            //console.log('SharedDEListMap[key].DEDataMap[0].keys.size : ' + JSON.stringify(SharedDEListMap[key].DEDataMap[0].keys));
+
+            if(SharedDEListMap[key].DEDataMap[0].keys.size) {
+              if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
+                var body = '';
+  
+                if(recLenDecimal != 0) {
+                  if(i == loopLength) {
+                    for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].DEDataMap.length ; a++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
+                    }
+                    body = body.slice(0, -1);
+                  }
+                  else {
+                    for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b-1]) + ',';
+                    }
+                    body = body.slice(0, -1);
+                  }
+                }
+                else {
+                  for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j-1]) + ',';
+                  }
+                  body = body.slice(0, -1);
+                }
+                body = '[' + body + ']';
+                //console.log('body Meri : ' + body);
+  
+                var DEdataInsertWithPrimaryKeyOptions = {
+                  'method': 'POST',
+                  'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+                  'headers': {
+                    'Authorization': 'Bearer ' + DestinationAccessToken,
+                    'Content-Type': 'application/json'
+                  },
+                  body: body
+                };
+                FinalResult = await insertSharedDERecFunc(DEdataInsertWithPrimaryKeyOptions);
+              }
+            }
+            else if (JSON.stringify(SharedDEListMap[key].DEDataMap[0].keys) == '{}'){
+              var body = '';
+              if(recLenDecimal != 0) {
+                if(i == loopLength) {
+                  for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].DEDataMap.length ; a++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]["values"]) + ',';
+                  }
+                  body = body.slice(0, -1);
+                }
+                else {
+                  for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b-1]["values"]) + ',';
+                  }
+                  body = body.slice(0, -1);
+                }
+              }
+              else {
+                for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
+                  body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j-1]["values"]) + ',';
+                }
+                body = body.slice(0, -1);
+              }
+              body = '{"items":[' + body + ']}';
+              //console.log('body Meri : ' + body);
+
+
+              
+              /*
+              for(var key1 in SharedDEListMap[key].DEDataMap) {
+                DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + SharedDEListMap[key].DEDataMap[key1]["values"] + ','; 
+              }
+              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
+              DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
+              */
+
+
+              var DEDataInsertwithoutPrimarykeyOption = {
+                'method': 'POST',
+                'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+                'headers': {
+                  'Authorization': 'Bearer ' + DestinationAccessToken,
+                  'Content-Type': 'application/json'
+                },
+                body: body
+              };
+              FinalResult = await insertSharedDERecFunc(DEDataInsertwithoutPrimarykeyOption);
+            }
+          }
+          resolve(FinalResult);
+        }
+      }
+      else {
+        FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
+        FinalResult[key]["DEDataInsert"]["StatusCode"] = "200";
+        FinalResult[key]["DEDataInsert"]["StatusMessage"] = "Success";
+        FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
+        resolve(FinalResult);
+      }
+
+
+
+
+
+      function insertSharedDERecFunc(ProcessedBody) {
+        return new Promise(function (resolve, reject) {
+          request(ProcessedBody, function (error, response) {
+            if (error) throw new Error(error);
+            var temp = response.body;
+            console.log('ProcessedBody response : ' + response.body);
+            FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if(response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
+            }
+            //console.log('FinalResult : ' + JSON.stringify(FinalResult));
+            resolve(FinalResult);
+          });
+        })
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*
       if(SharedDEListMap[key].DEDataMap.length != 0) {
         if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
           console.log('testing : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
@@ -1793,6 +1996,11 @@ app.post('/Authenticate', (req, res) => {
         FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
         resolve(FinalResult);
       }
+      */
+
+
+
+
     })
   }
 
