@@ -12,11 +12,12 @@ var xml2js = require('xml2js');
 var xml2jsParser = new xml2js.Parser();
 const Math = require("mathjs");
 
-
-app.get("*", (req, res) => {
-  const FirstPage = path.join(__dirname, 'public', 'index.html');
-  res.sendFile(FirstPage);
-});
+if(process.env.NODE_ENV === 'production'){
+  app.get("*", (req, res) => {
+    const FirstPage = path.join(__dirname, 'public', 'index.html');
+    res.sendFile(FirstPage);
+  })
+}
 
 app.use(express.urlencoded({
   extended: true
@@ -127,10 +128,12 @@ app.post('/Authenticate', (req, res) => {
   const SecondPage = path.join(__dirname, 'public', 'SecondPage.html');
   res.sendFile(SecondPage);
 
-  app.get("*", (req, res) => {
-    const SecondPage = path.join(__dirname, 'public', 'SecondPage.html');
-    res.sendFile(SecondPage);
-  });
+  if(process.env.NODE_ENV === 'production'){
+    app.get("*", (req, res) => {
+      const SecondPage = path.join(__dirname, 'public', 'SecondPage.html');
+      res.sendFile(SecondPage);
+    })
+  }
 
   app.use(express.urlencoded({
     extended: true
