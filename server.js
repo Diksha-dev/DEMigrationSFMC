@@ -817,13 +817,9 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(async function (resolve, reject) {
       if(DEListMap[key].DEDataMap.length != 0) {
         if(DEListMap[key].DEDataMap.length <= 10000) {
-          
-          console.log('DEListMap[key].DEDataMap[0].keys : ' + JSON.stringify(DEListMap[key].DEDataMap[0].keys));
-          console.log('Object.keys(DEListMap[key].DEDataMap[0].keys).length : ' + Object.keys(DEListMap[key].DEDataMap[0].keys).length);
+
           if(Object.keys(DEListMap[key].DEDataMap[0].keys)) {
-            console.log('if chala');
             if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
-              console.log('2if chala');
               //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
               var DEdataInsertWithPrimaryKeyOptions = {
                 'method': 'POST',
@@ -839,7 +835,6 @@ app.post('/Authenticate', (req, res) => {
             }
           }
           else if(JSON.stringify(DEListMap[key].DEDataMap[0].keys) == '{}') {
-            console.log('else chala ');
             var DEDataInsertWithoutPrimaryKeyBody = '';
             for(var key1 in DEListMap[key].DEDataMap) {
               DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
@@ -870,12 +865,9 @@ app.post('/Authenticate', (req, res) => {
           }
           var recLenDecimal = parseInt(ttemp , 10);
           for(var i = 1 ; i <= loopLength ; i++) {
-            //console.log('loop chala : ' + i);
-            //console.log('DEListMap[key].DEDataMap[0].keys.size : ' + DEListMap[key].DEDataMap[0].keys.size);
-            //console.log('DEListMap[key].DEDataMap[0].keys.size : ' + JSON.stringify(DEListMap[key].DEDataMap[0].keys));
 
-            if(DEListMap[key].DEDataMap[0].keys.size) {
-              if(DEListMap[key].DEDataMap[0].keys.size != 0) {
+            if(Object.keys(DEListMap[key].DEDataMap[0].keys)) {
+              if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
                 var body = '';
   
                 if(recLenDecimal != 0) {
@@ -1733,16 +1725,11 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertSharedDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
-
-
-
-
-
-
       if(SharedDEListMap[key].DEDataMap.length != 0) {
+
         if(SharedDEListMap[key].DEDataMap.length <= 10000) {
-          if(SharedDEListMap[key].DEDataMap[0].keys.size) {
-            if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
+          if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys)) {
+            if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
               //console.log('testing : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
               var DEdataInsertWithPrimaryKeyOptions = {
                 'method': 'POST',
@@ -1757,13 +1744,15 @@ app.post('/Authenticate', (req, res) => {
               resolve(FinalResult);
             }
           }
-          else if(JSON.stringify(SharedDEListMap[key].DEDataMap[0].keys.size) == '{}') {
+          else if(JSON.stringify(SharedDEListMap[key].DEDataMap[0].keys) == '{}') {
             var DEDataInsertWithoutPrimaryKeyBody = '';
             for(var key1 in SharedDEListMap[key].DEDataMap) {
               DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + SharedDEListMap[key].DEDataMap[key1]["values"] + ','; 
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
+            console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
+
             var DEDataInsertwithoutPrimarykeyOption = {
               'method': 'POST',
               'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
@@ -1786,12 +1775,9 @@ app.post('/Authenticate', (req, res) => {
           }
           var recLenDecimal = parseInt(ttemp , 10);
           for(var i = 1 ; i <= loopLength ; i++) {
-            //console.log('loop chala : ' + i);
-            //console.log('SharedDEListMap[key].DEDataMap[0].keys.size : ' + SharedDEListMap[key].DEDataMap[0].keys.size);
-            //console.log('SharedDEListMap[key].DEDataMap[0].keys.size : ' + JSON.stringify(SharedDEListMap[key].DEDataMap[0].keys));
 
-            if(SharedDEListMap[key].DEDataMap[0].keys.size) {
-              if(SharedDEListMap[key].DEDataMap[0].keys.size != 0) {
+            if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys)) {
+              if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
                 var body = '';
   
                 if(recLenDecimal != 0) {
