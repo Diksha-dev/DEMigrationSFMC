@@ -817,31 +817,28 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(async function (resolve, reject) {
       if(DEListMap[key].DEDataMap.length != 0) {
         if(DEListMap[key].DEDataMap.length <= 10000) {
-
-          if(Object.keys(DEListMap[key].DEDataMap[0].keys)) {
-            if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
-              //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
-              var DEdataInsertWithPrimaryKeyOptions = {
-                'method': 'POST',
-                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
-                'headers': {
-                  'Authorization': 'Bearer ' + DestinationAccessToken,
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(DEListMap[key].DEDataMap)
-              };
-              FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
-              resolve(FinalResult);
-            }
+          if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
+            //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
+            var DEdataInsertWithPrimaryKeyOptions = {
+              'method': 'POST',
+              'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+              'headers': {
+                'Authorization': 'Bearer ' + DestinationAccessToken,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(DEListMap[key].DEDataMap)
+            };
+            FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+            resolve(FinalResult);
           }
-          else if(JSON.stringify(DEListMap[key].DEDataMap[0].keys) == '{}') {
+          else {
             var DEDataInsertWithoutPrimaryKeyBody = '';
             for(var key1 in DEListMap[key].DEDataMap) {
               DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-            console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
+            //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
 
             var DEDataInsertwithoutPrimarykeyOption = {
               'method': 'POST',
