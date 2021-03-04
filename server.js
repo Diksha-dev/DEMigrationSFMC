@@ -1727,7 +1727,7 @@ app.post('/Authenticate', (req, res) => {
   }
 
   async function insertSharedDEDataToDestination(key) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
 
 
 
@@ -1887,7 +1887,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-      function insertSharedDERecFunc(ProcessedBody) {
+      async function insertSharedDERecFunc(ProcessedBody) {
         return new Promise(function (resolve, reject) {
           request(ProcessedBody, function (error, response) {
             if (error) throw new Error(error);
