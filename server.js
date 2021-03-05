@@ -1725,17 +1725,7 @@ app.post('/Authenticate', (req, res) => {
         if(SharedDEListMap[key].DEDataMap.length <= 10000) {
 
           if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
-            //console.log('testing : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
-            var DEdataInsertWithPrimaryKeyOptions = {
-              'method': 'POST',
-              'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
-              'headers': {
-                'Authorization': 'Bearer ' + DestinationAccessToken,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(SharedDEListMap[key].DEDataMap)
-            };
-            FinalResult = await insertSharedDERecFunc(DEdataInsertWithPrimaryKeyOptions);
+            FinalResult = await insertSharedDERecFunc(JSON.stringify(SharedDEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
@@ -1745,18 +1735,8 @@ app.post('/Authenticate', (req, res) => {
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-            //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
-
-            var DEDataInsertwithoutPrimarykeyOption = {
-              'method': 'POST',
-              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
-              'headers': {
-                'Authorization': 'Bearer ' + DestinationAccessToken,
-                'Content-Type': 'application/json'
-              },
-              body: DEDataInsertWithoutPrimaryKeyBody
-            };
-            FinalResult = await insertSharedDERecFunc(DEDataInsertwithoutPrimarykeyOption);
+            
+            FinalResult = await insertSharedDERecFunc(DEDataInsertWithoutPrimaryKeyBody);
             resolve(FinalResult);
           }
         }
@@ -1795,23 +1775,88 @@ app.post('/Authenticate', (req, res) => {
                 body = body.slice(0, -1);
               }
               body = '[' + body + ']';
-              //console.log('body Meri : ' + body);
-              console.log('body Meri ki length: ' + body.length);
 
-              var DEdataInsertWithPrimaryKeyOptions = {
-                'method': 'POST',
-                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
-                'headers': {
-                  'Authorization': 'Bearer ' + DestinationAccessToken,
-                  'Content-Type': 'application/json'
-                },
-                body: body
-              };
-              FinalResult = await insertSharedDERecFunc(DEdataInsertWithPrimaryKeyOptions);
+              console.log('body Meri ki length: ' + body.length);
+              if(body.length > 8300000) {
+
+                if(recLenDecimal != 0) {
+                  var loopDevide;
+                  if(i == loopLength) {
+
+                    if((SharedDEListMap[key].DEDataMap.length % 10000) % 2 == 0) {
+                      loopDevide = (SharedDEListMap[key].DEDataMap.length % 10000) / 2;
+                    }
+                    else {
+                      loopDevide = Math.ceil((SharedDEListMap[key].DEDataMap.length % 10000) / 2);
+                    }
+
+                    body="";
+                    for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].DEDataMap.length - loopDevide; a++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
+                    }
+                    body = body.slice(0, -1);
+                    body = '[' + body + ']';
+                    FinalResult = await insertSharedDERecFunc(body);
+
+                    body="";
+                    for(var a = (i*10000-9999+(loopDevide+1)) ; a <= SharedDEListMap[key].DEDataMap.length; a++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
+                    }
+                    body = body.slice(0, -1);
+                    body = '[' + body + ']';
+                    FinalResult = await insertSharedDERecFunc(body);
+
+                  }
+                  else {
+
+                    body = "";
+                    for(var b = (i*10000-9999) ; b <= (i*10000 - 5000) ; b++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b-1]) + ',';
+                    }
+                    body = body.slice(0, -1);
+                    body = '[' + body + ']';
+                    FinalResult = await insertSharedDERecFunc(body);
+
+                    body = "";
+                    //j=i*10000-9999+5001
+                    for(var b = (i*10000-4998) ; b <= (i*10000) ; b++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b-1]) + ',';
+                    }
+                    body = body.slice(0, -1);
+                    body = '[' + body + ']';
+                    FinalResult = await insertSharedDERecFunc(body);
+
+                  }
+                }
+                else {
+
+                  body="";
+                  for(var j = i*10000-9999 ; j <= (i*10000 - 5000) ; j++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j-1]) + ',';
+                  }
+                  body = body.slice(0, -1);
+                  body = '[' + body + ']';
+                  FinalResult = await insertSharedDERecFunc(body);
+
+
+
+                  body="";
+                  //j=i*10000-9999+5001
+                  for(var j = i*10000-4998 ; j <= (i*10000) ; j++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j-1]) + ',';
+                  }
+                  body = body.slice(0, -1);
+                  body = '[' + body + ']';
+                  FinalResult = await insertSharedDERecFunc(body);
+
+                }
+              }
+              else {
+                FinalResult = await insertSharedDERecFunc(body);
+              }
             }
             else {
-              //var body = '';
-              var body = new Blob();
+              var body = '';
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].DEDataMap.length ; a++) {
@@ -1846,16 +1891,7 @@ app.post('/Authenticate', (req, res) => {
               */
 
 
-              var DEDataInsertwithoutPrimarykeyOption = {
-                'method': 'POST',
-                'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
-                'headers': {
-                  'Authorization': 'Bearer ' + DestinationAccessToken,
-                  'Content-Type': 'application/json'
-                },
-                body: body
-              };
-              FinalResult = await insertSharedDERecFunc(DEDataInsertwithoutPrimarykeyOption);
+              FinalResult = await insertSharedDERecFunc(body);
             }
           }
           resolve(FinalResult);
@@ -1871,7 +1907,18 @@ app.post('/Authenticate', (req, res) => {
       
       async function insertSharedDERecFunc(ProcessedBody) {
         return new Promise(function (resolve, reject) {
-          request(ProcessedBody, function (error, response) {
+
+          var Option = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: ProcessedBody
+          };
+
+          request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
             //console.log('ProcessedBody response : ' + response.body);
