@@ -11,7 +11,6 @@ const { log } = require("console");
 var xml2js = require('xml2js');
 var xml2jsParser = new xml2js.Parser();
 const Math = require("mathjs");
-var Blob = require('blob');
 
 
 app.get("*", (req, res) => {
@@ -1773,7 +1772,7 @@ app.post('/Authenticate', (req, res) => {
 
             if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
               //var body = '';
-              var body = new Blob();
+
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
@@ -1797,7 +1796,8 @@ app.post('/Authenticate', (req, res) => {
               }
               body = '[' + body + ']';
               //console.log('body Meri : ' + body);
-
+              console.log('body Meri ki length: ' + body.length);
+              
               var DEdataInsertWithPrimaryKeyOptions = {
                 'method': 'POST',
                 'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
