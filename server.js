@@ -1771,7 +1771,7 @@ app.post('/Authenticate', (req, res) => {
           for(var i = 1 ; i <= loopLength ; i++) {
 
             if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
-              //var body = '';
+              var body = '';
 
 
               if(recLenDecimal != 0) {
@@ -1797,7 +1797,7 @@ app.post('/Authenticate', (req, res) => {
               body = '[' + body + ']';
               //console.log('body Meri : ' + body);
               console.log('body Meri ki length: ' + body.length);
-              
+
               var DEdataInsertWithPrimaryKeyOptions = {
                 'method': 'POST',
                 'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
