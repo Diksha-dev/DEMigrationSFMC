@@ -786,15 +786,19 @@ app.post('/Authenticate', (req, res) => {
             if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
               var body = '';
 
+              
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
+                  console.log('from : ' + (i*10000-10000) + ' to : ' + DEListMap[key].DEDataMap.length);
                   body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , DEListMap[key].DEDataMap.length ));
                 }
                 else {
+                  console.log('from : ' + (i*10000-10000) + ' to : ' + (i*10000));
                   body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
                 }
               }
               else {
+                console.log('from : ' + (i*10000-10000) + ' to : ' + (i*10000));
                 body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
               }
               
@@ -823,7 +827,7 @@ app.post('/Authenticate', (req, res) => {
               */
 
               //body = '[' + body + ']';
-              console.log('body Meri : ' + body);
+              //console.log('body Meri : ' + body);
 
               
               FinalResult = await insertRecFunc(body);
