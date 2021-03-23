@@ -534,66 +534,6 @@ app.post('/Authenticate', (req, res) => {
         NextUrl = tempResult1.links.next;
         resolve(NextUrl);
       })
-
-
-
-
-
-
-
-
-      /*DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
-                          '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
-                              '<s:Header>' +
-                                  '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
-                                  '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
-                                  '<a:ReplyTo>' +
-                                      '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
-                                  '</a:ReplyTo>' +
-                                  '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
-                                  '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
-                              '</s:Header>' +
-                              '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-                                  '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
-                                      '<RetrieveRequest>' +
-                                          '<ContinueRequest>' + DEDataRequestId + '</ContinueRequest>' +
-                                          '<Options>' +
-                                              '<BatchSize>2500</BatchSize>' +
-                                          '</Options>' +
-                                      '</RetrieveRequest>' +
-                                  '</RetrieveRequestMsg>' +
-                              '</s:Body>' +
-                          '</s:Envelope>';
-
-      DEDataOptions = {
-        'method': 'POST',
-        'url': SourceSoapURL + 'Service.asmx',
-        'headers': {
-          'Content-Type': 'text/xml',
-          'SoapAction': 'Retrieve',
-          'Authorization': 'Bearer ' + SourceAccessToken
-        },
-        body: DEDataBody
-      };
-      request(DEDataOptions, function (error, response) {
-        if (error) throw new Error(error);
-        xml2jsParser.parseString(response.body, function (err, result) {
-          SourceDEDataResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
-          DEDataRequestId = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['RequestID'][0];
-        });
-        if(SourceDEDataResult){
-          tempLength = SourceDEDataResult.length;
-        }
-        else {
-          tempLength = 0;
-        }
-        for (var key1 in SourceDEDataResult) {
-          DEListMap[key].DEDataMap.push(SourceDEDataResult[key1].Properties[0]);
-        }
-        resolve(tempLength);
-      })
-      */
-
     })
   }
 
@@ -683,15 +623,12 @@ app.post('/Authenticate', (req, res) => {
             else {
               tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
             }
-
-            
             if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
               tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
             }
             else {
               tempMaxLength = 100;
             }
-
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
               '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
               '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
@@ -722,14 +659,12 @@ app.post('/Authenticate', (req, res) => {
             else {
               tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
             }
-
             if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
               tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
             }
             else {
               tempMaxLength = 100;
             }
-
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
               '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
               '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
@@ -820,16 +755,8 @@ app.post('/Authenticate', (req, res) => {
 
           if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
             //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
-            var DEdataInsertWithPrimaryKeyOptions = {
-              'method': 'POST',
-              'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
-              'headers': {
-                'Authorization': 'Bearer ' + DestinationAccessToken,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(DEListMap[key].DEDataMap)
-            };
-            FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+            
+            FinalResult = await insertRecFunc(JSON.stringify(DEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
@@ -841,16 +768,8 @@ app.post('/Authenticate', (req, res) => {
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
             //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
 
-            var DEDataInsertwithoutPrimarykeyOption = {
-              'method': 'POST',
-              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
-              'headers': {
-                'Authorization': 'Bearer ' + DestinationAccessToken,
-                'Content-Type': 'application/json'
-              },
-              body: DEDataInsertWithoutPrimaryKeyBody
-            };
-            FinalResult = await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
+            
+            FinalResult = await insertRecFunc(body);
             resolve(FinalResult);
           }
         }
@@ -867,6 +786,20 @@ app.post('/Authenticate', (req, res) => {
             if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
               var body = '';
 
+              if(recLenDecimal != 0) {
+                if(i == loopLength) {
+                  body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , DEListMap[key].DEDataMap.length ));
+                }
+                else {
+                  body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000-1) ));
+                }
+              }
+              else {
+                body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000-1) ));
+              }
+              
+
+              /*
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
@@ -887,19 +820,13 @@ app.post('/Authenticate', (req, res) => {
                 }
                 body = body.slice(0, -1);
               }
+              */
+
               body = '[' + body + ']';
               //console.log('body Meri : ' + body);
 
-              var DEdataInsertWithPrimaryKeyOptions = {
-                'method': 'POST',
-                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
-                'headers': {
-                  'Authorization': 'Bearer ' + DestinationAccessToken,
-                  'Content-Type': 'application/json'
-                },
-                body: body
-              };
-              FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+              
+              FinalResult = await insertRecFunc(body);
             }
             else {
               var body = '';
@@ -937,16 +864,8 @@ app.post('/Authenticate', (req, res) => {
               */
 
 
-              var DEDataInsertwithoutPrimarykeyOption = {
-                'method': 'POST',
-                'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
-                'headers': {
-                  'Authorization': 'Bearer ' + DestinationAccessToken,
-                  'Content-Type': 'application/json'
-                },
-                body: body
-              };
-              FinalResult = await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
+              
+              FinalResult = await insertRecFunc(body);
             }
           }
           resolve(FinalResult);
@@ -966,7 +885,16 @@ app.post('/Authenticate', (req, res) => {
 
       async function insertRecFunc(ProcessedBody) {
         return new Promise(function (resolve, reject) {
-          request(ProcessedBody, function (error, response) {
+          var DEDataInsertOption = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: ProcessedBody
+          };
+          request(DEDataInsertOption, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
             //console.log('ProcessedBody response : ' + response.body);
