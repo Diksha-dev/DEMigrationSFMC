@@ -791,11 +791,11 @@ app.post('/Authenticate', (req, res) => {
                   body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , DEListMap[key].DEDataMap.length ));
                 }
                 else {
-                  body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000-1) ));
+                  body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
                 }
               }
               else {
-                body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000-1) ));
+                body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
               }
               
 
