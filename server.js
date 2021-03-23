@@ -755,7 +755,7 @@ app.post('/Authenticate', (req, res) => {
 
           if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
             //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
-            
+
             FinalResult = await insertRecFunc(JSON.stringify(DEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
@@ -823,7 +823,7 @@ app.post('/Authenticate', (req, res) => {
               */
 
               body = '[' + body + ']';
-              //console.log('body Meri : ' + body);
+              console.log('body Meri : ' + body);
 
               
               FinalResult = await insertRecFunc(body);
