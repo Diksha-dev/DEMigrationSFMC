@@ -790,15 +790,18 @@ app.post('/Authenticate', (req, res) => {
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
                   console.log('from : ' + (i*10000-10000) + ' to : ' + DEListMap[key].DEDataMap.length);
+                  console.log('DE Length : ' + DEListMap[key].DEDataMap.splice( (i*10000-10000) , DEListMap[key].DEDataMap.length ).length );
                   body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , DEListMap[key].DEDataMap.length ));
                 }
                 else {
                   console.log('from : ' + (i*10000-10000) + ' to : ' + (i*10000));
+                  console.log('DE Length : ' + DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ).length );
                   body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
                 }
               }
               else {
                 console.log('from : ' + (i*10000-10000) + ' to : ' + (i*10000));
+                console.log('DE Length : ' + DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ).length );
                 body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
               }
               
