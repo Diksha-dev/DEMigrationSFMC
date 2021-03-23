@@ -800,7 +800,7 @@ app.post('/Authenticate', (req, res) => {
                 }
               }
               else {
-                console.log('from : ' + (i*10000-10000) + ' to : ' + (i*10000));
+                console.log((i*10000-10000) + ' to ' + (i*10000));
                 console.log('DE Length : ' + DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ).length );
                 body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
               }
