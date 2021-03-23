@@ -534,6 +534,7 @@ app.post('/Authenticate', (req, res) => {
         NextUrl = tempResult1.links.next;
         resolve(NextUrl);
       })
+
     })
   }
 
@@ -623,12 +624,15 @@ app.post('/Authenticate', (req, res) => {
             else {
               tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
             }
+
+            
             if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
               tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
             }
             else {
               tempMaxLength = 100;
             }
+
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
               '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
               '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
@@ -659,12 +663,14 @@ app.post('/Authenticate', (req, res) => {
             else {
               tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
             }
+
             if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
               tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
             }
             else {
               tempMaxLength = 100;
             }
+
             DEListBody = DEListBody + '<Field xsi:type="ns2:DataExtensionField">' +
               '<CustomerKey>' + DEListMap[key].DEFieldMap[i].FieldName + '</CustomerKey>' +
               '<Name>' + DEListMap[key].DEFieldMap[i].FieldName + '</Name>' +
@@ -755,8 +761,16 @@ app.post('/Authenticate', (req, res) => {
 
           if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
             //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
-
-            FinalResult = await insertRecFunc(JSON.stringify(DEListMap[key].DEDataMap));
+            var DEdataInsertWithPrimaryKeyOptions = {
+              'method': 'POST',
+              'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+              'headers': {
+                'Authorization': 'Bearer ' + DestinationAccessToken,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(DEListMap[key].DEDataMap)
+            };
+            FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
             resolve(FinalResult);
           }
           else {
@@ -768,8 +782,16 @@ app.post('/Authenticate', (req, res) => {
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
             //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
 
-            
-            FinalResult = await insertRecFunc(body);
+            var DEDataInsertwithoutPrimarykeyOption = {
+              'method': 'POST',
+              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+              'headers': {
+                'Authorization': 'Bearer ' + DestinationAccessToken,
+                'Content-Type': 'application/json'
+              },
+              body: DEDataInsertWithoutPrimaryKeyBody
+            };
+            FinalResult = await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
             resolve(FinalResult);
           }
         }
@@ -786,27 +808,6 @@ app.post('/Authenticate', (req, res) => {
             if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
               var body = '';
 
-              /*
-              if(recLenDecimal != 0) {
-                if(i == loopLength) {
-                  console.log('from : ' + (i*10000-10000) + ' to : ' + DEListMap[key].DEDataMap.length);
-                  console.log('DE Length : ' + DEListMap[key].DEDataMap.splice( (i*10000-10000) , DEListMap[key].DEDataMap.length ).length );
-                  body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , DEListMap[key].DEDataMap.length ));
-                }
-                else {
-                  console.log('from : ' + (i*10000-10000) + ' to : ' + (i*10000));
-                  console.log('DE Length : ' + DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ).length );
-                  body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
-                }
-              }
-              else {
-                console.log((i*10000-10000) + ' to ' + (i*10000));
-                console.log('DE Length : ' + DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ).length );
-                body = JSON.stringify(DEListMap[key].DEDataMap.splice( (i*10000-10000) , (i*10000) ));
-              }
-              */
-
-              
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
                   for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
@@ -827,13 +828,19 @@ app.post('/Authenticate', (req, res) => {
                 }
                 body = body.slice(0, -1);
               }
-              
-
               body = '[' + body + ']';
               //console.log('body Meri : ' + body);
 
-              
-              FinalResult = await insertRecFunc(body);
+              var DEdataInsertWithPrimaryKeyOptions = {
+                'method': 'POST',
+                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+                'headers': {
+                  'Authorization': 'Bearer ' + DestinationAccessToken,
+                  'Content-Type': 'application/json'
+                },
+                body: body
+              };
+              FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
             }
             else {
               var body = '';
@@ -871,8 +878,16 @@ app.post('/Authenticate', (req, res) => {
               */
 
 
-              
-              FinalResult = await insertRecFunc(body);
+              var DEDataInsertwithoutPrimarykeyOption = {
+                'method': 'POST',
+                'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+                'headers': {
+                  'Authorization': 'Bearer ' + DestinationAccessToken,
+                  'Content-Type': 'application/json'
+                },
+                body: body
+              };
+              FinalResult = await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
             }
           }
           resolve(FinalResult);
@@ -892,16 +907,7 @@ app.post('/Authenticate', (req, res) => {
 
       async function insertRecFunc(ProcessedBody) {
         return new Promise(function (resolve, reject) {
-          var DEDataInsertOption = {
-            'method': 'POST',
-            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
-            'headers': {
-              'Authorization': 'Bearer ' + DestinationAccessToken,
-              'Content-Type': 'application/json'
-            },
-            body: ProcessedBody
-          };
-          request(DEDataInsertOption, function (error, response) {
+          request(ProcessedBody, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
             //console.log('ProcessedBody response : ' + response.body);
