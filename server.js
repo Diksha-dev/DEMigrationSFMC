@@ -316,7 +316,7 @@ app.post('/Authenticate', (req, res) => {
         //-----------------------------------------
 
         for (var key in DEListMap) {
-          //await getDERecordCount(key);
+          await getDERecordCount(key);
         }
         //console.log('DEListMap : ' + JSON.stringify(DEListMap));
 
