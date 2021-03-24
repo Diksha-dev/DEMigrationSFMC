@@ -299,7 +299,6 @@ app.post('/Authenticate', (req, res) => {
           SourceDEFieldsResult.push(JSON.parse(val));
         }
 
-
         for (var key in SourceDEFieldsResult) {
           if (SourceDEFieldsResult[key].DEExtKey in DEListMap) {
             DEListMap[SourceDEFieldsResult[key].DEExtKey].DEFieldMap[SourceDEFieldsResult[key].Name] = {
@@ -314,18 +313,12 @@ app.post('/Authenticate', (req, res) => {
           }
         }
 
-
         //-----------------------------------------
 
-
         for (var key in DEListMap) {
-          //await getDEData(key);
-          await getDERecordCount(key);
+          //await getDERecordCount(key);
         }
         //console.log('DEListMap : ' + JSON.stringify(DEListMap));
-
-        
-    
 
         resolve(DEListMap);
       });
@@ -375,7 +368,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-  /*
+  
   async function getDEData(key) {
     return new Promise( async function (resolve, reject) {
 
@@ -426,22 +419,34 @@ app.post('/Authenticate', (req, res) => {
           resolve(DEListSend); 
         }
       });
+    })
+  }
+
+  async function getMoreData(NextUrl , key) {
+    return new Promise(async function (resolve, reject) {
+
+      var DEMoreDataOptions = {
+        'method': 'GET',
+        'url': SourceRestURL + 'data' + NextUrl,
+        'headers': {
+          'Authorization': 'Bearer ' + SourceAccessToken
+        }
+      };
+      request(DEMoreDataOptions, function (error, response) {
+        if (error) throw new Error(error);
+        var tempResult1 = JSON.parse(response.body);
+        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap , tempResult1.items);
+        NextUrl = tempResult1.links.next;
+        resolve(NextUrl);
+      })
+
+    })
+  }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-      //this is soap api please comment it
+  /*
+  //this is soap api to get records
       var DEDataBody = '';
       DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
                     '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
@@ -557,33 +562,7 @@ app.post('/Authenticate', (req, res) => {
         }
         resolve(DEListMap[key].DEDataMap);
       });
-      
-
-    })
-  }
-*/
-  async function getMoreData(NextUrl , key) {
-    return new Promise(async function (resolve, reject) {
-
-      var DEMoreDataOptions = {
-        'method': 'GET',
-        'url': SourceRestURL + 'data' + NextUrl,
-        'headers': {
-          'Authorization': 'Bearer ' + SourceAccessToken
-        }
-      };
-      request(DEMoreDataOptions, function (error, response) {
-        if (error) throw new Error(error);
-        var tempResult1 = JSON.parse(response.body);
-        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap , tempResult1.items);
-        NextUrl = tempResult1.links.next;
-        resolve(NextUrl);
-      })
-
-    })
-  }
-
-
+  */
 
 
 
