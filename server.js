@@ -184,6 +184,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListDEResult[key].Description[0],
                 "DESendDEField": SourceListDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListDEResult[key].SendableSubscriberField[0].Name[0],
+                "RecordCount" : 0,
                 "DEFieldMap": {},
                 "DEDataMap": []
               };
@@ -197,6 +198,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
+                "RecordCount" : 0,
                 "DEFieldMap": {},
                 "DEDataMap": []
               };
@@ -325,8 +327,6 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
-
-
   async function getDERecordCount(key) {
     return new Promise( async function (resolve, reject) {
       var DEDataOptions = {
@@ -339,6 +339,7 @@ app.post('/Authenticate', (req, res) => {
       request(DEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
+        DEListMap[key].RecordCount = tempResult.count;
         DEListSend[key] = {
           "DEName" : DEListMap[key].DEName,
           "DECustomerKey" : DEListMap[key].DECustomerKey,
@@ -354,16 +355,6 @@ app.post('/Authenticate', (req, res) => {
       });
     })
   }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -390,34 +381,8 @@ app.post('/Authenticate', (req, res) => {
           for(var i = 2 ; i <= looplength ; i++) {
             NextUrl = await getMoreData(NextUrl , key);
           }
-          //console.log('dekhna h : ' + JSON.stringify(DEListMap[key].DEDataMap));
-          DEListSend[key] = {
-            "DEName" : DEListMap[key].DEName,
-            "DECustomerKey" : DEListMap[key].DECustomerKey,
-            "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
-            "RecordCount" : tempResult.count,
-            "DEDescription" : DEListMap[key].DEDescription,
-            "DEIsSendable" : DEListMap[key].DEIsSendable,
-            "DEIsTestable" : DEListMap[key].DEIsTestable,
-            "DESendDEField" : DEListMap[key].DESendDEField,
-            "DESendSubsField" : DEListMap[key].DESendSubsField
-          };
-          resolve(DEListSend); 
         }
-        else {
-          DEListSend[key] = {
-            "DEName" : DEListMap[key].DEName,
-            "DECustomerKey" : DEListMap[key].DECustomerKey,
-            "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
-            "RecordCount" : tempResult.count,
-            "DEDescription" : DEListMap[key].DEDescription,
-            "DEIsSendable" : DEListMap[key].DEIsSendable,
-            "DEIsTestable" : DEListMap[key].DEIsTestable,
-            "DESendDEField" : DEListMap[key].DESendDEField,
-            "DESendSubsField" : DEListMap[key].DESendSubsField
-          };
-          resolve(DEListSend); 
-        }
+        resolve(DEListSend);
       });
     })
   }
@@ -780,8 +745,11 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
-      if(DEListMap[key].DEDataMap.length != 0) {
-        if(DEListMap[key].DEDataMap.length <= 10000) {
+      if(DEListMap[key].RecordCount != 0) {
+
+        await getDEData(key);
+
+        if(DEListMap[key].RecordCount <= 10000) {
 
           if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
             //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
@@ -820,8 +788,8 @@ app.post('/Authenticate', (req, res) => {
           }
         }
         else {
-          var loopLength = Math.ceil(DEListMap[key].DEDataMap.length / 10000);
-          var recLengthSlice = DEListMap[key].DEDataMap.length / 10000;
+          var loopLength = Math.ceil(DEListMap[key].RecordCount / 10000);
+          var recLengthSlice = DEListMap[key].RecordCount / 10000;
           var ttemp = recLengthSlice.toString().split(".")[1];
           if(!ttemp) {
             ttemp = 0;
@@ -834,7 +802,7 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
+                  for(var a = (i*10000-9999) ; a <= DEListMap[key].RecordCount ; a++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]) + ',';
                   }
                   body = body.slice(0, -1);
@@ -870,7 +838,7 @@ app.post('/Authenticate', (req, res) => {
               var body = '';
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= DEListMap[key].DEDataMap.length ; a++) {
+                  for(var a = (i*10000-9999) ; a <= DEListMap[key].RecordCount ; a++) {
                     body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]["values"]) + ',';
                   }
                   body = body.slice(0, -1);
