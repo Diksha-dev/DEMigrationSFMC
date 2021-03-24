@@ -339,7 +339,8 @@ app.post('/Authenticate', (req, res) => {
         'method': 'GET',
         'url': SourceRestURL + 'data/v1/customobjectdata/key/' + key + '/rowset/',
         'headers': {
-          'Authorization': 'Bearer ' + SourceAccessToken
+          'Authorization': 'Bearer ' + SourceAccessToken,
+          'Timeout' : '120000'
         }
       };
       request(DEDataOptions, async function (error, response) {
@@ -524,7 +525,8 @@ app.post('/Authenticate', (req, res) => {
         'method': 'GET',
         'url': SourceRestURL + 'data' + NextUrl,
         'headers': {
-          'Authorization': 'Bearer ' + SourceAccessToken
+          'Authorization': 'Bearer ' + SourceAccessToken,
+          'Timeout' : '120000'
         }
       };
       request(DEMoreDataOptions, function (error, response) {
