@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const path = require('path');
 var http = require('http');
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 var request = require('request');
 const { stringify } = require("querystring");
 let xmlParser = require('xml2json');
@@ -339,8 +339,7 @@ app.post('/Authenticate', (req, res) => {
         'method': 'GET',
         'url': SourceRestURL + 'data/v1/customobjectdata/key/' + key + '/rowset/',
         'headers': {
-          'Authorization': 'Bearer ' + SourceAccessToken,
-          'Timeout' : '120000'
+          'Authorization': 'Bearer ' + SourceAccessToken
         }
       };
       request(DEDataOptions, async function (error, response) {
@@ -525,8 +524,7 @@ app.post('/Authenticate', (req, res) => {
         'method': 'GET',
         'url': SourceRestURL + 'data' + NextUrl,
         'headers': {
-          'Authorization': 'Bearer ' + SourceAccessToken,
-          'Timeout' : '120000'
+          'Authorization': 'Bearer ' + SourceAccessToken
         }
       };
       request(DEMoreDataOptions, function (error, response) {
