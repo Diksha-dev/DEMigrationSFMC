@@ -102,14 +102,14 @@ app.post('/Authenticate', (req, res) => {
   }
   authTokenForBothSFDC();
 
-  var c = 0;
+  /*var c = 0;
   var b = setInterval(function () {
     authTokenForBothSFDC();
     c = c + 1;
     if (c == 5) {
       clearInterval(b);
     }
-  }, 1000000);
+  }, 1000000);*/
 
 
 
@@ -319,7 +319,8 @@ app.post('/Authenticate', (req, res) => {
 
 
         for (var key in DEListMap) {
-          await getDEData(key);
+          //await getDEData(key);
+          await getDERecordCount(key);
         }
         //console.log('DEListMap : ' + JSON.stringify(DEListMap));
 
@@ -331,6 +332,50 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
+
+
+  async function getDERecordCount(key) {
+    return new Promise( async function (resolve, reject) {
+      var DEDataOptions = {
+        'method': 'GET',
+        'url': SourceRestURL + 'data/v1/customobjectdata/key/' + key + '/rowset/?$page=1&$pagesize=1',
+        'headers': {
+          'Authorization': 'Bearer ' + SourceAccessToken
+        }
+      };
+      request(DEDataOptions, async function (error, response) {
+        if (error) throw new Error(error);
+        var tempResult = JSON.parse(response.body);
+        DEListSend[key] = {
+          "DEName" : DEListMap[key].DEName,
+          "DECustomerKey" : DEListMap[key].DECustomerKey,
+          "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+          "RecordCount" : tempResult.count,
+          "DEDescription" : DEListMap[key].DEDescription,
+          "DEIsSendable" : DEListMap[key].DEIsSendable,
+          "DEIsTestable" : DEListMap[key].DEIsTestable,
+          "DESendDEField" : DEListMap[key].DESendDEField,
+          "DESendSubsField" : DEListMap[key].DESendSubsField
+        };
+        resolve(DEListSend);
+      });
+    })
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
   async function getDEData(key) {
     return new Promise( async function (resolve, reject) {
 
@@ -396,8 +441,8 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-
-      /*var DEDataBody = '';
+      //this is soap api please comment it
+      var DEDataBody = '';
       DEDataBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
                     '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
                       '<s:Header>' +
@@ -512,11 +557,11 @@ app.post('/Authenticate', (req, res) => {
         }
         resolve(DEListMap[key].DEDataMap);
       });
-      */
+      
 
     })
   }
-
+*/
   async function getMoreData(NextUrl , key) {
     return new Promise(async function (resolve, reject) {
 
