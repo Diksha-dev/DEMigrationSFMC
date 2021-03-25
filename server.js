@@ -1077,7 +1077,7 @@ app.post('/Authenticate', (req, res) => {
 
 
       var intrvl = setInterval(async function () {
-
+        console.log('interval chala');
         for (var key in selectedDEList.WithoutData) {
           console.log('First Loop : ' + key);
           FinalResult = await insertDEtoDestination(key);
@@ -1093,7 +1093,7 @@ app.post('/Authenticate', (req, res) => {
           console.log('clearInterval');
           clearInterval(intrvl);
         }
-      }, 29000);
+      }, 1000);
 
 
 
