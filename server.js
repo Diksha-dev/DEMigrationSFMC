@@ -382,7 +382,7 @@ app.post('/Authenticate', (req, res) => {
             NextUrl = await getMoreData(NextUrl , key);
           }
         }
-        resolve(DEListSend);
+        resolve(DEListMap);
       });
     })
   }
@@ -1066,12 +1066,27 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
       //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
+
+
       for (var key in selectedDEList.WithoutData) {
         FinalResult = await insertDEtoDestination(key);
         if(key in selectedDEList.WithData) {
           FinalResult = await insertDEDataToDestination(key);
         }
       }
+
+
+      /*var c = 0;
+      var b = setInterval(function () {
+        authTokenForBothSFDC();
+        c = c + 1;
+        if (c == 5) {
+          clearInterval(b);
+        }
+      }, 29000);*/
+
+
+
       console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
     res.send(FinalResult);
@@ -1195,6 +1210,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": SourceListSharedDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListSharedDEResult[key].SendableSubscriberField[0].Name[0],
+                "RecordCount" : "",
                 "DEFieldMap": {},
                 "DEDataMap" : []
               };
@@ -1208,6 +1224,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
+                "RecordCount" : "",
                 "DEFieldMap": {},
                 "DEDataMap" : []
               };
@@ -1357,7 +1374,7 @@ app.post('/Authenticate', (req, res) => {
 
         
         for (var key in SharedDEListMap) {
-          await getSharedDEData(key);
+          await getSharedDERecordCount(key);
         }
         //console.log('SharedDEListMap : ' + JSON.stringify(SharedDEListMap));
         
@@ -1365,6 +1382,42 @@ app.post('/Authenticate', (req, res) => {
       });
     })
   }
+
+  async function getSharedDERecordCount(key) {
+    return new Promise( async function (resolve, reject) {
+      var SharedDEDataOptions = {
+        'method': 'GET',
+        'url': SourceRestURL + 'data/v1/customobjectdata/key/' + key + '/rowset/?$page=1&$pagesize=1',
+        'headers': {
+          'Authorization': 'Bearer ' + SourceAccessToken
+        }
+      };
+      request(SharedDEDataOptions, async function (error, response) {
+        if (error) throw new Error(error);
+        var tempResult = JSON.parse(response.body);
+        SharedDEListMap[key].RecordCount = tempResult.count;
+        SharedDEListSend[key] = {
+          "DEName" : DEListMap[key].DEName,
+          "DECustomerKey" : DEListMap[key].DECustomerKey,
+          "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+          "RecordCount" : tempResult.count,
+          "DEDescription" : DEListMap[key].DEDescription,
+          "DEIsSendable" : DEListMap[key].DEIsSendable,
+          "DEIsTestable" : DEListMap[key].DEIsTestable,
+          "DESendDEField" : DEListMap[key].DESendDEField,
+          "DESendSubsField" : DEListMap[key].DESendSubsField
+        };
+        resolve(SharedDEListSend);
+      });
+    })
+  }
+
+
+
+
+
+
+
 
   async function getSharedDEData(key) {
     return new Promise( async function (resolve, reject) {
@@ -1386,34 +1439,8 @@ app.post('/Authenticate', (req, res) => {
           for(var i = 2 ; i <= looplength ; i++) {
             NextUrl = await getMoreSharedDEData(NextUrl , key);
           }
-          //console.log('dekhna h : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
-          SharedDEListSend[key] = {
-            "DEName" : SharedDEListMap[key].DEName,
-            "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
-            "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
-            "RecordCount" : tempResult.count,
-            "DEDescription" : SharedDEListMap[key].DEDescription,
-            "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
-            "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
-            "DESendDEField" : SharedDEListMap[key].DESendDEField,
-            "DESendSubsField" : SharedDEListMap[key].DESendSubsField
-          };
-          resolve(SharedDEListSend); 
         }
-        else {
-          SharedDEListSend[key] = {
-            "DEName" : SharedDEListMap[key].DEName,
-            "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
-            "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
-            "RecordCount" : tempResult.count,
-            "DEDescription" : SharedDEListMap[key].DEDescription,
-            "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
-            "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
-            "DESendDEField" : SharedDEListMap[key].DESendDEField,
-            "DESendSubsField" : SharedDEListMap[key].DESendSubsField
-          };
-          resolve(SharedDEListSend); 
-        }
+        resolve(SharedDEListMap);
       });
     })
   }
@@ -1655,8 +1682,11 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertSharedDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
-      if(SharedDEListMap[key].DEDataMap.length != 0) {
-        if(SharedDEListMap[key].DEDataMap.length <= 10000) {
+      if(SharedDEListMap[key].RecordCount != 0) {
+
+        await getSharedDEData(key);
+
+        if(SharedDEListMap[key].RecordCount <= 10000) {
 
           if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
             FinalResult = await insertSharedDERecFunc(JSON.stringify(SharedDEListMap[key].DEDataMap));
@@ -1675,8 +1705,8 @@ app.post('/Authenticate', (req, res) => {
           }
         }
         else {
-          var loopLength = Math.ceil(SharedDEListMap[key].DEDataMap.length / 10000);
-          var recLengthSlice = SharedDEListMap[key].DEDataMap.length / 10000;
+          var loopLength = Math.ceil(SharedDEListMap[key].RecordCount / 10000);
+          var recLengthSlice = SharedDEListMap[key].RecordCount / 10000;
           var ttemp = recLengthSlice.toString().split(".")[1];
           if(!ttemp) {
             ttemp = 0;
@@ -1690,7 +1720,7 @@ app.post('/Authenticate', (req, res) => {
 
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].DEDataMap.length ; a++) {
+                  for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].RecordCount ; a++) {
                     body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
                   }
                   body = body.slice(0, -1);
@@ -1717,15 +1747,15 @@ app.post('/Authenticate', (req, res) => {
                   var loopDevide;
                   if(i == loopLength) {
 
-                    if((SharedDEListMap[key].DEDataMap.length % 10000) % 2 == 0) {
-                      loopDevide = (SharedDEListMap[key].DEDataMap.length % 10000) / 2;
+                    if((SharedDEListMap[key].RecordCount % 10000) % 2 == 0) {
+                      loopDevide = (SharedDEListMap[key].RecordCount % 10000) / 2;
                     }
                     else {
-                      loopDevide = Math.ceil((SharedDEListMap[key].DEDataMap.length % 10000) / 2);
+                      loopDevide = Math.ceil((SharedDEListMap[key].RecordCount % 10000) / 2);
                     }
 
                     body="";
-                    for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].DEDataMap.length - loopDevide; a++) {
+                    for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].RecordCount - loopDevide; a++) {
                       body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
                     }
                     body = body.slice(0, -1);
@@ -1733,7 +1763,7 @@ app.post('/Authenticate', (req, res) => {
                     FinalResult = await insertSharedDERecFunc(body);
 
                     body="";
-                    for(var a = (i*10000-9999+(loopDevide+1)) ; a <= SharedDEListMap[key].DEDataMap.length; a++) {
+                    for(var a = (i*10000-9999+(loopDevide+1)) ; a <= SharedDEListMap[key].RecordCount ; a++) {
                       body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
                     }
                     body = body.slice(0, -1);
@@ -1793,7 +1823,7 @@ app.post('/Authenticate', (req, res) => {
               var body = '';
               if(recLenDecimal != 0) {
                 if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].DEDataMap.length ; a++) {
+                  for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].RecordCount ; a++) {
                     body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]["values"]) + ',';
                   }
                   body = body.slice(0, -1);
