@@ -1093,7 +1093,7 @@ app.post('/Authenticate', (req, res) => {
           console.log('clearInterval');
           clearInterval(intrvl);
         }
-      }, 1000);
+      }, 29000);
 
 
 
@@ -1220,7 +1220,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": SourceListSharedDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListSharedDEResult[key].SendableSubscriberField[0].Name[0],
-                "RecordCount" : "",
+                "RecordCount" : 0,
                 "DEFieldMap": {},
                 "DEDataMap" : []
               };
@@ -1234,7 +1234,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
-                "RecordCount" : "",
+                "RecordCount" : 0,
                 "DEFieldMap": {},
                 "DEDataMap" : []
               };
