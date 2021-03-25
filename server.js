@@ -1397,15 +1397,15 @@ app.post('/Authenticate', (req, res) => {
         var tempResult = JSON.parse(response.body);
         SharedDEListMap[key].RecordCount = tempResult.count;
         SharedDEListSend[key] = {
-          "DEName" : DEListMap[key].DEName,
-          "DECustomerKey" : DEListMap[key].DECustomerKey,
-          "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
+          "DEName" : SharedDEListMap[key].DEName,
+          "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
+          "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
           "RecordCount" : tempResult.count,
-          "DEDescription" : DEListMap[key].DEDescription,
-          "DEIsSendable" : DEListMap[key].DEIsSendable,
-          "DEIsTestable" : DEListMap[key].DEIsTestable,
-          "DESendDEField" : DEListMap[key].DESendDEField,
-          "DESendSubsField" : DEListMap[key].DESendSubsField
+          "DEDescription" : SharedDEListMap[key].DEDescription,
+          "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
+          "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
+          "DESendDEField" : SharedDEListMap[key].DESendDEField,
+          "DESendSubsField" : SharedDEListMap[key].DESendSubsField
         };
         resolve(SharedDEListSend);
       });
