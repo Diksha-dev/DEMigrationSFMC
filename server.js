@@ -1079,9 +1079,9 @@ app.post('/Authenticate', (req, res) => {
       var intrvl = setInterval(async function () {
 
         for (var key in selectedDEList.WithoutData) {
-          delete selectedDEList.WithoutData[key];
           console.log('First Loop : ' + key);
           FinalResult = await insertDEtoDestination(key);
+          delete selectedDEList.WithoutData[key];
           if(key in selectedDEList.WithData) {
             console.log('First Loop If : ' + key);
             FinalResult = await insertDEDataToDestination(key);
