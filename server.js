@@ -1077,22 +1077,24 @@ app.post('/Authenticate', (req, res) => {
 
 
       var intrvl = setInterval(async function () {
+
         console.log('interval chala');
         for (var key in selectedDEList.WithoutData) {
-          console.log('First Loop : ' + key);
           FinalResult = await insertDEtoDestination(key);
-          delete selectedDEList.WithoutData[key];
+          //delete selectedDEList.WithoutData[key];
           if(key in selectedDEList.WithData) {
-            console.log('First Loop If : ' + key);
             FinalResult = await insertDEDataToDestination(key);
           }
         }
-        console.log('Khaali hua kya : ' + JSON.stringify(selectedDEList.WithoutData));
+        clearInterval(intrvl);
+        console.log('interval band');
+        //console.log('Khaali hua kya : ' + JSON.stringify(selectedDEList.WithoutData));
 
-        if (Object.keys(selectedDEList.WithoutData).length === 0 && selectedDEList.WithoutData.constructor === Object) {
-          console.log('clearInterval');
-          clearInterval(intrvl);
-        }
+        //if (Object.keys(selectedDEList.WithoutData).length === 0 && selectedDEList.WithoutData.constructor === Object) {
+          //console.log('clearInterval');
+          //clearInterval(intrvl);
+        //}
+
       }, 29000);
 
 
