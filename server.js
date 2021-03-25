@@ -1068,22 +1068,32 @@ app.post('/Authenticate', (req, res) => {
       //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
 
 
-      for (var key in selectedDEList.WithoutData) {
+      /*for (var key in selectedDEList.WithoutData) {
         FinalResult = await insertDEtoDestination(key);
         if(key in selectedDEList.WithData) {
           FinalResult = await insertDEDataToDestination(key);
         }
-      }
+      }*/
 
 
-      /*var c = 0;
-      var b = setInterval(function () {
-        authTokenForBothSFDC();
-        c = c + 1;
-        if (c == 5) {
-          clearInterval(b);
+      var intrvl = setInterval(function () {
+
+        for (var key in selectedDEList.WithoutData) {
+          delete selectedDEList.WithoutData[key];
+          console.log('First Loop : ' + key);
+          FinalResult = await insertDEtoDestination(key);
+          if(key in selectedDEList.WithData) {
+            console.log('First Loop If : ' + key);
+            FinalResult = await insertDEDataToDestination(key);
+          }
         }
-      }, 29000);*/
+        console.log('Khaali hua kya : ' + JSON.stringify(selectedDEList.WithoutData));
+
+        if (Object.keys(selectedDEList.WithoutData).length === 0 && selectedDEList.WithoutData.constructor === Object) {
+          console.log('clearInterval');
+          clearInterval(intrvl);
+        }
+      }, 29000);
 
 
 
