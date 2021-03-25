@@ -1076,7 +1076,7 @@ app.post('/Authenticate', (req, res) => {
       }*/
 
 
-      var intrvl = setInterval(function () {
+      var intrvl = setInterval(async function () {
 
         for (var key in selectedDEList.WithoutData) {
           delete selectedDEList.WithoutData[key];
