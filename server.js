@@ -1470,7 +1470,7 @@ app.post('/Authenticate', (req, res) => {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
         SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap, tempResult.items);
-        console.log('Records aaye : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
+        //console.log('Records aaye : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
         if (looplength >= 2) {
           NextUrl = tempResult.links.next;
@@ -1738,7 +1738,7 @@ app.post('/Authenticate', (req, res) => {
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
 
-            console.log('body : ' + DEDataInsertWithoutPrimaryKeyBody);
+            
             FinalResult = await insertSharedDERecFunc(DEDataInsertWithoutPrimaryKeyBody);
             resolve(FinalResult);
           }
@@ -1920,10 +1920,11 @@ app.post('/Authenticate', (req, res) => {
             },
             body: ProcessedBody
           };
-
+          console.log('Option : ' + Option);
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
+            console.log('response.body : ' + response.body);
             //console.log('ProcessedBody response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
