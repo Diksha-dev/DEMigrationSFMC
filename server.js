@@ -172,7 +172,7 @@ app.post('/Authenticate', (req, res) => {
         //SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
 
 
-        
+
         for (var key in SourceListDEResult) {
           if (SourceListDEResult[key].Name[0] != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name[0] != "_MobileAddress" && SourceListDEResult[key].Name[0] != "_MobileSubscription" && SourceListDEResult[key].Name[0] != "_PushAddress" && SourceListDEResult[key].Name[0] != "_PushTag" && SourceListDEResult[key].Name[0] != "_MobileLineAddressContact" && SourceListDEResult[key].Name[0] != "_MobileLineAddress" && SourceListDEResult[key].Name[0] != "_MobileLineProfile" && SourceListDEResult[key].Name[0] != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name[0] != "_MobileLineSubscription" && SourceListDEResult[key].Name[0] != "MobileLineOrphanContact") {
             if (SourceListDEResult[key].IsSendable[0] == "true") {
@@ -184,7 +184,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListDEResult[key].Description[0],
                 "DESendDEField": SourceListDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListDEResult[key].SendableSubscriberField[0].Name[0],
-                "RecordCount" : 0,
+                "RecordCount": 0,
                 "DEFieldMap": {},
                 "DEDataMap": []
               };
@@ -198,7 +198,7 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
-                "RecordCount" : 0,
+                "RecordCount": 0,
                 "DEFieldMap": {},
                 "DEDataMap": []
               };
@@ -244,7 +244,7 @@ app.post('/Authenticate', (req, res) => {
         var FieldSet = new Set();
         for (var key in SourceDEFieldsResult) {
           if (SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0] in DEListMap) {
-            if('Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
+            if ('Scale' in SourceDEFieldsResult[key] && 'MaxLength' in SourceDEFieldsResult[key]) {
               FieldSet.add(JSON.stringify({
                 "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
                 "Name": SourceDEFieldsResult[key].Name[0],
@@ -256,7 +256,7 @@ app.post('/Authenticate', (req, res) => {
                 "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
               }));
             }
-            else if( ('Scale' in SourceDEFieldsResult[key]) == false && 'MaxLength' in SourceDEFieldsResult[key]) {
+            else if (('Scale' in SourceDEFieldsResult[key]) == false && 'MaxLength' in SourceDEFieldsResult[key]) {
               FieldSet.add(JSON.stringify({
                 "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
                 "Name": SourceDEFieldsResult[key].Name[0],
@@ -268,7 +268,7 @@ app.post('/Authenticate', (req, res) => {
                 "DefaultValue": SourceDEFieldsResult[key].DefaultValue[0]
               }));
             }
-            else if('Scale' in SourceDEFieldsResult[key] && ('MaxLength' in SourceDEFieldsResult[key]) == false) {
+            else if ('Scale' in SourceDEFieldsResult[key] && ('MaxLength' in SourceDEFieldsResult[key]) == false) {
               FieldSet.add(JSON.stringify({
                 "DEExtKey": SourceDEFieldsResult[key].DataExtension[0].CustomerKey[0],
                 "Name": SourceDEFieldsResult[key].Name[0],
@@ -328,7 +328,7 @@ app.post('/Authenticate', (req, res) => {
   }
 
   async function getDERecordCount(key) {
-    return new Promise( async function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       var DEDataOptions = {
         'method': 'GET',
         'url': SourceRestURL + 'data/v1/customobjectdata/key/' + key + '/rowset/?$page=1&$pagesize=1',
@@ -341,15 +341,15 @@ app.post('/Authenticate', (req, res) => {
         var tempResult = JSON.parse(response.body);
         DEListMap[key].RecordCount = tempResult.count;
         DEListSend[key] = {
-          "DEName" : DEListMap[key].DEName,
-          "DECustomerKey" : DEListMap[key].DECustomerKey,
-          "FieldCount" : Object.keys(DEListMap[key].DEFieldMap).length,
-          "RecordCount" : tempResult.count,
-          "DEDescription" : DEListMap[key].DEDescription,
-          "DEIsSendable" : DEListMap[key].DEIsSendable,
-          "DEIsTestable" : DEListMap[key].DEIsTestable,
-          "DESendDEField" : DEListMap[key].DESendDEField,
-          "DESendSubsField" : DEListMap[key].DESendSubsField
+          "DEName": DEListMap[key].DEName,
+          "DECustomerKey": DEListMap[key].DECustomerKey,
+          "FieldCount": Object.keys(DEListMap[key].DEFieldMap).length,
+          "RecordCount": tempResult.count,
+          "DEDescription": DEListMap[key].DEDescription,
+          "DEIsSendable": DEListMap[key].DEIsSendable,
+          "DEIsTestable": DEListMap[key].DEIsTestable,
+          "DESendDEField": DEListMap[key].DESendDEField,
+          "DESendSubsField": DEListMap[key].DESendSubsField
         };
         resolve(DEListSend);
       });
@@ -359,9 +359,9 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-  
+
   async function getDEData(key) {
-    return new Promise( async function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
 
       var NextUrl;
       var DEDataOptions = {
@@ -374,12 +374,12 @@ app.post('/Authenticate', (req, res) => {
       request(DEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
-        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap , tempResult.items);
+        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap, tempResult.items);
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
-        if(looplength >= 2) {
+        if (looplength >= 2) {
           NextUrl = tempResult.links.next;
-          for(var i = 2 ; i <= looplength ; i++) {
-            NextUrl = await getMoreData(NextUrl , key);
+          for (var i = 2; i <= looplength; i++) {
+            NextUrl = await getMoreData(NextUrl, key);
           }
         }
         resolve(DEListMap);
@@ -387,7 +387,7 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
-  async function getMoreData(NextUrl , key) {
+  async function getMoreData(NextUrl, key) {
     return new Promise(async function (resolve, reject) {
 
       var DEMoreDataOptions = {
@@ -400,7 +400,7 @@ app.post('/Authenticate', (req, res) => {
       request(DEMoreDataOptions, function (error, response) {
         if (error) throw new Error(error);
         var tempResult1 = JSON.parse(response.body);
-        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap , tempResult1.items);
+        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap, tempResult1.items);
         NextUrl = tempResult1.links.next;
         resolve(NextUrl);
       })
@@ -614,7 +614,7 @@ app.post('/Authenticate', (req, res) => {
               tempDefaultValue = DEListMap[key].DEFieldMap[i].FieldDefaultValue;
             }
 
-            
+
             if (DEListMap[key].DEFieldMap[i].FieldMaxLength) {
               tempMaxLength = DEListMap[key].DEFieldMap[i].FieldMaxLength;
             }
@@ -702,36 +702,36 @@ app.post('/Authenticate', (req, res) => {
             });
 
             //console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEInsertResult));
-            
-            if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
+
+            if (tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
               FinalResult[key] = {
-                "DEInsert" : {
-                  "Name" : DEListMap[key].DEName,
-                  "StatusCode" : response.statusCode,
-                  "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
-                  "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
+                "DEInsert": {
+                  "Name": DEListMap[key].DEName,
+                  "StatusCode": response.statusCode,
+                  "StatusMessage": tempDEInsertResult[0]["StatusCode"][0],
+                  "Description": "This Data extention Name or External Key is already exist in Destination SFMC Instance"
                 },
-                "DEDataInsert" : {
-                  "Name" : "-",
-                  "StatusCode" : "-",
-                  "StatusMessage" : "-",
-                  "Description" : "-"
+                "DEDataInsert": {
+                  "Name": "-",
+                  "StatusCode": "-",
+                  "StatusMessage": "-",
+                  "Description": "-"
                 }
               };
             }
             else {
               FinalResult[key] = {
-                "DEInsert" : {
-                  "Name" : DEListMap[key].DEName,
-                  "StatusCode" : response.statusCode,
-                  "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
-                  "Description" : tempDEInsertResult[0]["StatusMessage"][0]
+                "DEInsert": {
+                  "Name": DEListMap[key].DEName,
+                  "StatusCode": response.statusCode,
+                  "StatusMessage": tempDEInsertResult[0]["StatusCode"][0],
+                  "Description": tempDEInsertResult[0]["StatusMessage"][0]
                 },
-                "DEDataInsert" : {
-                  "Name" : "-",
-                  "StatusCode" : "-",
-                  "StatusMessage" : "-",
-                  "Description" : "-"
+                "DEDataInsert": {
+                  "Name": "-",
+                  "StatusCode": "-",
+                  "StatusMessage": "-",
+                  "Description": "-"
                 }
               };
             }
@@ -745,13 +745,13 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
-      if(DEListMap[key].RecordCount != 0) {
+      if (DEListMap[key].RecordCount != 0) {
 
         await getDEData(key);
 
-        if(DEListMap[key].RecordCount <= 10000) {
+        if (DEListMap[key].RecordCount <= 10000) {
 
-          if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
+          if (Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
             //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
             var DEdataInsertWithPrimaryKeyOptions = {
               'method': 'POST',
@@ -767,8 +767,8 @@ app.post('/Authenticate', (req, res) => {
           }
           else {
             var DEDataInsertWithoutPrimaryKeyBody = '';
-            for(var key1 in DEListMap[key].DEDataMap) {
-              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + JSON.stringify(DEListMap[key].DEDataMap[key1]["values"]) + ','; 
+            for (var key1 in DEListMap[key].DEDataMap) {
+              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + JSON.stringify(DEListMap[key].DEDataMap[key1]["values"]) + ',';
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
@@ -791,32 +791,32 @@ app.post('/Authenticate', (req, res) => {
           var loopLength = Math.ceil(DEListMap[key].RecordCount / 10000);
           var recLengthSlice = DEListMap[key].RecordCount / 10000;
           var ttemp = recLengthSlice.toString().split(".")[1];
-          if(!ttemp) {
+          if (!ttemp) {
             ttemp = 0;
           }
-          var recLenDecimal = parseInt(ttemp , 10);
-          for(var i = 1 ; i <= loopLength ; i++) {
+          var recLenDecimal = parseInt(ttemp, 10);
+          for (var i = 1; i <= loopLength; i++) {
 
-            if(Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
+            if (Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
               var body = '';
 
-              if(recLenDecimal != 0) {
-                if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= DEListMap[key].RecordCount ; a++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]) + ',';
+              if (recLenDecimal != 0) {
+                if (i == loopLength) {
+                  for (var a = (i * 10000 - 9999); a <= DEListMap[key].RecordCount; a++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a - 1]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b-1]) + ',';
+                  for (var b = (i * 10000 - 9999); b <= (i * 10000); b++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b - 1]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
               }
               else {
-                for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
-                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j-1]) + ',';
+                for (var j = i * 10000 - 9999; j <= (i * 10000); j++) {
+                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j - 1]) + ',';
                 }
                 body = body.slice(0, -1);
               }
@@ -836,23 +836,23 @@ app.post('/Authenticate', (req, res) => {
             }
             else {
               var body = '';
-              if(recLenDecimal != 0) {
-                if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= DEListMap[key].RecordCount ; a++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a-1]["values"]) + ',';
+              if (recLenDecimal != 0) {
+                if (i == loopLength) {
+                  for (var a = (i * 10000 - 9999); a <= DEListMap[key].RecordCount; a++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a - 1]["values"]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b-1]["values"]) + ',';
+                  for (var b = (i * 10000 - 9999); b <= (i * 10000); b++) {
+                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b - 1]["values"]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
               }
               else {
-                for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
-                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j-1]["values"]) + ',';
+                for (var j = i * 10000 - 9999; j <= (i * 10000); j++) {
+                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j - 1]["values"]) + ',';
                 }
                 body = body.slice(0, -1);
               }
@@ -860,7 +860,7 @@ app.post('/Authenticate', (req, res) => {
               //console.log('body Meri : ' + body);
 
 
-              
+
               /*
               for(var key1 in DEListMap[key].DEDataMap) {
                 DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
@@ -905,7 +905,7 @@ app.post('/Authenticate', (req, res) => {
             //console.log('ProcessedBody response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
-            if(response.statusCode == 202 || response.statusCode == 200) {
+            if (response.statusCode == 202 || response.statusCode == 200) {
               FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
               FinalResult[key]["DEDataInsert"]["Description"] = "Success";
             }
@@ -1075,27 +1075,52 @@ app.post('/Authenticate', (req, res) => {
         }
       }*/
 
+      /*
+            var intrvl = setInterval(async function () {
+      
+              console.log('interval chala');
+              for (var key in selectedDEList.WithoutData) {
+                FinalResult = await insertDEtoDestination(key);
+                //delete selectedDEList.WithoutData[key];
+                if(key in selectedDEList.WithData) {
+                  FinalResult = await insertDEDataToDestination(key);
+                }
+              }
+              clearInterval(intrvl);
+              console.log('interval band');
+              //console.log('Khaali hua kya : ' + JSON.stringify(selectedDEList.WithoutData));
+      
+              //if (Object.keys(selectedDEList.WithoutData).length === 0 && selectedDEList.WithoutData.constructor === Object) {
+                //console.log('clearInterval');
+                //clearInterval(intrvl);
+              //}
+      
+            }, 29000);
+            */
 
-      var intrvl = setInterval(async function () {
-
-        console.log('interval chala');
-        for (var key in selectedDEList.WithoutData) {
-          FinalResult = await insertDEtoDestination(key);
-          //delete selectedDEList.WithoutData[key];
-          if(key in selectedDEList.WithData) {
-            FinalResult = await insertDEDataToDestination(key);
-          }
+      let delay = 1000;
+      var bool = false;
+      var bool1 = false;
+      let timerId = setTimeout(function request() {
+        if (bool == false) {
+          delay *= 90;
+          bool1 = true;
+          timerId = setTimeout(request, delay);
         }
-        clearInterval(intrvl);
-        console.log('interval band');
-        //console.log('Khaali hua kya : ' + JSON.stringify(selectedDEList.WithoutData));
+        if (bool1 == true) {
+          bool = true;
 
-        //if (Object.keys(selectedDEList.WithoutData).length === 0 && selectedDEList.WithoutData.constructor === Object) {
-          //console.log('clearInterval');
-          //clearInterval(intrvl);
-        //}
+          for (var key in selectedDEList.WithoutData) {
+            FinalResult = await insertDEtoDestination(key);
+            if(key in selectedDEList.WithData) {
+              FinalResult = await insertDEDataToDestination(key);
+            }
+          }
 
-      }, 29000);
+          clearTimeout(timerId);
+          clearInterval(timerId);
+        }
+      }, delay);
 
 
 
@@ -1139,58 +1164,58 @@ app.post('/Authenticate', (req, res) => {
         });
 
         var CategoryIDList = [];
-        for(var key in SharedDEFolder) {
+        for (var key in SharedDEFolder) {
           CategoryIDList.push(SharedDEFolder[key].ID[0]);
         }
         //console.log('CategoryID : ' + CategoryIDList);
 
 
         var ListShareDEBody = '<?xml version="1.0" encoding="UTF-8"?>' +
-                                '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
-                                    '<s:Header>' +
-                                        '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
-                                        '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
-                                        '<a:ReplyTo>' +
-                                            '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
-                                        '</a:ReplyTo>' +
-                                        '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
-                                        '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
-                                    '</s:Header>' +
-                                    '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-                                        '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
-                                            '<RetrieveRequest>' +
-                                                '<ObjectType>DataExtension</ObjectType>' +
-                                                '<QueryAllAccounts>true</QueryAllAccounts>' +
-                                                '<QueryAllAccountsSpecified>true</QueryAllAccountsSpecified>' +
-                                                '<Properties>CustomerKey</Properties>' +
-                                                '<Properties>Name</Properties>' +
-                                                '<Properties>DataExtension.ObjectID</Properties>' +
-                                                '<Properties>IsSendable</Properties>' +
-                                                '<Properties>IsTestable</Properties>' +
-                                                '<Properties>SendableSubscriberField.Name</Properties>' +
-                                                '<Properties>SendableDataExtensionField.Name</Properties>' +
-                                                '<Properties>Description</Properties>' +
-                                                '<Properties>CategoryID</Properties>' +
-                                                '<Properties>Client.ID</Properties>' +  
-                                                '<Filter xsi:type="SimpleFilterPart">' +
-                                                    '<Property>CategoryID</Property>';
-                                                    
-        if(CategoryIDList.length == 1) {
+          '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+          '<s:Header>' +
+          '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+          '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
+          '<a:ReplyTo>' +
+          '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
+          '</a:ReplyTo>' +
+          '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
+          '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
+          '</s:Header>' +
+          '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+          '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+          '<RetrieveRequest>' +
+          '<ObjectType>DataExtension</ObjectType>' +
+          '<QueryAllAccounts>true</QueryAllAccounts>' +
+          '<QueryAllAccountsSpecified>true</QueryAllAccountsSpecified>' +
+          '<Properties>CustomerKey</Properties>' +
+          '<Properties>Name</Properties>' +
+          '<Properties>DataExtension.ObjectID</Properties>' +
+          '<Properties>IsSendable</Properties>' +
+          '<Properties>IsTestable</Properties>' +
+          '<Properties>SendableSubscriberField.Name</Properties>' +
+          '<Properties>SendableDataExtensionField.Name</Properties>' +
+          '<Properties>Description</Properties>' +
+          '<Properties>CategoryID</Properties>' +
+          '<Properties>Client.ID</Properties>' +
+          '<Filter xsi:type="SimpleFilterPart">' +
+          '<Property>CategoryID</Property>';
+
+        if (CategoryIDList.length == 1) {
           ListShareDEBody = ListShareDEBody + '<SimpleOperator>equals</SimpleOperator> <Value>' + CategoryIDList[0] + '</Value>';
         }
         else {
           ListShareDEBody = ListShareDEBody + '<SimpleOperator>IN</SimpleOperator>';
-          for(var i = 0 ; i < CategoryIDList.length ; i++) {
+          for (var i = 0; i < CategoryIDList.length; i++) {
             ListShareDEBody = ListShareDEBody + '<Value>' + CategoryIDList[i] + '</Value>';
           }
         }
-            
+
         ListShareDEBody = ListShareDEBody + '</Filter>' +
-                                          '</RetrieveRequest>' +
-                                    '</RetrieveRequestMsg>' +
-                                '</s:Body>' +
-                              '</s:Envelope>'; 
-        
+          '</RetrieveRequest>' +
+          '</RetrieveRequestMsg>' +
+          '</s:Body>' +
+          '</s:Envelope>';
+
         //console.log('body : ' + ListShareDEBody);
         var ListSharedDEOption = {
           'method': 'POST',
@@ -1204,14 +1229,14 @@ app.post('/Authenticate', (req, res) => {
         };
         request(ListSharedDEOption, function (error, response) {
           if (error) throw new Error(error);
-          
+
           xml2jsParser.parseString(response.body, function (err, result) {
             //console.log('Shared DE Result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
             SourceListSharedDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
           });
 
 
-          
+
           for (var key in SourceListSharedDEResult) {
             if (SourceListSharedDEResult[key].IsSendable[0] == "true") {
               SharedDEListMap[SourceListSharedDEResult[key].CustomerKey] = {
@@ -1222,9 +1247,9 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": SourceListSharedDEResult[key].SendableDataExtensionField[0].Name[0],
                 "DESendSubsField": SourceListSharedDEResult[key].SendableSubscriberField[0].Name[0],
-                "RecordCount" : 0,
+                "RecordCount": 0,
                 "DEFieldMap": {},
-                "DEDataMap" : []
+                "DEDataMap": []
               };
             }
             else {
@@ -1236,9 +1261,9 @@ app.post('/Authenticate', (req, res) => {
                 "DEDescription": SourceListSharedDEResult[key].Description[0],
                 "DESendDEField": '',
                 "DESendSubsField": '',
-                "RecordCount" : 0,
+                "RecordCount": 0,
                 "DEFieldMap": {},
-                "DEDataMap" : []
+                "DEDataMap": []
               };
             }
           }
@@ -1253,46 +1278,46 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(async function (resolve, reject) {
       authTokenForBothSFDC();
 
-      var ShareDEFieldsBody =  '<?xml version="1.0" encoding="UTF-8"?>' +
-                    '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
-                        '<s:Header>' +
-                            '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
-                            '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
-                            '<a:ReplyTo>' +
-                                '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
-                            '</a:ReplyTo>' +
-                            '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
-                            '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
-                        '</s:Header>' +
-                        '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-                            '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
-                                '<RetrieveRequest>' +
-                                    '<ObjectType>DataExtensionField</ObjectType>' +
-                                    '<Properties>Client.ID</Properties>' +
-                                    '<Properties>CreatedDate</Properties>' +
-                                    '<Properties>CustomerKey</Properties>' +
-                                    '<Properties>DataExtension.CustomerKey</Properties>' +
-                                    '<Properties>DefaultValue</Properties>' +
-                                    '<Properties>FieldType</Properties>' +
-                                    '<Properties>IsPrimaryKey</Properties>' +
-                                    '<Properties>IsRequired</Properties>' +
-                                    '<Properties>MaxLength</Properties>' +
-                                    '<Properties>ModifiedDate</Properties>' +
-                                    '<Properties>Name</Properties>' +
-                                    '<Properties>ObjectID</Properties>' +
-                                    '<Properties>Ordinal</Properties>' +
-                                    '<Properties>Scale</Properties>' +
-                                    '<Filter xsi:type="SimpleFilterPart">' +
-                                        '<Property>DataExtension.CustomerKey</Property>';
+      var ShareDEFieldsBody = '<?xml version="1.0" encoding="UTF-8"?>' +
+        '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+        '<s:Header>' +
+        '<a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+        '<a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>' +
+        '<a:ReplyTo>' +
+        '<a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>' +
+        '</a:ReplyTo>' +
+        '<a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>' +
+        '<fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>' +
+        '</s:Header>' +
+        '<s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+        '<RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+        '<RetrieveRequest>' +
+        '<ObjectType>DataExtensionField</ObjectType>' +
+        '<Properties>Client.ID</Properties>' +
+        '<Properties>CreatedDate</Properties>' +
+        '<Properties>CustomerKey</Properties>' +
+        '<Properties>DataExtension.CustomerKey</Properties>' +
+        '<Properties>DefaultValue</Properties>' +
+        '<Properties>FieldType</Properties>' +
+        '<Properties>IsPrimaryKey</Properties>' +
+        '<Properties>IsRequired</Properties>' +
+        '<Properties>MaxLength</Properties>' +
+        '<Properties>ModifiedDate</Properties>' +
+        '<Properties>Name</Properties>' +
+        '<Properties>ObjectID</Properties>' +
+        '<Properties>Ordinal</Properties>' +
+        '<Properties>Scale</Properties>' +
+        '<Filter xsi:type="SimpleFilterPart">' +
+        '<Property>DataExtension.CustomerKey</Property>';
 
       var tempcheck = true;
-      for(var key in SharedDEListMap) { 
-        if(SharedDEListMap.size == 1) {
+      for (var key in SharedDEListMap) {
+        if (SharedDEListMap.size == 1) {
           ShareDEFieldsBody = ShareDEFieldsBody + '<SimpleOperator>equals</SimpleOperator> <Value>' + key + '</Value>';
           break;
         }
         else {
-          if(tempcheck == true) {
+          if (tempcheck == true) {
             ShareDEFieldsBody = ShareDEFieldsBody + '<SimpleOperator>IN</SimpleOperator>';
             tempcheck = false;
           }
@@ -1300,16 +1325,16 @@ app.post('/Authenticate', (req, res) => {
         }
       }
       ShareDEFieldsBody = ShareDEFieldsBody + '</Filter>' +
-                                              '<QueryAllAccounts>true</QueryAllAccounts>' +
-                                              '<Retrieves />' +
-                                              '<Options>' +
-                                                  '<SaveOptions />' +
-                                                  '<IncludeObjects>true</IncludeObjects>' +
-                                              '</Options>' +
-                                          '</RetrieveRequest>' +
-                                    '</RetrieveRequestMsg>' +
-                                '</s:Body>' +
-                              '</s:Envelope>';
+        '<QueryAllAccounts>true</QueryAllAccounts>' +
+        '<Retrieves />' +
+        '<Options>' +
+        '<SaveOptions />' +
+        '<IncludeObjects>true</IncludeObjects>' +
+        '</Options>' +
+        '</RetrieveRequest>' +
+        '</RetrieveRequestMsg>' +
+        '</s:Body>' +
+        '</s:Envelope>';
 
       //console.log('ShareDEFieldsBody : ' + ShareDEFieldsBody);
       var SharedDEFieldOption = {
@@ -1335,7 +1360,7 @@ app.post('/Authenticate', (req, res) => {
 
         for (var key in SourceSharedDEFieldsResult) {
           if (SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0] in SharedDEListMap) {
-            if("MaxLength" in SourceSharedDEFieldsResult[key] && "Scale" in SourceSharedDEFieldsResult[key]) {
+            if ("MaxLength" in SourceSharedDEFieldsResult[key] && "Scale" in SourceSharedDEFieldsResult[key]) {
               SharedDEListMap[SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0]].DEFieldMap[SourceSharedDEFieldsResult[key].Name[0]] = {
                 "FieldName": SourceSharedDEFieldsResult[key].Name[0],
                 "FieldIsRequired": SourceSharedDEFieldsResult[key].IsRequired[0],
@@ -1384,19 +1409,19 @@ app.post('/Authenticate', (req, res) => {
 
         //console.log('settled Field : ' + JSON.stringify(SharedDEListMap));
 
-        
+
         for (var key in SharedDEListMap) {
           await getSharedDERecordCount(key);
         }
         //console.log('SharedDEListMap : ' + JSON.stringify(SharedDEListMap));
-        
+
         resolve(SharedDEListMap);
       });
     })
   }
 
   async function getSharedDERecordCount(key) {
-    return new Promise( async function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       var SharedDEDataOptions = {
         'method': 'GET',
         'url': SourceRestURL + 'data/v1/customobjectdata/key/' + key + '/rowset/?$page=1&$pagesize=1',
@@ -1409,15 +1434,15 @@ app.post('/Authenticate', (req, res) => {
         var tempResult = JSON.parse(response.body);
         SharedDEListMap[key].RecordCount = tempResult.count;
         SharedDEListSend[key] = {
-          "DEName" : SharedDEListMap[key].DEName,
-          "DECustomerKey" : SharedDEListMap[key].DECustomerKey,
-          "FieldCount" : Object.keys(SharedDEListMap[key].DEFieldMap).length,
-          "RecordCount" : tempResult.count,
-          "DEDescription" : SharedDEListMap[key].DEDescription,
-          "DEIsSendable" : SharedDEListMap[key].DEIsSendable,
-          "DEIsTestable" : SharedDEListMap[key].DEIsTestable,
-          "DESendDEField" : SharedDEListMap[key].DESendDEField,
-          "DESendSubsField" : SharedDEListMap[key].DESendSubsField
+          "DEName": SharedDEListMap[key].DEName,
+          "DECustomerKey": SharedDEListMap[key].DECustomerKey,
+          "FieldCount": Object.keys(SharedDEListMap[key].DEFieldMap).length,
+          "RecordCount": tempResult.count,
+          "DEDescription": SharedDEListMap[key].DEDescription,
+          "DEIsSendable": SharedDEListMap[key].DEIsSendable,
+          "DEIsTestable": SharedDEListMap[key].DEIsTestable,
+          "DESendDEField": SharedDEListMap[key].DESendDEField,
+          "DESendSubsField": SharedDEListMap[key].DESendSubsField
         };
         resolve(SharedDEListSend);
       });
@@ -1432,7 +1457,7 @@ app.post('/Authenticate', (req, res) => {
 
 
   async function getSharedDEData(key) {
-    return new Promise( async function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       var NextUrl;
       var SharedDEDataOptions = {
         'method': 'GET',
@@ -1444,12 +1469,12 @@ app.post('/Authenticate', (req, res) => {
       request(SharedDEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
-        SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap , tempResult.items);
+        SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap, tempResult.items);
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
-        if(looplength >= 2) {
+        if (looplength >= 2) {
           NextUrl = tempResult.links.next;
-          for(var i = 2 ; i <= looplength ; i++) {
-            NextUrl = await getMoreSharedDEData(NextUrl , key);
+          for (var i = 2; i <= looplength; i++) {
+            NextUrl = await getMoreSharedDEData(NextUrl, key);
           }
         }
         resolve(SharedDEListMap);
@@ -1457,7 +1482,7 @@ app.post('/Authenticate', (req, res) => {
     })
   }
 
-  async function getMoreSharedDEData(NextUrl , key) {
+  async function getMoreSharedDEData(NextUrl, key) {
     return new Promise(async function (resolve, reject) {
       var SharedDEMoreDataOptions = {
         'method': 'GET',
@@ -1469,7 +1494,7 @@ app.post('/Authenticate', (req, res) => {
       request(SharedDEMoreDataOptions, function (error, response) {
         if (error) throw new Error(error);
         var tempResult1 = JSON.parse(response.body);
-        SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap , tempResult1.items);
+        SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap, tempResult1.items);
         NextUrl = tempResult1.links.next;
         resolve(NextUrl);
       })
@@ -1479,7 +1504,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-  
+
   async function insertSharedDEtoDestination(key) {
     return new Promise(function (resolve, reject) {
       var DEListBody = '';
@@ -1563,7 +1588,7 @@ app.post('/Authenticate', (req, res) => {
               tempDefaultValue = SharedDEListMap[key].DEFieldMap[i].FieldDefaultValue;
             }
 
-            
+
             if (SharedDEListMap[key].DEFieldMap[i].FieldMaxLength) {
               tempMaxLength = SharedDEListMap[key].DEFieldMap[i].FieldMaxLength;
             }
@@ -1651,36 +1676,36 @@ app.post('/Authenticate', (req, res) => {
             });
 
             //console.log(DEListMap[key].DEName + ' : DEInsert statusCode : ' + response.statusCode + ' , Body : ' + JSON.stringify(tempDEInsertResult));
-            
-            if(tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
+
+            if (tempDEInsertResult[0]["StatusMessage"] == "Updating an existing Data Extension definition is not allowed when doing an add-only operation. ") {
               FinalResult[key] = {
-                "DEInsert" : {
-                  "Name" : SharedDEListMap[key].DEName,
-                  "StatusCode" : response.statusCode,
-                  "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
-                  "Description" : "This Data extention Name or External Key is already exist in Destination SFMC Instance"
+                "DEInsert": {
+                  "Name": SharedDEListMap[key].DEName,
+                  "StatusCode": response.statusCode,
+                  "StatusMessage": tempDEInsertResult[0]["StatusCode"][0],
+                  "Description": "This Data extention Name or External Key is already exist in Destination SFMC Instance"
                 },
-                "DEDataInsert" : {
-                  "Name" : "-",
-                  "StatusCode" : "-",
-                  "StatusMessage" : "-",
-                  "Description" : "-"
+                "DEDataInsert": {
+                  "Name": "-",
+                  "StatusCode": "-",
+                  "StatusMessage": "-",
+                  "Description": "-"
                 }
               };
             }
             else {
               FinalResult[key] = {
-                "DEInsert" : {
-                  "Name" : SharedDEListMap[key].DEName,
-                  "StatusCode" : response.statusCode,
-                  "StatusMessage" : tempDEInsertResult[0]["StatusCode"][0],
-                  "Description" : tempDEInsertResult[0]["StatusMessage"][0]
+                "DEInsert": {
+                  "Name": SharedDEListMap[key].DEName,
+                  "StatusCode": response.statusCode,
+                  "StatusMessage": tempDEInsertResult[0]["StatusCode"][0],
+                  "Description": tempDEInsertResult[0]["StatusMessage"][0]
                 },
-                "DEDataInsert" : {
-                  "Name" : "-",
-                  "StatusCode" : "-",
-                  "StatusMessage" : "-",
-                  "Description" : "-"
+                "DEDataInsert": {
+                  "Name": "-",
+                  "StatusCode": "-",
+                  "StatusMessage": "-",
+                  "Description": "-"
                 }
               };
             }
@@ -1694,24 +1719,24 @@ app.post('/Authenticate', (req, res) => {
 
   async function insertSharedDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
-      if(SharedDEListMap[key].RecordCount != 0) {
+      if (SharedDEListMap[key].RecordCount != 0) {
 
         await getSharedDEData(key);
 
-        if(SharedDEListMap[key].RecordCount <= 10000) {
+        if (SharedDEListMap[key].RecordCount <= 10000) {
 
-          if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
+          if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
             FinalResult = await insertSharedDERecFunc(JSON.stringify(SharedDEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
             var DEDataInsertWithoutPrimaryKeyBody = '';
-            for(var key1 in SharedDEListMap[key].DEDataMap) {
-              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + JSON.stringify(SharedDEListMap[key].DEDataMap[key1]["values"]) + ','; 
+            for (var key1 in SharedDEListMap[key].DEDataMap) {
+              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + JSON.stringify(SharedDEListMap[key].DEDataMap[key1]["values"]) + ',';
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-            
+
             FinalResult = await insertSharedDERecFunc(DEDataInsertWithoutPrimaryKeyBody);
             resolve(FinalResult);
           }
@@ -1720,63 +1745,63 @@ app.post('/Authenticate', (req, res) => {
           var loopLength = Math.ceil(SharedDEListMap[key].RecordCount / 10000);
           var recLengthSlice = SharedDEListMap[key].RecordCount / 10000;
           var ttemp = recLengthSlice.toString().split(".")[1];
-          if(!ttemp) {
+          if (!ttemp) {
             ttemp = 0;
           }
-          var recLenDecimal = parseInt(ttemp , 10);
-          for(var i = 1 ; i <= loopLength ; i++) {
+          var recLenDecimal = parseInt(ttemp, 10);
+          for (var i = 1; i <= loopLength; i++) {
 
-            if(Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
+            if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
               var body = '';
 
 
-              if(recLenDecimal != 0) {
-                if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].RecordCount ; a++) {
-                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
+              if (recLenDecimal != 0) {
+                if (i == loopLength) {
+                  for (var a = (i * 10000 - 9999); a <= SharedDEListMap[key].RecordCount; a++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a - 1]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
-                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b-1]) + ',';
+                  for (var b = (i * 10000 - 9999); b <= (i * 10000); b++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b - 1]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
               }
               else {
-                for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
-                  body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j-1]) + ',';
+                for (var j = i * 10000 - 9999; j <= (i * 10000); j++) {
+                  body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j - 1]) + ',';
                 }
                 body = body.slice(0, -1);
               }
               body = '[' + body + ']';
 
               console.log('body Meri ki length: ' + body.length);
-              if(body.length > 8300000) {
+              if (body.length > 8300000) {
 
-                if(recLenDecimal != 0) {
+                if (recLenDecimal != 0) {
                   var loopDevide;
-                  if(i == loopLength) {
+                  if (i == loopLength) {
 
-                    if((SharedDEListMap[key].RecordCount % 10000) % 2 == 0) {
+                    if ((SharedDEListMap[key].RecordCount % 10000) % 2 == 0) {
                       loopDevide = (SharedDEListMap[key].RecordCount % 10000) / 2;
                     }
                     else {
                       loopDevide = Math.ceil((SharedDEListMap[key].RecordCount % 10000) / 2);
                     }
 
-                    body="";
-                    for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].RecordCount - loopDevide; a++) {
-                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
+                    body = "";
+                    for (var a = (i * 10000 - 9999); a <= SharedDEListMap[key].RecordCount - loopDevide; a++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a - 1]) + ',';
                     }
                     body = body.slice(0, -1);
                     body = '[' + body + ']';
                     FinalResult = await insertSharedDERecFunc(body);
 
-                    body="";
-                    for(var a = (i*10000-9999+(loopDevide+1)) ; a <= SharedDEListMap[key].RecordCount ; a++) {
-                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]) + ',';
+                    body = "";
+                    for (var a = (i * 10000 - 9999 + (loopDevide + 1)); a <= SharedDEListMap[key].RecordCount; a++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a - 1]) + ',';
                     }
                     body = body.slice(0, -1);
                     body = '[' + body + ']';
@@ -1786,8 +1811,8 @@ app.post('/Authenticate', (req, res) => {
                   else {
 
                     body = "";
-                    for(var b = (i*10000-9999) ; b <= (i*10000 - 5000) ; b++) {
-                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b-1]) + ',';
+                    for (var b = (i * 10000 - 9999); b <= (i * 10000 - 5000); b++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b - 1]) + ',';
                     }
                     body = body.slice(0, -1);
                     body = '[' + body + ']';
@@ -1795,8 +1820,8 @@ app.post('/Authenticate', (req, res) => {
 
                     body = "";
                     //j=i*10000-9999+5001
-                    for(var b = (i*10000-4998) ; b <= (i*10000) ; b++) {
-                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b-1]) + ',';
+                    for (var b = (i * 10000 - 4998); b <= (i * 10000); b++) {
+                      body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b - 1]) + ',';
                     }
                     body = body.slice(0, -1);
                     body = '[' + body + ']';
@@ -1806,9 +1831,9 @@ app.post('/Authenticate', (req, res) => {
                 }
                 else {
 
-                  body="";
-                  for(var j = i*10000-9999 ; j <= (i*10000 - 5000) ; j++) {
-                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j-1]) + ',';
+                  body = "";
+                  for (var j = i * 10000 - 9999; j <= (i * 10000 - 5000); j++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j - 1]) + ',';
                   }
                   body = body.slice(0, -1);
                   body = '[' + body + ']';
@@ -1816,10 +1841,10 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-                  body="";
+                  body = "";
                   //j=i*10000-9999+5001
-                  for(var j = i*10000-4998 ; j <= (i*10000) ; j++) {
-                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j-1]) + ',';
+                  for (var j = i * 10000 - 4998; j <= (i * 10000); j++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j - 1]) + ',';
                   }
                   body = body.slice(0, -1);
                   body = '[' + body + ']';
@@ -1833,23 +1858,23 @@ app.post('/Authenticate', (req, res) => {
             }
             else {
               var body = '';
-              if(recLenDecimal != 0) {
-                if(i == loopLength) {
-                  for(var a = (i*10000-9999) ; a <= SharedDEListMap[key].RecordCount ; a++) {
-                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a-1]["values"]) + ',';
+              if (recLenDecimal != 0) {
+                if (i == loopLength) {
+                  for (var a = (i * 10000 - 9999); a <= SharedDEListMap[key].RecordCount; a++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[a - 1]["values"]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
                 else {
-                  for(var b = (i*10000-9999) ; b <= (i*10000) ; b++) {
-                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b-1]["values"]) + ',';
+                  for (var b = (i * 10000 - 9999); b <= (i * 10000); b++) {
+                    body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[b - 1]["values"]) + ',';
                   }
                   body = body.slice(0, -1);
                 }
               }
               else {
-                for(var j = i*10000-9999 ; j <= (i*10000) ; j++) {
-                  body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j-1]["values"]) + ',';
+                for (var j = i * 10000 - 9999; j <= (i * 10000); j++) {
+                  body = body + JSON.stringify(SharedDEListMap[key].DEDataMap[j - 1]["values"]) + ',';
                 }
                 body = body.slice(0, -1);
               }
@@ -1857,7 +1882,7 @@ app.post('/Authenticate', (req, res) => {
               //console.log('body Meri : ' + body);
 
 
-              
+
               /*
               for(var key1 in SharedDEListMap[key].DEDataMap) {
                 DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + SharedDEListMap[key].DEDataMap[key1]["values"] + ','; 
@@ -1880,7 +1905,7 @@ app.post('/Authenticate', (req, res) => {
         FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
         resolve(FinalResult);
       }
-      
+
       async function insertSharedDERecFunc(ProcessedBody) {
         return new Promise(function (resolve, reject) {
 
@@ -1900,7 +1925,7 @@ app.post('/Authenticate', (req, res) => {
             //console.log('ProcessedBody response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
-            if(response.statusCode == 202 || response.statusCode == 200) {
+            if (response.statusCode == 202 || response.statusCode == 200) {
               FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
               FinalResult[key]["DEDataInsert"]["Description"] = "Success";
             }
@@ -1977,7 +2002,7 @@ app.post('/Authenticate', (req, res) => {
       //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
       for (var key in selectedDEList.WithoutData) {
         FinalResult = await insertSharedDEtoDestination(key);
-        if(key in selectedDEList.WithData) {
+        if (key in selectedDEList.WithData) {
           FinalResult = await insertSharedDEDataToDestination(key);
         }
       }
@@ -1988,7 +2013,7 @@ app.post('/Authenticate', (req, res) => {
   });
 
 
-  
+
 
 
 
