@@ -1112,8 +1112,10 @@ app.post('/Authenticate', (req, res) => {
 
           for (var key in selectedDEList.WithoutData) {
             FinalResult = await insertDEtoDestination(key);
-            if(key in selectedDEList.WithData) {
-              FinalResult = await insertDEDataToDestination(key);
+            if(selectedDEList.WithData) {
+              if(key in selectedDEList.WithData) {
+                FinalResult = await insertDEDataToDestination(key);
+              }
             }
           }
 
@@ -2000,8 +2002,10 @@ app.post('/Authenticate', (req, res) => {
       //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
       for (var key in selectedDEList.WithoutData) {
         FinalResult = await insertSharedDEtoDestination(key);
-        if (key in selectedDEList.WithData) {
-          FinalResult = await insertSharedDEDataToDestination(key);
+        if(selectedDEList.WithData) {
+          if (key in selectedDEList.WithData) {
+            FinalResult = await insertSharedDEDataToDestination(key);
+          }
         }
       }
       console.log('FinalResult : ' + JSON.stringify(FinalResult));
