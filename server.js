@@ -1519,8 +1519,8 @@ app.post('/Authenticate', (req, res) => {
           '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
           '<Options/>' +
           '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '</CustomerKey>' +
-          '<Name>' + selectedDEList.WithoutData[key].DEName + '</Name>' +
+          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + 'test</CustomerKey>' +
+          '<Name>' + selectedDEList.WithoutData[key].DEName + 'test</Name>' +
           '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
           '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
           '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
@@ -1727,7 +1727,7 @@ app.post('/Authenticate', (req, res) => {
         if (SharedDEListMap[key].RecordCount <= 10000) {
 
           if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
-            FinalResult = await insertSharedDERecFunc(JSON.stringify(SharedDEListMap[key].DEDataMap));
+            FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(SharedDEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
@@ -1739,7 +1739,7 @@ app.post('/Authenticate', (req, res) => {
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
 
             
-            FinalResult = await insertSharedDERecFunc(DEDataInsertWithoutPrimaryKeyBody);
+            FinalResult = await insertSharedDERecFuncWithoutExtKey(DEDataInsertWithoutPrimaryKeyBody);
             resolve(FinalResult);
           }
         }
@@ -1799,7 +1799,7 @@ app.post('/Authenticate', (req, res) => {
                     }
                     body = body.slice(0, -1);
                     body = '[' + body + ']';
-                    FinalResult = await insertSharedDERecFunc(body);
+                    FinalResult = await insertSharedDERecFuncWithExtKey(body);
 
                     body = "";
                     for (var a = (i * 10000 - 9999 + (loopDevide + 1)); a <= SharedDEListMap[key].RecordCount; a++) {
@@ -1807,7 +1807,7 @@ app.post('/Authenticate', (req, res) => {
                     }
                     body = body.slice(0, -1);
                     body = '[' + body + ']';
-                    FinalResult = await insertSharedDERecFunc(body);
+                    FinalResult = await insertSharedDERecFuncWithExtKey(body);
 
                   }
                   else {
@@ -1818,7 +1818,7 @@ app.post('/Authenticate', (req, res) => {
                     }
                     body = body.slice(0, -1);
                     body = '[' + body + ']';
-                    FinalResult = await insertSharedDERecFunc(body);
+                    FinalResult = await insertSharedDERecFuncWithExtKey(body);
 
                     body = "";
                     //j=i*10000-9999+5001
@@ -1827,7 +1827,7 @@ app.post('/Authenticate', (req, res) => {
                     }
                     body = body.slice(0, -1);
                     body = '[' + body + ']';
-                    FinalResult = await insertSharedDERecFunc(body);
+                    FinalResult = await insertSharedDERecFuncWithExtKey(body);
 
                   }
                 }
@@ -1839,7 +1839,7 @@ app.post('/Authenticate', (req, res) => {
                   }
                   body = body.slice(0, -1);
                   body = '[' + body + ']';
-                  FinalResult = await insertSharedDERecFunc(body);
+                  FinalResult = await insertSharedDERecFuncWithExtKey(body);
 
 
 
@@ -1850,12 +1850,12 @@ app.post('/Authenticate', (req, res) => {
                   }
                   body = body.slice(0, -1);
                   body = '[' + body + ']';
-                  FinalResult = await insertSharedDERecFunc(body);
+                  FinalResult = await insertSharedDERecFuncWithExtKey(body);
 
                 }
               }
               else {
-                FinalResult = await insertSharedDERecFunc(body);
+                FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
             }
             else {
@@ -1894,7 +1894,7 @@ app.post('/Authenticate', (req, res) => {
               */
 
 
-              FinalResult = await insertSharedDERecFunc(body);
+              FinalResult = await insertSharedDERecFuncWithoutExtKey(body);
             }
           }
           resolve(FinalResult);
@@ -1908,25 +1908,22 @@ app.post('/Authenticate', (req, res) => {
         resolve(FinalResult);
       }
 
-      async function insertSharedDERecFunc(ProcessedBody) {
+      async function insertSharedDERecFuncWithExtKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
 
           var Option = {
             'method': 'POST',
-            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
             'headers': {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
             },
             body: ProcessedBody
           };
-          console.log('Option : ' + JSON.stringify(Option));
 
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('response.body : ' + response.body);
-            //console.log('ProcessedBody response : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if (response.statusCode == 202 || response.statusCode == 200) {
@@ -1937,11 +1934,41 @@ app.post('/Authenticate', (req, res) => {
               FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
               FinalResult[key]["DEDataInsert"]["Description"] = "-";
             }
-            //console.log('FinalResult : ' + JSON.stringify(FinalResult));
             resolve(FinalResult);
           });
         })
       }
+      async function insertSharedDERecFuncWithoutExtKey(ProcessedBody) {
+        return new Promise(function (resolve, reject) {
+
+          var Option = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: ProcessedBody
+          };
+          request(Option, function (error, response) {
+            if (error) throw new Error(error);
+            var temp = response.body;
+            FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if (response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
+            }
+            resolve(FinalResult);
+          });
+        })
+      }
+
+
     })
   }
 
