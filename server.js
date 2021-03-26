@@ -1101,7 +1101,7 @@ app.post('/Authenticate', (req, res) => {
       let delay = 1000;
       var bool = false;
       var bool1 = false;
-      let timerId = setTimeout(function request() {
+      let timerId = setTimeout(async function request() {
         if (bool == false) {
           delay *= 90;
           bool1 = true;
