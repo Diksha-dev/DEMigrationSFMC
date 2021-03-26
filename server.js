@@ -1913,7 +1913,7 @@ app.post('/Authenticate', (req, res) => {
 
           var Option = {
             'method': 'POST',
-            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
             'headers': {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
