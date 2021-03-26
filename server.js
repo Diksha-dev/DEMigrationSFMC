@@ -1103,7 +1103,7 @@ app.post('/Authenticate', (req, res) => {
       var bool1 = false;
       let timerId = setTimeout(async function request() {
         if (bool == false) {
-          delay *= 90;
+          delay *= 60*60;
           bool1 = true;
           timerId = setTimeout(request, delay);
         }
@@ -1118,7 +1118,8 @@ app.post('/Authenticate', (req, res) => {
           }
 
           clearTimeout(timerId);
-          clearInterval(timerId);
+          //clearInterval(timerId);
+          console.log('ho ggyaaaaaaaaaaaaaaaa');
         }
       }, delay);
 
