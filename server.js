@@ -1103,7 +1103,7 @@ app.post('/Authenticate', (req, res) => {
       var bool1 = false;
       let timerId = setTimeout(async function request() {
         if (bool == false) {
-          delay *= 60*60;
+          delay *= 24*60*60;
           bool1 = true;
           timerId = setTimeout(request, delay);
         }
@@ -1122,9 +1122,6 @@ app.post('/Authenticate', (req, res) => {
           console.log('ho ggyaaaaaaaaaaaaaaaa');
         }
       }, delay);
-
-
-
       console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
     res.send(FinalResult);
@@ -1912,7 +1909,7 @@ app.post('/Authenticate', (req, res) => {
 
           var Option = {
             'method': 'POST',
-            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '-test/rowset',
             'headers': {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
