@@ -1920,7 +1920,7 @@ app.post('/Authenticate', (req, res) => {
             },
             body: ProcessedBody
           };
-          console.log('Option : ' + Option);
+          console.log('Option : ' + JSON.stringify(Option));
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
