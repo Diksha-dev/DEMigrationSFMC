@@ -1519,8 +1519,8 @@ app.post('/Authenticate', (req, res) => {
           '<CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
           '<Options/>' +
           '<Objects xsi:type="ns2:DataExtension" xmlns:ns2="http://exacttarget.com/wsdl/partnerAPI">' +
-          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + 'test</CustomerKey>' +
-          '<Name>' + selectedDEList.WithoutData[key].DEName + 'test</Name>' +
+          '<CustomerKey>' + selectedDEList.WithoutData[key].DEExtKey + '</CustomerKey>' +
+          '<Name>' + selectedDEList.WithoutData[key].DEName + '</Name>' +
           '<Description>' + selectedDEList.WithoutData[key].DEDes + '</Description>' +
           '<IsSendable>' + selectedDEList.WithoutData[key].DEIsSend + '</IsSendable>' +
           '<IsTestable>' + selectedDEList.WithoutData[key].DEIsTest + '</IsTestable>';
@@ -1913,7 +1913,7 @@ app.post('/Authenticate', (req, res) => {
 
           var Option = {
             'method': 'POST',
-            'url': DestinationRestURL + 'hub/v1/dataevents/key:{' + key + 'test}/rowset',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
             'headers': {
               'Authorization': 'Bearer ' + DestinationAccessToken,
               'Content-Type': 'application/json'
