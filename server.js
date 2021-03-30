@@ -2190,7 +2190,8 @@ app.post('/Authenticate', (req, res) => {
   app.post("/SelectedSharedDEListInsert", async (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
-      //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
+
+      /*
       for (var key in selectedDEList.WithoutData) {
         FinalResult = await insertSharedDEtoDestination(key);
         if(selectedDEList.WithData) {
@@ -2199,10 +2200,43 @@ app.post('/Authenticate', (req, res) => {
           }
         }
       }
+      */
+
+      let delay = 1000;
+      var bool = false;
+      var bool1 = false;
+      let timerId = setTimeout(async function requestShared() {
+        if (bool == false) {
+          delay *= 24*60*60;
+          bool1 = true;
+          timerId = setTimeout(requestShared, delay);
+        }
+        if (bool1 == true) {
+          bool = true;
+
+          for (var key in selectedDEList.WithoutData) {
+            FinalResult = await insertSharedDEtoDestination(key);
+            if(selectedDEList.WithData) {
+              if (key in selectedDEList.WithData) {
+                FinalResult = await insertSharedDEDataToDestination(key);
+              }
+            }
+          }
+
+          clearTimeout(timerId);
+          //clearInterval(timerId);
+          console.log('shared bhi ho ggyaaaaaaaaaaaaaaaa');
+        }
+      }, delay);
       console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
     res.send(FinalResult);
     FinalResult = {};
+
+
+
+
+
   });
 
 
