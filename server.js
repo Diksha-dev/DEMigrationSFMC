@@ -1785,7 +1785,7 @@ app.post('/Authenticate', (req, res) => {
         if (SharedDEListMap[key].RecordCount <= 10000) {
 
 
-          if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
+          if (SharedDEListMap[key].DEDataMap[0].keys) {
             FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(SharedDEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
@@ -1804,7 +1804,7 @@ app.post('/Authenticate', (req, res) => {
           for (var i = 1; i <= loopLength; i++) {
 
 
-            if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
+            if (SharedDEListMap[key].DEDataMap[0].keys) {
               var body = '';
 
               var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
