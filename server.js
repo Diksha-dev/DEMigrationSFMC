@@ -1779,67 +1779,40 @@ app.post('/Authenticate', (req, res) => {
   async function insertSharedDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
       if (SharedDEListMap[key].RecordCount != 0) {
-
         await getSharedDEData(key);
-
         if (SharedDEListMap[key].RecordCount <= 10000) {
-
-
           if (SharedDEListMap[key].DEDataMap[0].keys) {
             FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(SharedDEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
-            //var body = '{"items":' + JSON.stringify(SharedDEListMap[key].DEDataMap) + '}';
-
             FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(SharedDEListMap[key].DEDataMap) + '}');
             resolve(FinalResult);
           }
-
-
         }
         else {
           var loopLength = Math.ceil(SharedDEListMap[key].RecordCount / 10000);
-
           for (var i = 1; i <= loopLength; i++) {
-
-
             if (SharedDEListMap[key].DEDataMap[0].keys) {
-              var body = '';
-
               var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
-
               if (JSON.stringify(temp).length < 8300000) {
-                body = JSON.stringify(temp);
-                FinalResult = await insertSharedDERecFuncWithExtKey(body);
+                FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp));
               }
               else {
-                body = JSON.stringify(temp.splice(0,5000));
-                FinalResult = await insertSharedDERecFuncWithExtKey(body);
-
-                body = JSON.stringify(temp.splice(0,5000));
-                FinalResult = await insertSharedDERecFuncWithExtKey(body);
+                FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.splice(0,5000)));
+                FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.splice(0,5000)));
               }
             }
             else {
-              var body = '';
-
               var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
-
               if (JSON.stringify(temp).length < 8300000) {
-                body = '{"items":' + JSON.stringify(temp) + '}';
-                FinalResult = await insertSharedDERecFuncWithoutExtKey(body);
+                FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(temp) + '}');
               }
               else {
-                body = '{"items":' + JSON.stringify(temp.splice(0,5000)) + '}';
-                FinalResult = await insertSharedDERecFuncWithoutExtKey(body);
-
-                body = '{"items":' + JSON.stringify(temp.splice(0,5000)) + '}';
-                FinalResult = await insertSharedDERecFuncWithoutExtKey(body);
+                FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
+                FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
               }
             }
-
-
           }
           resolve(FinalResult);
         }
