@@ -1858,16 +1858,16 @@ app.post('/Authenticate', (req, res) => {
               console.log('temp length 10000 : ' + JSON.stringify(temp).length);
 
               if (JSON.stringify(temp).length > 8300000) {
-                body = '[' + JSON.stringify(temp.splice(0,5000)) + ']';
+                body = JSON.stringify(temp.splice(0,5000));
                 console.log('temp length 10000 : ' + JSON.stringify(temp.splice(0,5000)).length);
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
 
-                body = '[' + JSON.stringify(temp.splice(0,5000)) + ']';
+                body = JSON.stringify(temp.splice(0,5000));
                 console.log('temp length 10000 : ' + JSON.stringify(temp.splice(0,5000)).length);
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
               else {
-                body = '[' + JSON.stringify(temp) + ']';
+                body = JSON.stringify(temp);
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
 
@@ -2033,7 +2033,8 @@ app.post('/Authenticate', (req, res) => {
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('response.body : ' + response.body);
+            console.log('response.body : ' + JSON.stringify(response));
+
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if (response.statusCode == 202 || response.statusCode == 200) {
