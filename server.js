@@ -1033,66 +1033,43 @@ app.post('/Authenticate', (req, res) => {
   app.post("/SelectedDEListInsert", async (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
-      //console.log('reqForSelectedDEList : ' + JSON.stringify(selectedDEList));
 
 
-      /*for (var key in selectedDEList.WithoutData) {
-        FinalResult = await insertDEtoDestination(key);
-        if(key in selectedDEList.WithData) {
-          FinalResult = await insertDEDataToDestination(key);
-        }
-      }*/
 
-      /*
-            var intrvl = setInterval(async function () {
-      
-              console.log('interval chala');
-              for (var key in selectedDEList.WithoutData) {
-                FinalResult = await insertDEtoDestination(key);
-                //delete selectedDEList.WithoutData[key];
+      for (var key in selectedDEList.WithoutData) {
+        FinalDEInsert(key);
+      }
+
+
+      async function FinalDEInsert(key) {
+        let delay = 1000;
+        var bool = false;
+        var bool1 = false;
+        let timerId = setTimeout(async function request() {
+          if (bool == false) {
+            delay *= 24*60*60;
+            bool1 = true;
+            timerId = setTimeout(request, delay);
+          }
+          if (bool1 == true) {
+            bool = true;
+
+            //for (var key in selectedDEList.WithoutData) {
+              FinalResult = await insertDEtoDestination(key);
+              if(selectedDEList.WithData) {
                 if(key in selectedDEList.WithData) {
                   FinalResult = await insertDEDataToDestination(key);
                 }
               }
-              clearInterval(intrvl);
-              console.log('interval band');
-              //console.log('Khaali hua kya : ' + JSON.stringify(selectedDEList.WithoutData));
-      
-              //if (Object.keys(selectedDEList.WithoutData).length === 0 && selectedDEList.WithoutData.constructor === Object) {
-                //console.log('clearInterval');
-                //clearInterval(intrvl);
-              //}
-      
-            }, 29000);
-            */
+            //}
 
-      let delay = 1000;
-      var bool = false;
-      var bool1 = false;
-      let timerId = setTimeout(async function request() {
-        if (bool == false) {
-          delay *= 24*60*60;
-          bool1 = true;
-          timerId = setTimeout(request, delay);
-        }
-        if (bool1 == true) {
-          bool = true;
-
-          for (var key in selectedDEList.WithoutData) {
-            FinalResult = await insertDEtoDestination(key);
-            if(selectedDEList.WithData) {
-              if(key in selectedDEList.WithData) {
-                FinalResult = await insertDEDataToDestination(key);
-              }
-            }
+            clearTimeout(timerId);
+            console.log('ho ggyaaaaaaaaaaaaaaaa');
           }
-
-          clearTimeout(timerId);
-          //clearInterval(timerId);
-          console.log('ho ggyaaaaaaaaaaaaaaaa');
-        }
-      }, delay);
-      console.log('FinalResult : ' + JSON.stringify(FinalResult));
+        }, delay);
+        console.log('FinalResult : ' + JSON.stringify(FinalResult));
+      }
+      
     }
     res.send(FinalResult);
     FinalResult = {};
@@ -1828,7 +1805,7 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-
+//this function is only for test but it have so imp logics
   async function Test_insertSharedDEDataToDestination(key) {
     return new Promise(async function (resolve, reject) {
       if (SharedDEListMap[key].RecordCount != 0) {
