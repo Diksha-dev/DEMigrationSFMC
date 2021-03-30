@@ -374,7 +374,18 @@ app.post('/Authenticate', (req, res) => {
       request(DEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
-        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap, tempResult.items);
+
+        if(tempResult.count != 0) {
+          if(Object.keys(tempResult.items[0].keys).length != 0) {
+            DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap, tempResult.items);
+          }
+          else {
+            for(var i in tempResult.items) {
+              DEListMap[key].DEDataMap.push(tempResult.items[i].values);
+            }
+          }
+        }
+        
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
         if (looplength >= 2) {
           NextUrl = tempResult.links.next;
@@ -400,7 +411,18 @@ app.post('/Authenticate', (req, res) => {
       request(DEMoreDataOptions, function (error, response) {
         if (error) throw new Error(error);
         var tempResult1 = JSON.parse(response.body);
-        DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap, tempResult1.items);
+
+        if(tempResult1.count != 0) {
+          if(Object.keys(tempResult1.items[0].keys).length != 0) {
+            DEListMap[key].DEDataMap.push.apply(DEListMap[key].DEDataMap, tempResult1.items);
+          }
+          else {
+            for(var i in tempResult1.items) {
+              DEListMap[key].DEDataMap.push(tempResult1.items[i].values);
+            }
+          }
+        }
+
         NextUrl = tempResult1.links.next;
         resolve(NextUrl);
       })
@@ -757,14 +779,16 @@ app.post('/Authenticate', (req, res) => {
           }
           else {
             var DEDataInsertWithoutPrimaryKeyBody = '';
+            /*
             for (var key1 in DEListMap[key].DEDataMap) {
               DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + JSON.stringify(DEListMap[key].DEDataMap[key1]["values"]) + ',';
             }
             DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-            //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
-
             
+            //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
+            */
+            DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + JSON.stringify(DEListMap[key].DEDataMap) + ']}';
             FinalResult = await insertRecFuncWithoutPrimaryKey(DEDataInsertWithoutPrimaryKeyBody);
             resolve(FinalResult);
           }
@@ -811,6 +835,8 @@ app.post('/Authenticate', (req, res) => {
             }
             else {
               var body = '';
+
+              /*
               if (recLenDecimal != 0) {
                 if (i == loopLength) {
                   for (var a = (i * 10000 - 9999); a <= DEListMap[key].RecordCount; a++) {
@@ -831,7 +857,9 @@ app.post('/Authenticate', (req, res) => {
                 }
                 body = body.slice(0, -1);
               }
-              body = '{"items":[' + body + ']}';
+              */
+
+              body = '{"items":[' + JSON.stringify(DEListMap[key].DEDataMap.splice(0,10000)) + ']}';
               //console.log('body Meri : ' + body);
 
 
@@ -1477,7 +1505,18 @@ app.post('/Authenticate', (req, res) => {
       request(SharedDEDataOptions, async function (error, response) {
         if (error) throw new Error(error);
         var tempResult = JSON.parse(response.body);
-        SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap, tempResult.items);
+
+        if(tempResult.count != 0) {
+          if(Object.keys(tempResult.items[0].keys).length != 0) {
+            SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap, tempResult.items);
+          }
+          else {
+            for(var i in tempResult.items) {
+              SharedDEListMap[key].DEDataMap.push(tempResult.items[i].values);
+            }
+          }
+        }
+
         //console.log('Records aaye : ' + JSON.stringify(SharedDEListMap[key].DEDataMap));
         var looplength = Math.ceil(tempResult.count / tempResult.pageSize);
         if (looplength >= 2) {
@@ -1503,7 +1542,18 @@ app.post('/Authenticate', (req, res) => {
       request(SharedDEMoreDataOptions, function (error, response) {
         if (error) throw new Error(error);
         var tempResult1 = JSON.parse(response.body);
-        SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap, tempResult1.items);
+
+        if(tempResult1.count != 0) {
+          if(Object.keys(tempResult1.items[0].keys).length != 0) {
+            SharedDEListMap[key].DEDataMap.push.apply(SharedDEListMap[key].DEDataMap, tempResult1.items);
+          }
+          else {
+            for(var i in tempResult1.items) {
+              SharedDEListMap[key].DEDataMap.push(tempResult1.items[i].values);
+            }
+          }
+        }
+
         NextUrl = tempResult1.links.next;
         resolve(NextUrl);
       })
@@ -1781,6 +1831,7 @@ app.post('/Authenticate', (req, res) => {
             if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
               var body = '';
 
+              /*
               if (recLenDecimal != 0) {
                 if (i == loopLength) {
                   for (var a = (i * 10000 - 9999); a <= SharedDEListMap[key].RecordCount; a++) {
@@ -1801,9 +1852,17 @@ app.post('/Authenticate', (req, res) => {
                 }
                 body = body.slice(0, -1);
               }
-              body = '[' + body + ']';
+              */
+
+
+              body = '[' + JSON.stringify(SharedDEListMap[key].DEDataMap.splice(0,10000)) + ']';
+              FinalResult = await insertSharedDERecFuncWithExtKey(body);
 
               console.log('body Meri ki length: ' + body.length);
+              
+
+
+              /*
               if (body.length > 8300000) {
 
                 if (recLenDecimal != 0) {
@@ -1881,6 +1940,11 @@ app.post('/Authenticate', (req, res) => {
               else {
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
+              */
+
+
+
+
             }
             else {
               var body = '';
