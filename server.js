@@ -773,106 +773,38 @@ app.post('/Authenticate', (req, res) => {
 
         if (DEListMap[key].RecordCount <= 10000) {
 
-          if (Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
+          if (DEListMap[key].DEDataMap[0].keys) {
             FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(DEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
-            var DEDataInsertWithoutPrimaryKeyBody = '';
-            /*
-            for (var key1 in DEListMap[key].DEDataMap) {
-              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + JSON.stringify(DEListMap[key].DEDataMap[key1]["values"]) + ',';
-            }
-            DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
-            DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-            
-            //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
-            */
-            DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + JSON.stringify(DEListMap[key].DEDataMap) + ']}';
-            FinalResult = await insertRecFuncWithoutPrimaryKey(DEDataInsertWithoutPrimaryKeyBody);
+            FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(DEListMap[key].DEDataMap) + '}');
             resolve(FinalResult);
           }
         }
         else {
           var loopLength = Math.ceil(DEListMap[key].RecordCount / 10000);
-          var recLengthSlice = DEListMap[key].RecordCount / 10000;
-          var ttemp = recLengthSlice.toString().split(".")[1];
-          if (!ttemp) {
-            ttemp = 0;
-          }
-          var recLenDecimal = parseInt(ttemp, 10);
           for (var i = 1; i <= loopLength; i++) {
 
-            if (Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
-              var body = '';
-
-              /*
-              if (recLenDecimal != 0) {
-                if (i == loopLength) {
-                  for (var a = (i * 10000 - 9999); a <= DEListMap[key].RecordCount; a++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a - 1]) + ',';
-                  }
-                  body = body.slice(0, -1);
-                }
-                else {
-                  for (var b = (i * 10000 - 9999); b <= (i * 10000); b++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b - 1]) + ',';
-                  }
-                  body = body.slice(0, -1);
-                }
+            if (DEListMap[key].DEDataMap[0].keys) {
+              var temp = DEListMap[key].DEDataMap.splice(0,10000);
+              if (JSON.stringify(temp).length < 8300000) {
+                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp));
               }
               else {
-                for (var j = i * 10000 - 9999; j <= (i * 10000); j++) {
-                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j - 1]) + ',';
-                }
-                body = body.slice(0, -1);
-              }*/
-
-
-              body = '[' + JSON.stringify(DEListMap[key].DEDataMap.splice(0, 10000)); + ']';
-
-              FinalResult = await insertRecFuncWithPrimaryKey(body);
+                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
+                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
+              }
             }
             else {
-              var body = '';
-
-              /*
-              if (recLenDecimal != 0) {
-                if (i == loopLength) {
-                  for (var a = (i * 10000 - 9999); a <= DEListMap[key].RecordCount; a++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[a - 1]["values"]) + ',';
-                  }
-                  body = body.slice(0, -1);
-                }
-                else {
-                  for (var b = (i * 10000 - 9999); b <= (i * 10000); b++) {
-                    body = body + JSON.stringify(DEListMap[key].DEDataMap[b - 1]["values"]) + ',';
-                  }
-                  body = body.slice(0, -1);
-                }
+              var temp = DEListMap[key].DEDataMap.splice(0,10000);
+              if (JSON.stringify(temp).length < 8300000) {
+                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp) + '}');
               }
               else {
-                for (var j = i * 10000 - 9999; j <= (i * 10000); j++) {
-                  body = body + JSON.stringify(DEListMap[key].DEDataMap[j - 1]["values"]) + ',';
-                }
-                body = body.slice(0, -1);
+                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
+                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
               }
-              */
-
-              body = '{"items":[' + JSON.stringify(DEListMap[key].DEDataMap.splice(0,10000)) + ']}';
-              //console.log('body Meri : ' + body);
-
-
-
-              /*
-              for(var key1 in DEListMap[key].DEDataMap) {
-                DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody + DEListMap[key].DEDataMap[key1]["values"] + ','; 
-              }
-              DEDataInsertWithoutPrimaryKeyBody = DEDataInsertWithoutPrimaryKeyBody.slice(0, -1);
-              DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
-              */
-
-              FinalResult = await insertRecFuncWithoutPrimaryKey(body);
             }
           }
           resolve(FinalResult);
