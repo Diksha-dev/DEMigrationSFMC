@@ -1855,12 +1855,15 @@ app.post('/Authenticate', (req, res) => {
               */
 
               var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
-              console.log('body Meri ki length: ' + JSON.stringify(temp).length);
+              console.log('temp length 10000 : ' + JSON.stringify(temp).length);
 
               if (JSON.stringify(temp).length > 8300000) {
                 body = '[' + JSON.stringify(temp.splice(0,5000)) + ']';
+                console.log('temp length 10000 : ' + JSON.stringify(temp.splice(0,5000)).length);
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
+
                 body = '[' + JSON.stringify(temp.splice(0,5000)) + ']';
+                console.log('temp length 10000 : ' + JSON.stringify(temp.splice(0,5000)).length);
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
               else {
