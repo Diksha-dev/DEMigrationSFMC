@@ -1785,6 +1785,154 @@ app.post('/Authenticate', (req, res) => {
         if (SharedDEListMap[key].RecordCount <= 10000) {
 
 
+          if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
+            FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(SharedDEListMap[key].DEDataMap));
+            resolve(FinalResult);
+          }
+          else {
+            //var body = '{"items":' + JSON.stringify(SharedDEListMap[key].DEDataMap) + '}';
+
+            FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(SharedDEListMap[key].DEDataMap) + '}');
+            resolve(FinalResult);
+          }
+
+
+        }
+        else {
+          var loopLength = Math.ceil(SharedDEListMap[key].RecordCount / 10000);
+
+          for (var i = 1; i <= loopLength; i++) {
+
+
+            if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
+              var body = '';
+
+              var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
+
+              if (JSON.stringify(temp).length < 8300000) {
+                body = JSON.stringify(temp);
+                FinalResult = await insertSharedDERecFuncWithExtKey(body);
+              }
+              else {
+                body = JSON.stringify(temp.splice(0,5000));
+                FinalResult = await insertSharedDERecFuncWithExtKey(body);
+
+                body = JSON.stringify(temp.splice(0,5000));
+                FinalResult = await insertSharedDERecFuncWithExtKey(body);
+              }
+            }
+            else {
+              var body = '';
+
+              var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
+
+              if (JSON.stringify(temp).length < 8300000) {
+                body = '{"items":' + JSON.stringify(temp) + '}';
+                FinalResult = await insertSharedDERecFuncWithoutExtKey(body);
+              }
+              else {
+                body = '{"items":' + JSON.stringify(temp.splice(0,5000)) + '}';
+                FinalResult = await insertSharedDERecFuncWithoutExtKey(body);
+
+                body = '{"items":' + JSON.stringify(temp.splice(0,5000)) + '}';
+                FinalResult = await insertSharedDERecFuncWithoutExtKey(body);
+              }
+            }
+
+
+          }
+          resolve(FinalResult);
+        }
+      }
+      else {
+        FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
+        FinalResult[key]["DEDataInsert"]["StatusCode"] = "200";
+        FinalResult[key]["DEDataInsert"]["StatusMessage"] = "Success";
+        FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
+        resolve(FinalResult);
+      }
+
+
+
+      async function insertSharedDERecFuncWithExtKey(ProcessedBody) {
+        return new Promise(function (resolve, reject) {
+
+          var Option = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + 'test/rowset',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: ProcessedBody
+          };
+
+          request(Option, function (error, response) {
+            if (error) throw new Error(error);
+            var temp = response.body;
+            FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if (response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
+            }
+            resolve(FinalResult);
+          });
+        })
+      }
+      async function insertSharedDERecFuncWithoutExtKey(ProcessedBody) {
+        return new Promise(function (resolve, reject) {
+
+          var Option = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: ProcessedBody
+          };
+          request(Option, function (error, response) {
+            if (error) throw new Error(error);
+            var temp = response.body;
+            FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if (response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
+            }
+            resolve(FinalResult);
+          });
+        })
+      }
+
+
+    })
+  }
+
+
+
+
+
+
+
+  async function Test_insertSharedDEDataToDestination(key) {
+    return new Promise(async function (resolve, reject) {
+      if (SharedDEListMap[key].RecordCount != 0) {
+
+        await getSharedDEData(key);
+
+        if (SharedDEListMap[key].RecordCount <= 10000) {
+
+
 
 
 
@@ -1857,18 +2005,15 @@ app.post('/Authenticate', (req, res) => {
               var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
               console.log('temp length 10000 : ' + JSON.stringify(temp).length);
 
-              if (JSON.stringify(temp).length > 8300000) {
-                body = JSON.stringify(temp.splice(0,5000));
-                console.log('insert 00 : ' + i);
-                FinalResult = await insertSharedDERecFuncWithExtKey(body);
-
-                body = JSON.stringify(temp.splice(0,5000));
-                console.log('insert 01 : ' + i);
+              if (JSON.stringify(temp).length < 8300000) {
+                body = JSON.stringify(temp);
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
               else {
-                body = JSON.stringify(temp);
-                console.log('insert ** : ' + i);
+                body = JSON.stringify(temp.splice(0,5000));
+                FinalResult = await insertSharedDERecFuncWithExtKey(body);
+
+                body = JSON.stringify(temp.splice(0,5000));
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
 
