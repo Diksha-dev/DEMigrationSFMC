@@ -752,17 +752,7 @@ app.post('/Authenticate', (req, res) => {
         if (DEListMap[key].RecordCount <= 10000) {
 
           if (Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
-            //console.log('testing : ' + JSON.stringify(DEListMap[key].DEDataMap));
-            var DEdataInsertWithPrimaryKeyOptions = {
-              'method': 'POST',
-              'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
-              'headers': {
-                'Authorization': 'Bearer ' + DestinationAccessToken,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(DEListMap[key].DEDataMap)
-            };
-            FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+            FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(DEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
@@ -774,16 +764,8 @@ app.post('/Authenticate', (req, res) => {
             DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
             //console.log('DEDataInsertWithoutPrimaryKeyBody : ' + DEDataInsertWithoutPrimaryKeyBody);
 
-            var DEDataInsertwithoutPrimarykeyOption = {
-              'method': 'POST',
-              'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
-              'headers': {
-                'Authorization': 'Bearer ' + DestinationAccessToken,
-                'Content-Type': 'application/json'
-              },
-              body: DEDataInsertWithoutPrimaryKeyBody
-            };
-            FinalResult = await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
+            
+            FinalResult = await insertRecFuncWithoutPrimaryKey(DEDataInsertWithoutPrimaryKeyBody);
             resolve(FinalResult);
           }
         }
@@ -800,6 +782,7 @@ app.post('/Authenticate', (req, res) => {
             if (Object.keys(DEListMap[key].DEDataMap[0].keys).length != 0) {
               var body = '';
 
+              /*
               if (recLenDecimal != 0) {
                 if (i == loopLength) {
                   for (var a = (i * 10000 - 9999); a <= DEListMap[key].RecordCount; a++) {
@@ -819,20 +802,13 @@ app.post('/Authenticate', (req, res) => {
                   body = body + JSON.stringify(DEListMap[key].DEDataMap[j - 1]) + ',';
                 }
                 body = body.slice(0, -1);
-              }
-              body = '[' + body + ']';
-              //console.log('body Meri : ' + body);
+              }*/
 
-              var DEdataInsertWithPrimaryKeyOptions = {
-                'method': 'POST',
-                'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
-                'headers': {
-                  'Authorization': 'Bearer ' + DestinationAccessToken,
-                  'Content-Type': 'application/json'
-                },
-                body: body
-              };
-              FinalResult = await insertRecFunc(DEdataInsertWithPrimaryKeyOptions);
+
+              body = JSON.stringify(DEListMap[key].DEDataMap.splice(0, 10000));
+              body = '[' + body + ']';
+
+              FinalResult = await insertRecFuncWithPrimaryKey(body);
             }
             else {
               var body = '';
@@ -869,17 +845,7 @@ app.post('/Authenticate', (req, res) => {
               DEDataInsertWithoutPrimaryKeyBody = '{"items":[' + DEDataInsertWithoutPrimaryKeyBody + ']}';
               */
 
-
-              var DEDataInsertwithoutPrimarykeyOption = {
-                'method': 'POST',
-                'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
-                'headers': {
-                  'Authorization': 'Bearer ' + DestinationAccessToken,
-                  'Content-Type': 'application/json'
-                },
-                body: body
-              };
-              FinalResult = await insertRecFunc(DEDataInsertwithoutPrimarykeyOption);
+              FinalResult = await insertRecFuncWithoutPrimaryKey(body);
             }
           }
           resolve(FinalResult);
@@ -897,9 +863,20 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-      async function insertRecFunc(ProcessedBody) {
+      async function insertRecFuncWithPrimaryKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
-          request(ProcessedBody, function (error, response) {
+
+          var option = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'hub/v1/dataevents/key:' + key + '/rowset',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: ProcessedBody
+          };
+
+          request(option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
             //console.log('ProcessedBody response : ' + response.body);
@@ -919,6 +896,38 @@ app.post('/Authenticate', (req, res) => {
         })
       }
 
+      async function insertRecFuncWithoutPrimaryKey(ProcessedBody) {
+        return new Promise(function (resolve, reject) {
+
+          var option = {
+            'method': 'POST',
+            'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
+            'headers': {
+              'Authorization': 'Bearer ' + DestinationAccessToken,
+              'Content-Type': 'application/json'
+            },
+            body: ProcessedBody
+          };
+
+          request(option, function (error, response) {
+            if (error) throw new Error(error);
+            var temp = response.body;
+            //console.log('ProcessedBody response : ' + response.body);
+            FinalResult[key]["DEDataInsert"]["Name"] = DEListMap[key].DEName;
+            FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
+            if (response.statusCode == 202 || response.statusCode == 200) {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = "ok";
+              FinalResult[key]["DEDataInsert"]["Description"] = "Success";
+            }
+            else {
+              FinalResult[key]["DEDataInsert"]["StatusMessage"] = temp.resultMessages;
+              FinalResult[key]["DEDataInsert"]["Description"] = "-";
+            }
+            //console.log('FinalResult : ' + JSON.stringify(FinalResult));
+            resolve(FinalResult);
+          });
+        })
+      }
 
 
 
@@ -1726,6 +1735,12 @@ app.post('/Authenticate', (req, res) => {
 
         if (SharedDEListMap[key].RecordCount <= 10000) {
 
+
+
+
+
+
+
           if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
             FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(SharedDEListMap[key].DEDataMap));
             resolve(FinalResult);
@@ -1742,6 +1757,12 @@ app.post('/Authenticate', (req, res) => {
             FinalResult = await insertSharedDERecFuncWithoutExtKey(DEDataInsertWithoutPrimaryKeyBody);
             resolve(FinalResult);
           }
+
+
+
+
+
+
         }
         else {
           var loopLength = Math.ceil(SharedDEListMap[key].RecordCount / 10000);
@@ -1753,9 +1774,13 @@ app.post('/Authenticate', (req, res) => {
           var recLenDecimal = parseInt(ttemp, 10);
           for (var i = 1; i <= loopLength; i++) {
 
+
+
+
+
+
             if (Object.keys(SharedDEListMap[key].DEDataMap[0].keys).length != 0) {
               var body = '';
-
 
               if (recLenDecimal != 0) {
                 if (i == loopLength) {
@@ -1896,6 +1921,13 @@ app.post('/Authenticate', (req, res) => {
 
               FinalResult = await insertSharedDERecFuncWithoutExtKey(body);
             }
+
+
+
+
+
+
+
           }
           resolve(FinalResult);
         }
@@ -1907,6 +1939,8 @@ app.post('/Authenticate', (req, res) => {
         FinalResult[key]["DEDataInsert"]["Description"] = "Record Count is 0";
         resolve(FinalResult);
       }
+
+
 
       async function insertSharedDERecFuncWithExtKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
