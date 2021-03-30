@@ -805,8 +805,7 @@ app.post('/Authenticate', (req, res) => {
               }*/
 
 
-              body = JSON.stringify(DEListMap[key].DEDataMap.splice(0, 10000));
-              body = '[' + body + ']';
+              body = '[' + JSON.stringify(DEListMap[key].DEDataMap.splice(0, 10000)); + ']';
 
               FinalResult = await insertRecFuncWithPrimaryKey(body);
             }
