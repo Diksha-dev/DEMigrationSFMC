@@ -1854,16 +1854,17 @@ app.post('/Authenticate', (req, res) => {
               }
               */
 
+              var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
+              console.log('body Meri ki length: ' + JSON.stringify(temp).length);
 
-              body = '[' + JSON.stringify(SharedDEListMap[key].DEDataMap.splice(0,10000)) + ']';
-              console.log('body Meri ki length: ' + body.length);
-              if (body.length > 8300000) {
-                body = '[' + JSON.stringify(SharedDEListMap[key].DEDataMap.splice(0,5000)) + ']';
+              if (JSON.stringify(temp).length > 8300000) {
+                body = '[' + JSON.stringify(temp.splice(0,5000)) + ']';
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
-                body = '[' + JSON.stringify(SharedDEListMap[key].DEDataMap.splice(0,10000)) + ']';
+                body = '[' + JSON.stringify(temp.splice(0,5000)) + ']';
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
               else {
+                body = '[' + JSON.stringify(temp.splice(0,10000)) + ']';
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
 
