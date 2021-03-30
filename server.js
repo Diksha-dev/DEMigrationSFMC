@@ -774,11 +774,13 @@ app.post('/Authenticate', (req, res) => {
         if (DEListMap[key].RecordCount <= 10000) {
 
           if (DEListMap[key].DEDataMap[0].keys) {
-            FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(DEListMap[key].DEDataMap));
+            //FinalResult = await 
+            insertRecFuncWithPrimaryKey(JSON.stringify(DEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
-            FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(DEListMap[key].DEDataMap) + '}');
+            //FinalResult = await 
+            insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(DEListMap[key].DEDataMap) + '}');
             resolve(FinalResult);
           }
         }
@@ -789,21 +791,27 @@ app.post('/Authenticate', (req, res) => {
             if (DEListMap[key].DEDataMap[0].keys) {
               var temp = DEListMap[key].DEDataMap.splice(0,10000);
               if (JSON.stringify(temp).length < 8300000) {
-                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp));
+                //FinalResult = await 
+                insertRecFuncWithPrimaryKey(JSON.stringify(temp));
               }
               else {
-                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
-                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
+                //FinalResult = await 
+                insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
+                //FinalResult = await 
+                insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
               }
             }
             else {
               var temp = DEListMap[key].DEDataMap.splice(0,10000);
               if (JSON.stringify(temp).length < 8300000) {
-                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp) + '}');
+                //FinalResult = await 
+                insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp) + '}');
               }
               else {
-                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
-                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
+                //FinalResult = await 
+                insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
+                //FinalResult = await 
+                insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
               }
             }
           }
@@ -1055,10 +1063,12 @@ app.post('/Authenticate', (req, res) => {
             bool = true;
 
             //for (var key in selectedDEList.WithoutData) {
-              FinalResult = await insertDEtoDestination(key);
+              //FinalResult = await 
+              insertDEtoDestination(key);
               if(selectedDEList.WithData) {
                 if(key in selectedDEList.WithData) {
-                  FinalResult = await insertDEDataToDestination(key);
+                  //FinalResult = await 
+                  insertDEDataToDestination(key);
                 }
               }
             //}
