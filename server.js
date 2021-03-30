@@ -1864,7 +1864,7 @@ app.post('/Authenticate', (req, res) => {
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
               else {
-                body = '[' + JSON.stringify(temp.splice(0,10000)) + ']';
+                body = '[' + JSON.stringify(temp) + ']';
                 FinalResult = await insertSharedDERecFuncWithExtKey(body);
               }
 
@@ -2030,6 +2030,7 @@ app.post('/Authenticate', (req, res) => {
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
+            console.log('response.body : ' + response.body);
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if (response.statusCode == 202 || response.statusCode == 200) {
