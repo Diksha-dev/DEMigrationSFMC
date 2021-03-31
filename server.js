@@ -1716,7 +1716,8 @@ app.post('/Authenticate', (req, res) => {
           else {
             //var sliceStart = 0;
             //var sliceEnd = SharedDEListMap[key].RecordCount;
-            recurFuncSharedDERecInsertWithoutExtKey(0 , SharedDEListMap[key].RecordCount , SharedDEListMap[key].DEDataMap);
+            var temp = SharedDEListMap[key].DEDataMap;
+            recurFuncSharedDERecInsertWithoutExtKey(0 , SharedDEListMap[key].RecordCount , temp);
             resolve(FinalResult);
           }
         }
@@ -1760,7 +1761,7 @@ app.post('/Authenticate', (req, res) => {
         }
       }
       async function recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd , ListToInsert) {
-        console.log('dekho : ' + sliceStart + sliceEnd + ListToInsert);
+        console.log(ListToInsert);
         if(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)).length < 8300000) {
           FinalResult = await insertSharedDERecFuncWithoutExtKey(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)));
         }
