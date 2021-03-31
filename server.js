@@ -776,13 +776,13 @@ app.post('/Authenticate', (req, res) => {
           if (DEListMap[key].DEDataMap[0].keys) {
             var sliceStart = 0;
             var sliceEnd = DEListMap[key].RecordCount;
-            recurFuncDERecInsertWithPrimaryKey(sliceStart,sliceEnd);
+            recurFuncDERecInsertWithPrimaryKey(sliceStart , sliceEnd , DEListMap[key].DEDataMap);
             resolve(FinalResult);
           }
           else {
             var sliceStart = 0;
             var sliceEnd = DEListMap[key].RecordCount;
-            recurFuncDERecInsertWithoutPrimaryKey(sliceStart,sliceEnd);
+            recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd , DEListMap[key].DEDataMap);
             resolve(FinalResult);
           }
         }
@@ -791,16 +791,14 @@ app.post('/Authenticate', (req, res) => {
           for (var i = 1; i <= loopLength; i++) {
 
             if (DEListMap[key].DEDataMap[0].keys) {
-              var temp = DEListMap[key].DEDataMap.splice(0,10000);
               var sliceStart = 0;
               var sliceEnd = 10000;
-              recurFuncDERecInsertWithPrimaryKey(sliceStart,sliceEnd);
+              recurFuncDERecInsertWithPrimaryKey(sliceStart , sliceEnd , DEListMap[key].DEDataMap.splice(0,10000));
             }
             else {
-              var temp = DEListMap[key].DEDataMap.splice(0,10000);
               var sliceStart = 0;
               var sliceEnd = 10000;
-              recurFuncDERecInsertWithoutPrimaryKey(sliceStart,sliceEnd);
+              recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd , DEListMap[key].DEDataMap.splice(0,10000));
             }
           }
           resolve(FinalResult);
@@ -818,30 +816,30 @@ app.post('/Authenticate', (req, res) => {
 
 
 
-      async function recurFuncDERecInsertWithPrimaryKey(sliceStart , sliceEnd) {
-        if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
-          FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
+      async function recurFuncDERecInsertWithPrimaryKey(sliceStart , sliceEnd , ListToInsert) {
+        if(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+          FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)));
         }
         else {
           var SecontSliceEnd = sliceEnd
             sliceEnd = Math.ceil(sliceEnd/2);
-            recurFuncDERecInsertWithPrimaryKey(sliceStart , sliceEnd);
+            recurFuncDERecInsertWithPrimaryKey(sliceStart , sliceEnd , ListToInsert);
 
             sliceStart = sliceEnd + 1;
-            recurFuncDERecInsertWithPrimaryKey(sliceStart , SecontSliceEnd);
+            recurFuncDERecInsertWithPrimaryKey(sliceStart , SecontSliceEnd , ListToInsert);
         }
       }
-      async function recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd) {
-        if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
-          FinalResult = await insertRecFuncWithoutPrimaryKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
+      async function recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd , ListToInsert) {
+        if(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+          FinalResult = await insertRecFuncWithoutPrimaryKey(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)));
         }
         else {
           var SecontSliceEnd = sliceEnd
             sliceEnd = Math.ceil(sliceEnd/2);
-            recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd);
+            recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd , ListToInsert);
 
             sliceStart = sliceEnd + 1;
-            recurFuncDERecInsertWithoutPrimaryKey(sliceStart , SecontSliceEnd);
+            recurFuncDERecInsertWithoutPrimaryKey(sliceStart , SecontSliceEnd , ListToInsert);
         }
       }
 
@@ -1709,15 +1707,15 @@ app.post('/Authenticate', (req, res) => {
         await getSharedDEData(key);
         if (SharedDEListMap[key].RecordCount <= 10000) {
           if (SharedDEListMap[key].DEDataMap[0].keys) {
-            var sliceStart = 0;
-            var sliceEnd = SharedDEListMap[key].RecordCount;
-            recurFuncSharedDERecInsertWithExtKey(sliceStart,sliceEnd);
+            //var sliceStart = 0;
+            //var sliceEnd = SharedDEListMap[key].RecordCount;
+            recurFuncSharedDERecInsertWithExtKey(0 , SharedDEListMap[key].RecordCount , SharedDEListMap[key].DEDataMap);
             resolve(FinalResult);
           }
           else {
-            var sliceStart = 0;
-            var sliceEnd = SharedDEListMap[key].RecordCount;
-            recurFuncSharedDERecInsertWithoutExtKey(sliceStart,sliceEnd);
+            //var sliceStart = 0;
+            //var sliceEnd = SharedDEListMap[key].RecordCount;
+            recurFuncSharedDERecInsertWithoutExtKey(0 , SharedDEListMap[key].RecordCount , SharedDEListMap[key].DEDataMap);
             resolve(FinalResult);
           }
         }
@@ -1725,16 +1723,14 @@ app.post('/Authenticate', (req, res) => {
           var loopLength = Math.ceil(SharedDEListMap[key].RecordCount / 10000);
           for (var i = 1; i <= loopLength; i++) {
             if (SharedDEListMap[key].DEDataMap[0].keys) {
-              var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
-              var sliceStart = 0;
-              var sliceEnd = 10000;
-              recurFuncSharedDERecInsertWithExtKey(sliceStart,sliceEnd);
+              //var sliceStart = 0;
+              //var sliceEnd = 10000;
+              recurFuncSharedDERecInsertWithExtKey(0 , 10000 , SharedDEListMap[key].DEDataMap.splice(0,10000));
             }
             else {
-              var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
-              var sliceStart = 0;
-              var sliceEnd = 10000;
-              recurFuncSharedDERecInsertWithoutExtKey(sliceStart,sliceEnd);
+              //var sliceStart = 0;
+              //var sliceEnd = 10000;
+              recurFuncSharedDERecInsertWithoutExtKey(0 , 10000 , SharedDEListMap[key].DEDataMap.splice(0,10000));
             }
           }
           resolve(FinalResult);
@@ -1749,30 +1745,30 @@ app.post('/Authenticate', (req, res) => {
       }
 
 
-      async function recurFuncSharedDERecInsertWithExtKey(sliceStart , sliceEnd) {
-        if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
-          FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
+      async function recurFuncSharedDERecInsertWithExtKey(sliceStart , sliceEnd , ListToInsert) {
+        if(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+          FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)));
         }
         else {
           var SecontSliceEnd = sliceEnd
-            sliceEnd = Math.ceil(sliceEnd/2);
-            recurFuncSharedDERecInsertWithExtKey(sliceStart , sliceEnd);
+          sliceEnd = Math.ceil(sliceEnd/2);
+          recurFuncSharedDERecInsertWithExtKey(sliceStart , sliceEnd , ListToInsert);
 
-            sliceStart = sliceEnd + 1;
-            recurFuncSharedDERecInsertWithExtKey(sliceStart , SecontSliceEnd);
+          sliceStart = sliceEnd + 1;
+          recurFuncSharedDERecInsertWithExtKey(sliceStart , SecontSliceEnd , ListToInsert);
         }
       }
-      async function recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd) {
-        if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
-          FinalResult = await insertSharedDERecFuncWithoutExtKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
+      async function recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd , ListToInsert) {
+        if(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+          FinalResult = await insertSharedDERecFuncWithoutExtKey(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)));
         }
         else {
           var SecontSliceEnd = sliceEnd
             sliceEnd = Math.ceil(sliceEnd/2);
-            recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd);
+            recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd , ListToInsert);
 
             sliceStart = sliceEnd + 1;
-            recurFuncSharedDERecInsertWithoutExtKey(sliceStart , SecontSliceEnd);
+            recurFuncSharedDERecInsertWithoutExtKey(sliceStart , SecontSliceEnd , ListToInsert);
         }
       }
 
