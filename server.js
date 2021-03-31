@@ -1703,10 +1703,10 @@ app.post('/Authenticate', (req, res) => {
 
               var sliceStart = 0;
               var sliceEnd = 10000;
-              
+
               recurFuncDERecInsert(sliceStart,sliceEnd);
 
-              function recurFuncDERecInsert(sliceStart , sliceEnd) {
+              async function recurFuncDERecInsert(sliceStart , sliceEnd) {
                 if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
                   FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
                 }
