@@ -1707,45 +1707,22 @@ app.post('/Authenticate', (req, res) => {
               recurFuncDERecInsert(sliceStart,sliceEnd);
 
               async function recurFuncDERecInsert(sliceStart , sliceEnd) {
+
                 if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+                  console.log('if sliceStart : ' + sliceStart + ', sliceEnd : ' + sliceEnd);
                   FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
                 }
                 else {
                   var SecontSliceEnd = sliceEnd
                     sliceEnd = Math.ceil(sliceEnd/2);
+                    console.log('1st else sliceStart : ' + sliceStart + ', sliceEnd : ' + sliceEnd);
                     recurFuncDERecInsert(sliceStart , sliceEnd);
 
                     sliceStart = sliceEnd + 1;
+                    console.log('2nd else sliceStart : ' + sliceStart + ', sliceEnd : ' + SecontSliceEnd);
                     recurFuncDERecInsert(sliceStart , SecontSliceEnd);
                 }
               }
-
-
-              /*
-              if (JSON.stringify(temp).length < 8300000) {
-                FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp));
-              }
-              else{
-                if(JSON.stringify(temp.slice(0,5001)).length < 8300000) {
-                  FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(0,5001)));
-                }
-                else {
-                  FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(0,2501)));
-                  FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(2501,5001)));
-                }
-                if(JSON.stringify(temp.slice(5001,10001)).length < 8300000) {
-                  FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(5001,10001)));
-                }
-                else {
-                  FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(5001,7501)));
-                  FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(7501,10001)));
-                }
-              }
-              */
-
-
-
-
             }
             else {
               var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
