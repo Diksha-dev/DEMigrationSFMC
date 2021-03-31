@@ -1714,9 +1714,10 @@ app.post('/Authenticate', (req, res) => {
             resolve(FinalResult);
           }
           else {
-            //var sliceStart = 0;
-            //var sliceEnd = SharedDEListMap[key].RecordCount;
-            recurFuncSharedDERecInsertWithoutExtKey(0 , SharedDEListMap[key].RecordCount , SharedDEListMap[key].DEDataMap);
+            var sliceStart = 0;
+            var sliceEnd = SharedDEListMap[key].RecordCount;
+            console.log('ye chala');
+            recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd , SharedDEListMap[key].DEDataMap);
             resolve(FinalResult);
           }
         }
