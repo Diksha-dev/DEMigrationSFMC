@@ -1716,8 +1716,7 @@ app.post('/Authenticate', (req, res) => {
           else {
             //var sliceStart = 0;
             //var sliceEnd = SharedDEListMap[key].RecordCount;
-            var ListToInsert = SharedDEListMap[key].DEDataMap;
-            recurFuncSharedDERecInsertWithoutExtKey(0 , SharedDEListMap[key].RecordCount);
+            recurFuncSharedDERecInsertWithoutExtKey(0 , SharedDEListMap[key].RecordCount , SharedDEListMap[key].DEDataMap);
             resolve(FinalResult);
           }
         }
@@ -1760,7 +1759,7 @@ app.post('/Authenticate', (req, res) => {
           recurFuncSharedDERecInsertWithExtKey(sliceStart , SecontSliceEnd , ListToInsert);
         }
       }
-      async function recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd) {
+      async function recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd , ListToInsert) {
         if(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)).length < 8300000) {
           FinalResult = await insertSharedDERecFuncWithoutExtKey(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)));
         }
@@ -2223,10 +2222,10 @@ app.post('/Authenticate', (req, res) => {
             bool = true;
 
             //for (var key in selectedDEList.WithoutData) {
-              FinalResult = await insertSharedDEtoDestination(key);
+              insertSharedDEtoDestination(key);
               if(selectedDEList.WithData) {
                 if(key in selectedDEList.WithData) {
-                  FinalResult = await insertSharedDEDataToDestination(key);
+                  insertSharedDEDataToDestination(key);
                 }
               }
               console.log('FinalResult : ' + JSON.stringify(FinalResult));
