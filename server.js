@@ -774,13 +774,11 @@ app.post('/Authenticate', (req, res) => {
         if (DEListMap[key].RecordCount <= 10000) {
 
           if (DEListMap[key].DEDataMap[0].keys) {
-            //FinalResult = await 
-            insertRecFuncWithPrimaryKey(JSON.stringify(DEListMap[key].DEDataMap));
+            FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(DEListMap[key].DEDataMap));
             resolve(FinalResult);
           }
           else {
-            //FinalResult = await 
-            insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(DEListMap[key].DEDataMap) + '}');
+            FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(DEListMap[key].DEDataMap) + '}');
             resolve(FinalResult);
           }
         }
@@ -791,27 +789,21 @@ app.post('/Authenticate', (req, res) => {
             if (DEListMap[key].DEDataMap[0].keys) {
               var temp = DEListMap[key].DEDataMap.splice(0,10000);
               if (JSON.stringify(temp).length < 8300000) {
-                //FinalResult = await 
-                insertRecFuncWithPrimaryKey(JSON.stringify(temp));
+                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp));
               }
               else {
-                //FinalResult = await 
-                insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
-                //FinalResult = await 
-                insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
+                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
+                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
               }
             }
             else {
               var temp = DEListMap[key].DEDataMap.splice(0,10000);
               if (JSON.stringify(temp).length < 8300000) {
-                //FinalResult = await 
-                insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp) + '}');
+                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp) + '}');
               }
               else {
-                //FinalResult = await 
-                insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
-                //FinalResult = await 
-                insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
+                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
+                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
               }
             }
           }
@@ -1042,13 +1034,9 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
 
-
-
       for (var key in selectedDEList.WithoutData) {
         FinalDEInsert(key);
       }
-
-
       async function FinalDEInsert(key) {
         let delay = 1000;
         var bool = false;
@@ -1074,12 +1062,10 @@ app.post('/Authenticate', (req, res) => {
             //}
 
             clearTimeout(timerId);
-            console.log('ho ggyaaaaaaaaaaaaaaaa');
           }
         }, delay);
-        console.log('FinalResult : ' + JSON.stringify(FinalResult));
       }
-      
+      console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
     res.send(FinalResult);
     FinalResult = {};
@@ -2177,44 +2163,38 @@ app.post('/Authenticate', (req, res) => {
   app.post("/SelectedSharedDEListInsert", async (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
-
-      /*
+      
       for (var key in selectedDEList.WithoutData) {
-        FinalResult = await insertSharedDEtoDestination(key);
-        if(selectedDEList.WithData) {
-          if (key in selectedDEList.WithData) {
-            FinalResult = await insertSharedDEDataToDestination(key);
-          }
-        }
+        FinalSharedDEInsert(key);
       }
-      */
-
-      let delay = 1000;
-      var bool = false;
-      var bool1 = false;
-      let timerId = setTimeout(async function requestShared() {
-        if (bool == false) {
-          delay *= 24*60*60;
-          bool1 = true;
-          timerId = setTimeout(requestShared, delay);
-        }
-        if (bool1 == true) {
-          bool = true;
-
-          for (var key in selectedDEList.WithoutData) {
-            FinalResult = await insertSharedDEtoDestination(key);
-            if(selectedDEList.WithData) {
-              if (key in selectedDEList.WithData) {
-                FinalResult = await insertSharedDEDataToDestination(key);
-              }
-            }
+      async function FinalSharedDEInsert(key) {
+        let delay = 1000;
+        var bool = false;
+        var bool1 = false;
+        let timerId = setTimeout(async function request() {
+          if (bool == false) {
+            delay *= 24*60*60;
+            bool1 = true;
+            timerId = setTimeout(request, delay);
           }
+          if (bool1 == true) {
+            bool = true;
 
-          clearTimeout(timerId);
-          //clearInterval(timerId);
-          console.log('shared bhi ho ggyaaaaaaaaaaaaaaaa');
-        }
-      }, delay);
+            //for (var key in selectedDEList.WithoutData) {
+              //FinalResult = await 
+              insertSharedDEtoDestination(key);
+              if(selectedDEList.WithData) {
+                if(key in selectedDEList.WithData) {
+                  //FinalResult = await 
+                  insertSharedDEDataToDestination(key);
+                }
+              }
+            //}
+
+            clearTimeout(timerId);
+          }
+        }, delay);
+      }
       console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
     res.send(FinalResult);
