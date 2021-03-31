@@ -774,11 +774,15 @@ app.post('/Authenticate', (req, res) => {
         if (DEListMap[key].RecordCount <= 10000) {
 
           if (DEListMap[key].DEDataMap[0].keys) {
-            FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(DEListMap[key].DEDataMap));
+            var sliceStart = 0;
+            var sliceEnd = DEListMap[key].RecordCount;
+            recurFuncDERecInsertWithPrimaryKey(sliceStart,sliceEnd);
             resolve(FinalResult);
           }
           else {
-            FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(DEListMap[key].DEDataMap) + '}');
+            var sliceStart = 0;
+            var sliceEnd = DEListMap[key].RecordCount;
+            recurFuncDERecInsertWithoutPrimaryKey(sliceStart,sliceEnd);
             resolve(FinalResult);
           }
         }
@@ -788,23 +792,15 @@ app.post('/Authenticate', (req, res) => {
 
             if (DEListMap[key].DEDataMap[0].keys) {
               var temp = DEListMap[key].DEDataMap.splice(0,10000);
-              if (JSON.stringify(temp).length < 8300000) {
-                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp));
-              }
-              else {
-                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
-                FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.splice(0,5000)));
-              }
+              var sliceStart = 0;
+              var sliceEnd = 10000;
+              recurFuncDERecInsertWithPrimaryKey(sliceStart,sliceEnd);
             }
             else {
               var temp = DEListMap[key].DEDataMap.splice(0,10000);
-              if (JSON.stringify(temp).length < 8300000) {
-                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp) + '}');
-              }
-              else {
-                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
-                FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
-              }
+              var sliceStart = 0;
+              var sliceEnd = 10000;
+              recurFuncDERecInsertWithoutPrimaryKey(sliceStart,sliceEnd);
             }
           }
           resolve(FinalResult);
@@ -821,6 +817,33 @@ app.post('/Authenticate', (req, res) => {
 
 
 
+
+      async function recurFuncDERecInsertWithPrimaryKey(sliceStart , sliceEnd) {
+        if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+          FinalResult = await insertRecFuncWithPrimaryKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
+        }
+        else {
+          var SecontSliceEnd = sliceEnd
+            sliceEnd = Math.ceil(sliceEnd/2);
+            recurFuncDERecInsertWithPrimaryKey(sliceStart , sliceEnd);
+
+            sliceStart = sliceEnd + 1;
+            recurFuncDERecInsertWithPrimaryKey(sliceStart , SecontSliceEnd);
+        }
+      }
+      async function recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd) {
+        if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+          FinalResult = await insertRecFuncWithoutPrimaryKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
+        }
+        else {
+          var SecontSliceEnd = sliceEnd
+            sliceEnd = Math.ceil(sliceEnd/2);
+            recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd);
+
+            sliceStart = sliceEnd + 1;
+            recurFuncDERecInsertWithoutPrimaryKey(sliceStart , SecontSliceEnd);
+        }
+      }
 
       async function insertRecFuncWithPrimaryKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
@@ -854,7 +877,6 @@ app.post('/Authenticate', (req, res) => {
           });
         })
       }
-
       async function insertRecFuncWithoutPrimaryKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
 
@@ -1687,11 +1709,15 @@ app.post('/Authenticate', (req, res) => {
         await getSharedDEData(key);
         if (SharedDEListMap[key].RecordCount <= 10000) {
           if (SharedDEListMap[key].DEDataMap[0].keys) {
-            FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(SharedDEListMap[key].DEDataMap));
+            var sliceStart = 0;
+            var sliceEnd = SharedDEListMap[key].RecordCount;
+            recurFuncSharedDERecInsertWithExtKey(sliceStart,sliceEnd);
             resolve(FinalResult);
           }
           else {
-            FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(SharedDEListMap[key].DEDataMap) + '}');
+            var sliceStart = 0;
+            var sliceEnd = SharedDEListMap[key].RecordCount;
+            recurFuncSharedDERecInsertWithoutExtKey(sliceStart,sliceEnd);
             resolve(FinalResult);
           }
         }
@@ -1700,39 +1726,15 @@ app.post('/Authenticate', (req, res) => {
           for (var i = 1; i <= loopLength; i++) {
             if (SharedDEListMap[key].DEDataMap[0].keys) {
               var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
-
               var sliceStart = 0;
               var sliceEnd = 10000;
-
-              recurFuncDERecInsert(sliceStart,sliceEnd);
-
-              async function recurFuncDERecInsert(sliceStart , sliceEnd) {
-
-                if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
-                  console.log('if sliceStart : ' + sliceStart + ', sliceEnd : ' + sliceEnd);
-                  FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
-                }
-                else {
-                  var SecontSliceEnd = sliceEnd
-                    sliceEnd = Math.ceil(sliceEnd/2);
-                    console.log('1st else sliceStart : ' + sliceStart + ', sliceEnd : ' + sliceEnd);
-                    recurFuncDERecInsert(sliceStart , sliceEnd);
-
-                    sliceStart = sliceEnd + 1;
-                    console.log('2nd else sliceStart : ' + sliceStart + ', sliceEnd : ' + SecontSliceEnd);
-                    recurFuncDERecInsert(sliceStart , SecontSliceEnd);
-                }
-              }
+              recurFuncSharedDERecInsertWithExtKey(sliceStart,sliceEnd);
             }
             else {
               var temp = SharedDEListMap[key].DEDataMap.splice(0,10000);
-              if (JSON.stringify(temp).length < 8300000) {
-                FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(temp) + '}');
-              }
-              else {
-                FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
-                FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":' + JSON.stringify(temp.splice(0,5000)) + '}');
-              }
+              var sliceStart = 0;
+              var sliceEnd = 10000;
+              recurFuncSharedDERecInsertWithoutExtKey(sliceStart,sliceEnd);
             }
           }
           resolve(FinalResult);
@@ -1747,6 +1749,32 @@ app.post('/Authenticate', (req, res) => {
       }
 
 
+      async function recurFuncSharedDERecInsertWithExtKey(sliceStart , sliceEnd) {
+        if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+          FinalResult = await insertSharedDERecFuncWithExtKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
+        }
+        else {
+          var SecontSliceEnd = sliceEnd
+            sliceEnd = Math.ceil(sliceEnd/2);
+            recurFuncSharedDERecInsertWithExtKey(sliceStart , sliceEnd);
+
+            sliceStart = sliceEnd + 1;
+            recurFuncSharedDERecInsertWithExtKey(sliceStart , SecontSliceEnd);
+        }
+      }
+      async function recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd) {
+        if(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)).length < 8300000) {
+          FinalResult = await insertSharedDERecFuncWithoutExtKey(JSON.stringify(temp.slice(sliceStart,sliceEnd+1)));
+        }
+        else {
+          var SecontSliceEnd = sliceEnd
+            sliceEnd = Math.ceil(sliceEnd/2);
+            recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd);
+
+            sliceStart = sliceEnd + 1;
+            recurFuncSharedDERecInsertWithoutExtKey(sliceStart , SecontSliceEnd);
+        }
+      }
 
       async function insertSharedDERecFuncWithExtKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
