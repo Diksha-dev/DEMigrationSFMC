@@ -11,6 +11,7 @@ const { log } = require("console");
 var xml2js = require('xml2js');
 var xml2jsParser = new xml2js.Parser();
 const Math = require("mathjs");
+const { json } = require("mathjs");
 
 
 app.get("*", (req, res) => {
@@ -2221,14 +2222,13 @@ app.post('/Authenticate', (req, res) => {
             bool = true;
 
             //for (var key in selectedDEList.WithoutData) {
-              //FinalResult = await 
               FinalResult = await insertSharedDEtoDestination(key);
               if(selectedDEList.WithData) {
                 if(key in selectedDEList.WithData) {
-                  //FinalResult = await 
-                  insertSharedDEDataToDestination(key);
+                  FinalResult = await insertSharedDEDataToDestination(key);
                 }
               }
+              console.log('FinalResult : ' + JSON.stringify(FinalResult));
             //}
 
             clearTimeout(timerId);
