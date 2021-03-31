@@ -2222,7 +2222,7 @@ app.post('/Authenticate', (req, res) => {
 
             //for (var key in selectedDEList.WithoutData) {
               //FinalResult = await 
-              insertSharedDEtoDestination(key);
+              FinalResult = await insertSharedDEtoDestination(key);
               if(selectedDEList.WithData) {
                 if(key in selectedDEList.WithData) {
                   //FinalResult = await 
