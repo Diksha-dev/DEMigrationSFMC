@@ -832,7 +832,7 @@ app.post('/Authenticate', (req, res) => {
       }
       async function recurFuncDERecInsertWithoutPrimaryKey(sliceStart , sliceEnd , ListToInsert) {
         if(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)).length < 8300000) {
-          FinalResult = await insertRecFuncWithoutPrimaryKey(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)));
+          FinalResult = await insertRecFuncWithoutPrimaryKey('{"items":' + JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)) + '}');
         }
         else {
           var SecontSliceEnd = sliceEnd
@@ -878,7 +878,6 @@ app.post('/Authenticate', (req, res) => {
       }
       async function insertRecFuncWithoutPrimaryKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
-
           var option = {
             'method': 'POST',
             'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + '/rows',
@@ -888,7 +887,6 @@ app.post('/Authenticate', (req, res) => {
             },
             body: ProcessedBody
           };
-
           request(option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
@@ -1805,7 +1803,6 @@ app.post('/Authenticate', (req, res) => {
       }
       async function insertSharedDERecFuncWithoutExtKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
-          console.log('insert Shared DE Rec Func Without ExtKey');
           var Option = {
             'method': 'POST',
             'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
@@ -1815,12 +1812,9 @@ app.post('/Authenticate', (req, res) => {
             },
             body: ProcessedBody
           };
-          console.log('ProcessedBody : ' + ProcessedBody);
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('Without ExtKey Response : ' + JSON.stringify(response));
-            
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if (response.statusCode == 202 || response.statusCode == 200) {
