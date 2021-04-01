@@ -1063,7 +1063,7 @@ app.post('/Authenticate', (req, res) => {
           if(x in FinalResult) {
             if(FinalResult[x].DEInsert.Name) {
               if(x in selectedDEList.WithData) {
-                if(x in FinalResult[x].DEDataInsert.Name != '-') {
+                if(FinalResult[x].DEDataInsert.Name != '-') {
                   count = count + 1;
                 }
               }
