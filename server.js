@@ -1818,7 +1818,7 @@ app.post('/Authenticate', (req, res) => {
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
-            console.log('Without ExtKey Response : ' + response.body);
+            console.log('Without ExtKey Response : ' + JSON.stringify(response));
             
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
