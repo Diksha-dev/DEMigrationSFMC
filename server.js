@@ -1716,7 +1716,7 @@ app.post('/Authenticate', (req, res) => {
           else {
             //var sliceStart = 0;
             //var sliceEnd = SharedDEListMap[key].RecordCount;
-            recurFuncSharedDERecInsertWithoutExtKey(0 , SharedDEListMap[key].RecordCount , SharedDEListMap[key].DEDataMap);
+            recurFuncSharedDERecInsertWithoutExtKey(0 , SharedDEListMap[key].RecordCount , '{"items:"' + SharedDEListMap[key].DEDataMap + '}');
             resolve(FinalResult);
           }
         }
