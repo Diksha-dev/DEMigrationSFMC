@@ -1061,14 +1061,20 @@ app.post('/Authenticate', (req, res) => {
 
         for(var x in selectedDEList.WithoutData) {
           if(x in FinalResult) {
+            console.log('x in FinalResult');
             if(FinalResult[x].DEInsert.Name) {
+              console.log('FinalResult[x].DEInsert.Name : ' + FinalResult[x].DEInsert.Name);
               if(x in selectedDEList.WithData) {
+                console.log('if  ..  x in selectedDEList.WithData');
                 if(FinalResult[x].DEDataInsert.Name != '-') {
+                  console.log('FinalResult[x].DEDataInsert.Name : ' + FinalResult[x].DEDataInsert.Name);
                   count = count + 1;
+                  console.log('if count : ' + count);
                 }
               }
               else {
                 count = count + 1;
+                console.log('else count : ' + count);
               }
             }
           }
