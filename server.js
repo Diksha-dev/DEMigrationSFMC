@@ -1073,7 +1073,7 @@ app.post('/Authenticate', (req, res) => {
           clearInterval(sendEmail);
         }
         
-      }, 1000);
+      }, 2000);
 
 
 
