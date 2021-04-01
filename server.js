@@ -12,6 +12,7 @@ var xml2js = require('xml2js');
 var xml2jsParser = new xml2js.Parser();
 const Math = require("mathjs");
 const { json } = require("mathjs");
+var nodemailer = require('nodemailer');
 
 
 app.get("*", (req, res) => {
@@ -1058,58 +1059,52 @@ app.post('/Authenticate', (req, res) => {
       }
 
       var sendEmail = setInterval(function () {
-        
         var count = 0;
         for(var x in selectedDEList.WithoutData) {
           if(x in FinalResult) {
-            console.log('x in FinalResult');
             if(FinalResult[x].DEInsert.Name) {
-              console.log('FinalResult[x].DEInsert.Name : ' + FinalResult[x].DEInsert.Name);
               if(x in selectedDEList.WithData) {
-                console.log('if  ..  x in selectedDEList.WithData');
                 if(FinalResult[x].DEDataInsert.Name != '-') {
-                  console.log('FinalResult[x].DEDataInsert.Name : ' + FinalResult[x].DEDataInsert.Name);
                   count = count + 1;
-                  console.log('if count : ' + count);
                 }
               }
               else {
                 count = count + 1;
-                console.log('else count : ' + count);
               }
             }
           }
         }
-
-        console.log('count : ' + count + ', length : ' + Object.keys(selectedDEList.WithoutData).length);
         if(count == Object.keys(selectedDEList.WithoutData).length) {
           console.log('final h : ' + JSON.stringify(FinalResult));
+
+
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'faizal@cyntexa.com',
+              pass: 'fzlkhan*#'
+            }
+          });
+          var mailOptions = {
+            from: 'faizal@cyntexa.com',
+            to: 'aviral@cyntexa.com',
+            subject: 'Sending Email using Node.js',
+            text: 'That was easy!'
+          };
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+
+
+
           clearInterval(sendEmail);
         }
-        
       }, 2000);
-
-
-
-      /*
-      let timerId = setTimeout(async function SendEmail() {
-        if (bool == false) {
-
-          timerId = setTimeout(request, delay);
-        }
-        if (bool1 == true) {
-
-          clearTimeout(timerId);
-        }
-      }, delay);
-      */
       
-
-      
-
-
-
-
 
       
       async function FinalDEInsert(key) {
