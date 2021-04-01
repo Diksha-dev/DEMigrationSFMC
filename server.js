@@ -1053,13 +1053,13 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
 
-      
+      var count = 0;
       for (var key in selectedDEList.WithoutData) {
         FinalDEInsert(key);
       }
 
       var sendEmail = setInterval(function () {
-        var count = 0;
+        count = 0;
         for(var x in selectedDEList.WithoutData) {
           if(x in FinalResult) {
             if(FinalResult[x].DEInsert.Name) {
@@ -1082,7 +1082,7 @@ app.post('/Authenticate', (req, res) => {
             service: 'gmail',
             auth: {
               user: 'fzlkhan7866@gmail.com',
-              pass: 'fzlkhan*#'
+              pass: 'pasword apna daalo'
             }
           });
           var mailOptions = {
