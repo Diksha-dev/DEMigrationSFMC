@@ -1052,13 +1052,14 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
 
-      var count = 0;
+      
       for (var key in selectedDEList.WithoutData) {
         FinalDEInsert(key);
       }
 
       var sendEmail = setInterval(function () {
-
+        
+        var count = 0;
         for(var x in selectedDEList.WithoutData) {
           if(x in FinalResult) {
             console.log('x in FinalResult');
