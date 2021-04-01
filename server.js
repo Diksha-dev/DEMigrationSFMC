@@ -1061,6 +1061,7 @@ app.post('/Authenticate', (req, res) => {
 
 
       var sendEmail = setInterval(function () {
+        console.log('count : ' + count);
         if (count == maxDELength) {
           console.log('count == maxDELength');
           if(FinalResult) {
@@ -1112,7 +1113,7 @@ app.post('/Authenticate', (req, res) => {
               if(selectedDEList.WithData) {
                 if(key in selectedDEList.WithData) {
                   //FinalResult = await 
-                  insertDEDataToDestination(key);
+                  await insertDEDataToDestination(key);
                 }
               }
             //}
