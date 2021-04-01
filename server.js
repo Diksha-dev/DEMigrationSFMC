@@ -1081,13 +1081,13 @@ app.post('/Authenticate', (req, res) => {
           var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-              user: 'faizal@cyntexa.com',
+              user: 'fzlkhan7866@gmail.com',
               pass: 'fzlkhan*#'
             }
           });
           var mailOptions = {
-            from: 'faizal@cyntexa.com',
-            to: 'aviral@cyntexa.com',
+            from: 'fzlkhan7866@gmail.com',
+            to: 'faizal@cyntexa.com',
             subject: 'Sending Email using Node.js',
             text: 'That was easy!'
           };
