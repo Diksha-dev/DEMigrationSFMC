@@ -2219,7 +2219,7 @@ app.post('/Authenticate', (req, res) => {
             bool = true;
 
             //for (var key in selectedDEList.WithoutData) {
-              insertSharedDEtoDestination(key);
+              await insertSharedDEtoDestination(key);
               if(selectedDEList.WithData) {
                 if(key in selectedDEList.WithData) {
                   insertSharedDEDataToDestination(key);
