@@ -1764,7 +1764,7 @@ app.post('/Authenticate', (req, res) => {
           FinalResult = await insertSharedDERecFuncWithoutExtKey(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)));
         }
         else {
-          var SecontSliceEnd = sliceEnd
+          var SecontSliceEnd = sliceEnd;
             sliceEnd = Math.ceil(sliceEnd/2);
             recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd , ListToInsert);
 
@@ -1805,7 +1805,7 @@ app.post('/Authenticate', (req, res) => {
       }
       async function insertSharedDERecFuncWithoutExtKey(ProcessedBody) {
         return new Promise(function (resolve, reject) {
-
+          console.log('insert Shared DE Rec Func Without ExtKey');
           var Option = {
             'method': 'POST',
             'url': DestinationRestURL + 'data/v1/async/dataextensions/key:' + key + 'test/rows',
@@ -1818,6 +1818,8 @@ app.post('/Authenticate', (req, res) => {
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
+            console.log('Without ExtKey Response : ' + response.body);
+            
             FinalResult[key]["DEDataInsert"]["Name"] = SharedDEListMap[key].DEName;
             FinalResult[key]["DEDataInsert"]["StatusCode"] = response.statusCode;
             if (response.statusCode == 202 || response.statusCode == 200) {
