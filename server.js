@@ -1071,7 +1071,7 @@ app.post('/Authenticate', (req, res) => {
 
             //for (var key in selectedDEList.WithoutData) {
               //FinalResult = await 
-              insertDEtoDestination(key);
+              await insertDEtoDestination(key);
               if(selectedDEList.WithData) {
                 if(key in selectedDEList.WithData) {
                   //FinalResult = await 
