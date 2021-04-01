@@ -1061,14 +1061,18 @@ app.post('/Authenticate', (req, res) => {
 
 
       var sendEmail = setInterval(function () {
+        var boolCheck = false;
         console.log('count : ' + count);
         if (count == maxDELength) {
-          console.log('count == maxDELength');
-          if(FinalResult) {
-            console.log('last me h ye sabse : ' + JSON.stringify(FinalResult));
-            clearInterval(sendEmail);
-          }
+          console.log('count == maxDELength : ' + JSON.stringify(FinalResult));
+          boolCheck = true;
+          
         }
+        if(boolCheck == true) {
+          console.log('boolCheck == true : ' + JSON.stringify(FinalResult));
+          clearInterval(sendEmail);
+        }
+        
       }, 1000);
 
 
