@@ -1761,7 +1761,7 @@ app.post('/Authenticate', (req, res) => {
       }
       async function recurFuncSharedDERecInsertWithoutExtKey(sliceStart , sliceEnd , ListToInsert) {
         if(JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)).length < 8300000) {
-          FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items:"'+ JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)) + '}');
+          FinalResult = await insertSharedDERecFuncWithoutExtKey('{"items":'+ JSON.stringify(ListToInsert.slice(sliceStart,sliceEnd+1)) + '}');
         }
         else {
           var SecontSliceEnd = sliceEnd;
