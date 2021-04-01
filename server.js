@@ -1052,24 +1052,30 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
 
-
       var count = 0;
-      var maxDELength = Object.keys(selectedDEList.WithoutData).length;
       for (var key in selectedDEList.WithoutData) {
         FinalDEInsert(key);
       }
 
-
       var sendEmail = setInterval(function () {
-        var boolCheck = false;
-        console.log('count : ' + count);
-        if (count == maxDELength) {
-          console.log('count == maxDELength : ' + JSON.stringify(FinalResult));
-          boolCheck = true;
-          
+
+        for(var x in selectedDEList.WithoutData) {
+          if(x in FinalResult) {
+            if(FinalResult[x].DEInsert.Name) {
+              if(x in selectedDEList.WithData) {
+                if(x in FinalResult[x].DEDataInsert.Name != '-') {
+                  count = count + 1;
+                }
+              }
+              else {
+                count = count + 1;
+              }
+            }
+          }
         }
-        if(boolCheck == true) {
-          console.log('boolCheck == true : ' + JSON.stringify(FinalResult));
+
+        if(count == Object.keys(selectedDEList.WithoutData).length) {
+          console.log('final h : ' + JSON.stringify(FinalResult));
           clearInterval(sendEmail);
         }
         
