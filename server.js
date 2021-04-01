@@ -1815,7 +1815,7 @@ app.post('/Authenticate', (req, res) => {
             },
             body: ProcessedBody
           };
-          console.log('ProcessedBody : ' + ProcessedBody);
+          console.log('Option : ' + Option);
           request(Option, function (error, response) {
             if (error) throw new Error(error);
             var temp = response.body;
