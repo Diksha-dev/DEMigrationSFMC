@@ -1080,6 +1080,7 @@ app.post('/Authenticate', (req, res) => {
           }
         }
 
+        console.log('count : ' + count + ', length : ' + Object.keys(selectedDEList.WithoutData).length);
         if(count == Object.keys(selectedDEList.WithoutData).length) {
           console.log('final h : ' + JSON.stringify(FinalResult));
           clearInterval(sendEmail);
