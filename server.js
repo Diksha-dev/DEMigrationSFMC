@@ -519,7 +519,6 @@ app.post('/Authenticate', (req, res) => {
               //else if (key1 == 'Properties') {
                 //DEListMap[key].DEDataMap.push(SourceDEDataResult["Properties"]);
               //}
-              
             }
             DEListSend[key] = {
               "DEName" : DEListMap[key].DEName,
@@ -1053,9 +1052,47 @@ app.post('/Authenticate', (req, res) => {
     if (req.body.reqForSelectedDEList) {
       selectedDEList = req.body.reqForSelectedDEList;
 
+
+      var count = 0;
+      var maxDELength = Object.keys(selectedDEList.WithoutData).length;
       for (var key in selectedDEList.WithoutData) {
         FinalDEInsert(key);
       }
+
+
+      var sendEmail = setInterval(function () {
+        if (count == maxDELength) {
+          console.log('count == maxDELength');
+          if(FinalResult) {
+            console.log('last me h ye sabse : ' + JSON.stringify(FinalResult));
+            clearInterval(sendEmail);
+          }
+        }
+      }, 1000);
+
+
+
+      /*
+      let timerId = setTimeout(async function SendEmail() {
+        if (bool == false) {
+
+          timerId = setTimeout(request, delay);
+        }
+        if (bool1 == true) {
+
+          clearTimeout(timerId);
+        }
+      }, delay);
+      */
+      
+
+      
+
+
+
+
+
+      
       async function FinalDEInsert(key) {
         let delay = 1000;
         var bool = false;
@@ -1081,10 +1118,12 @@ app.post('/Authenticate', (req, res) => {
             //}
 
             clearTimeout(timerId);
+            count = count + 1;
           }
         }, delay);
       }
-      console.log('FinalResult : ' + JSON.stringify(FinalResult));
+
+      //console.log('FinalResult : ' + JSON.stringify(FinalResult));
     }
     res.send(FinalResult);
     FinalResult = {};
