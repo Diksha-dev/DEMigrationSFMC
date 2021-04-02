@@ -136,7 +136,7 @@
 
 
 
-
+    {% if isEmailModalOpen == true %}
     <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
         <div class="slds-modal__container">
           <header class="slds-modal__header">
@@ -165,12 +165,13 @@
 
           </div>
           <footer class="slds-modal__footer">
-            <button class="slds-button slds-button_neutral" onclick="">Cancel</button>
+            <button class="slds-button slds-button_neutral" onclick="closeEmailModal()">Cancel</button>
             <button class="slds-button slds-button_brand" onclick="">Save</button>
           </footer>
         </div>
       </section>
       <div class="slds-backdrop slds-backdrop_open"></div>
+    {% endif %}
 
 
 
@@ -189,6 +190,7 @@
 </body>
 <script>
     var SourceListDEResult;
+    var isEmailModalOpen = false;
     function isWithData() {
         var grid = document.getElementById("DEDataTableId");
         var checkBoxes = grid.getElementsByTagName("input");
@@ -208,6 +210,12 @@
         }
     }
 
+    function openEmailModal() {
+        isEmailModalOpen = true;
+    }
+    function closeEmailModal() {
+        isEmailModalOpen = false;
+    }
 
     
     function DEListShow() {
