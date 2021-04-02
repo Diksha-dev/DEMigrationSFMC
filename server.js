@@ -1078,25 +1078,28 @@ app.post('/Authenticate', (req, res) => {
           console.log('final h : ' + JSON.stringify(FinalResult));
 
 
-          var transporter = nodemailer.createTransport({
+          let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-              user: 'fzlkhan7866@gmail.com',
-              pass: 'pasword apna daalo'
+              type: 'OAuth2',
+              user: 'faizal@cyntexa.com',
+              pass: 'fzlkhan*#',
+              clientId: '644945586686-g3b5ngtt4l003k0mu9onl5nsa49i47lv.apps.googleusercontent.com',
+              clientSecret: '9XBsZSm03RQQ35CoG21HjjVB',
+              refreshToken: '1//04kGmfZNUxqqGCgYIARAAGAQSNwF-L9IrpQWtLGAfIiYYq_UZJikNQ1FSS7vCxjhf2HbW1FfTVDLUbaZZEShJgl9H-VXPEW3_UTU'
             }
           });
-          var mailOptions = {
-            from: 'fzlkhan7866@gmail.com',
-            to: 'faizal@cyntexa.com',
-            subject: 'Sending Email using Node.js',
-            text: 'That was easy!'                    //html: '<h1>That was easy!</h1>'
-            
+          let mailOptions = {
+            from: 'faizal@cyntexa.com',
+            to: 'fzlkhan7866@gmail.com',
+            subject: 'Nodemailer Project',
+            text: 'Hi from your nodemailer project : ' + JSON.stringify(FinalResult)
           };
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              console.log(error);
+          transporter.sendMail(mailOptions, function(err, data) {
+            if (err) {
+              console.log("Error " + err);
             } else {
-              console.log('Email sent: ' + info.response);
+              console.log("Email sent successfully");
             }
           });
 
