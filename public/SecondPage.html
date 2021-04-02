@@ -67,7 +67,7 @@
                                             </li>
                                             &nbsp;
                                             <li class="slds-nav-vertical__item">
-                                                <button class="slds-nav-vertical__action slds-button" onclick="SendDEIdsToServer()" style="padding-top:0px;padding-bottom:0px;padding-left:4px;">Send DE</button>
+                                                <button class="slds-nav-vertical__action slds-button" onclick="openEmailModal()" style="padding-top:0px;padding-bottom:0px;padding-left:4px;">Send DE</button>
                                             </li>
                                             &nbsp;
                                             <li class="slds-nav-vertical__item">
@@ -188,7 +188,7 @@
                     <label class="slds-form-element__label" for="text-input-id-1"> \
                         <abbr class="slds-required" title="required">* </abbr>Email Address</label> \
                     <div class="slds-form-element__control"> \
-                        <input type="text" id="text-input-id-1 UserEmailAddress" value="" name="UserEmailAddress"placeholder="Email Address" required="true" class="slds-input" /> \
+                        <input type="text" id="UserEmailAddress" value="" name="UserEmailAddress"placeholder="Email Address" required="true" class="slds-input" /> \
                     </div> \
                 </div> \
               </div> \
@@ -339,7 +339,7 @@
             }
         }
         console.log(selectedDE);
-        //console.log(document.getElementById('UserEmailAddress').value);
+        console.log(document.getElementById('UserEmailAddress').value);
         //selectedDE = selectedDE.toString();
 
 
