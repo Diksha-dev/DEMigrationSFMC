@@ -349,7 +349,8 @@
             ({
                 url: '/SelectedDEListInsert',
                 data: {
-                    'reqForSelectedDEList': selectedDE
+                    'reqForSelectedDEList': selectedDE,
+                    'UserEmailAddress' : document.getElementById('UserEmailAddress').value
                 },
                 type: "POST",
                 headers: {

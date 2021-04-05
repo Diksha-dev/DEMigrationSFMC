@@ -156,15 +156,12 @@ app.post('/Authenticate', (req, res) => {
           'SoapAction': 'Retrieve',
           'Authorization': 'Bearer ' + SourceAccessToken
         },
-        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtension</ObjectType>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>DataExtension.ObjectID</Properties>\r\n                <Properties>IsSendable</Properties>\r\n          <Properties>IsTestable</Properties>\r\n             <Properties>SendableSubscriberField.Name</Properties>\r\n        <Properties>SendableDataExtensionField.Name</Properties>\r\n          <Properties>Description</Properties>\r\n                \r\n        \r\n                \r\n        \r\n             \r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
+        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtension</ObjectType>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>DataExtension.ObjectID</Properties>\r\n                <Properties>IsSendable</Properties>\r\n          <Properties>IsTestable</Properties>\r\n             <Properties>SendableSubscriberField.Name</Properties>\r\n        <Properties>SendableDataExtensionField.Name</Properties>\r\n          <Properties>Description</Properties>\r\n                \r\n        \r\n                \r\n        \r\n             \r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
       };
       request(ListDEOption, function (error, response) {
         if (error) throw new Error(error);
         SourceListDEResult = response.body;
-
-
         xml2jsParser.parseString(SourceListDEResult, function (err, result) {
-          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceListDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
 
@@ -172,8 +169,6 @@ app.post('/Authenticate', (req, res) => {
         //SourceListDEResult = xmlParser.toJson(SourceListDEResult);
         //SourceListDEResult = JSON.parse(SourceListDEResult);
         //SourceListDEResult = SourceListDEResult.soapEnvelope.soapBody.RetrieveResponseMsg.Results;
-
-
 
         for (var key in SourceListDEResult) {
           if (SourceListDEResult[key].Name[0] != "ExpressionBuilderAttributes" && SourceListDEResult[key].Name[0] != "_MobileAddress" && SourceListDEResult[key].Name[0] != "_MobileSubscription" && SourceListDEResult[key].Name[0] != "_PushAddress" && SourceListDEResult[key].Name[0] != "_PushTag" && SourceListDEResult[key].Name[0] != "_MobileLineAddressContact" && SourceListDEResult[key].Name[0] != "_MobileLineAddress" && SourceListDEResult[key].Name[0] != "_MobileLineProfile" && SourceListDEResult[key].Name[0] != "_MobileLineProfileAttribute" && SourceListDEResult[key].Name[0] != "_MobileLineSubscription" && SourceListDEResult[key].Name[0] != "MobileLineOrphanContact") {
@@ -207,7 +202,6 @@ app.post('/Authenticate', (req, res) => {
             }
           }
         }
-        //console.log('DEListMap : ' + JSON.stringify(DEListMap));
         resolve(DEListMap);
       });
     })
@@ -224,16 +218,12 @@ app.post('/Authenticate', (req, res) => {
           'SoapAction': 'Retrieve',
           'Authorization': 'Bearer ' + SourceAccessToken
         },
-        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">https://mc6vgk-sxj9p08pqwxqz9hw9-4my.soap.marketingcloudapis.com/Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtensionField</ObjectType>\r\n                <Properties>Client.ID</Properties>\r\n                <Properties>CreatedDate</Properties>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>DataExtension.CustomerKey</Properties>\r\n                <Properties>DefaultValue</Properties>\r\n                <Properties>FieldType</Properties>\r\n                <Properties>IsPrimaryKey</Properties>\r\n                <Properties>IsRequired</Properties>\r\n                <Properties>MaxLength</Properties>\r\n                <Properties>ModifiedDate</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>ObjectID</Properties>\r\n                <Properties>Ordinal</Properties>\r\n                <Properties>Scale</Properties>\r\n\r\n                               <QueryAllAccounts>true</QueryAllAccounts>\r\n                <Retrieves />\r\n                <Options>\r\n                    <SaveOptions />\r\n                    <IncludeObjects>true</IncludeObjects>\r\n                </Options>\r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
-
+        body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataExtensionField</ObjectType>\r\n                <Properties>Client.ID</Properties>\r\n                <Properties>CreatedDate</Properties>\r\n                <Properties>CustomerKey</Properties>\r\n                <Properties>DataExtension.CustomerKey</Properties>\r\n                <Properties>DefaultValue</Properties>\r\n                <Properties>FieldType</Properties>\r\n                <Properties>IsPrimaryKey</Properties>\r\n                <Properties>IsRequired</Properties>\r\n                <Properties>MaxLength</Properties>\r\n                <Properties>ModifiedDate</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>ObjectID</Properties>\r\n                <Properties>Ordinal</Properties>\r\n                <Properties>Scale</Properties>\r\n\r\n                               <QueryAllAccounts>true</QueryAllAccounts>\r\n                <Retrieves />\r\n                <Options>\r\n                    <SaveOptions />\r\n                    <IncludeObjects>true</IncludeObjects>\r\n                </Options>\r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
       };
       request(DEFieldOption, async function (error, response) {
         if (error) throw new Error(error);
-
         SourceDEFieldsResult = response.body;
-
         xml2jsParser.parseString(SourceDEFieldsResult, function (err, result) {
-          //console.log('mera result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceDEFieldsResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
 
@@ -1083,7 +1073,7 @@ app.post('/Authenticate', (req, res) => {
             auth: {
               type: 'OAuth2',
               user: 'faizal@cyntexa.com',
-              pass: 'fzlkhan*#',
+              pass: 'apnadaalo',
               clientId: '644945586686-g3b5ngtt4l003k0mu9onl5nsa49i47lv.apps.googleusercontent.com',
               clientSecret: '9XBsZSm03RQQ35CoG21HjjVB',
               refreshToken: '1//04kGmfZNUxqqGCgYIARAAGAQSNwF-L9IrpQWtLGAfIiYYq_UZJikNQ1FSS7vCxjhf2HbW1FfTVDLUbaZZEShJgl9H-VXPEW3_UTU'
@@ -1091,9 +1081,9 @@ app.post('/Authenticate', (req, res) => {
           });
           let mailOptions = {
             from: 'faizal@cyntexa.com',
-            to: 'fzlkhan7866@gmail.com',
-            subject: 'Nodemailer Project',
-            text: 'Hi from your nodemailer project : ' + JSON.stringify(FinalResult)
+            to: req.body.UserEmailAddress,
+            subject: 'Data Extention Migration Report Mail',
+            html: '<h5>Hi from your nodemailer project : </h5><br><br>' + JSON.stringify(FinalResult)
           };
           transporter.sendMail(mailOptions, function(err, data) {
             if (err) {
@@ -1160,7 +1150,6 @@ app.post('/Authenticate', (req, res) => {
     return new Promise(function (resolve, reject) {
       authTokenForBothSFDC();
       var SharedDEFolder;
-
       var SharedDEFolderOption = {
         'method': 'POST',
         'url': SourceSoapURL + 'Service.asmx',
@@ -1170,23 +1159,16 @@ app.post('/Authenticate', (req, res) => {
           'Authorization': 'Bearer ' + SourceAccessToken
         },
         body: '<?xml version="1.0" encoding="UTF-8"?>\r\n<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r\n    <s:Header>\r\n        <a:Action s:mustUnderstand="1">Retrieve</a:Action>\r\n        <a:MessageID>urn:uuid:7e0cca04-57bd-4481-864c-6ea8039d2ea0</a:MessageID>\r\n        <a:ReplyTo>\r\n            <a:Address>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</a:Address>\r\n        </a:ReplyTo>\r\n        <a:To s:mustUnderstand="1">' + SourceSoapURL + 'Service.asmx</a:To>\r\n        <fueloauth xmlns="http://exacttarget.com">' + SourceAccessToken + '</fueloauth>\r\n    </s:Header>\r\n    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\r\n        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">\r\n            <RetrieveRequest>\r\n                <ObjectType>DataFolder</ObjectType>\r\n                <Properties>ID</Properties>\r\n                <Properties>Name</Properties>\r\n                <Properties>ContentType</Properties>\r\n                <Properties>ParentFolder.Name</Properties>\r\n                <Properties>ObjectID</Properties>\r\n                <Properties>ParentFolder.ObjectID</Properties>\r\n\r\n                <ns1:Filter\r\n                     xmlns:ns1="http://exacttarget.com/wsdl/partnerAPI" xsi:type="ns1:SimpleFilterPart">\r\n                     <ns1:Property>ContentType</ns1:Property>\r\n                     <ns1:SimpleOperator>equals</ns1:SimpleOperator>\r\n                     <ns1:Value>shared_dataextension</ns1:Value>\r\n                </ns1:Filter>\r\n\r\n                <QueryAllAccounts>true</QueryAllAccounts>\r\n            </RetrieveRequest>\r\n      </RetrieveRequestMsg>\r\n   </s:Body>\r\n</s:Envelope>'
-
       };
       request(SharedDEFolderOption, function (error, response) {
         if (error) throw new Error(error);
-
         xml2jsParser.parseString(response.body, function (err, result) {
-          //console.log('DATA Folder : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SharedDEFolder = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
-
         var CategoryIDList = [];
         for (var key in SharedDEFolder) {
           CategoryIDList.push(SharedDEFolder[key].ID[0]);
         }
-        //console.log('CategoryID : ' + CategoryIDList);
-
-
         var ListShareDEBody = '<?xml version="1.0" encoding="UTF-8"?>' +
           '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
           '<s:Header>' +
@@ -1216,7 +1198,6 @@ app.post('/Authenticate', (req, res) => {
           '<Properties>Client.ID</Properties>' +
           '<Filter xsi:type="SimpleFilterPart">' +
           '<Property>CategoryID</Property>';
-
         if (CategoryIDList.length == 1) {
           ListShareDEBody = ListShareDEBody + '<SimpleOperator>equals</SimpleOperator> <Value>' + CategoryIDList[0] + '</Value>';
         }
@@ -1226,14 +1207,11 @@ app.post('/Authenticate', (req, res) => {
             ListShareDEBody = ListShareDEBody + '<Value>' + CategoryIDList[i] + '</Value>';
           }
         }
-
         ListShareDEBody = ListShareDEBody + '</Filter>' +
           '</RetrieveRequest>' +
           '</RetrieveRequestMsg>' +
           '</s:Body>' +
           '</s:Envelope>';
-
-        //console.log('body : ' + ListShareDEBody);
         var ListSharedDEOption = {
           'method': 'POST',
           'url': SourceSoapURL + 'Service.asmx',
@@ -1246,14 +1224,9 @@ app.post('/Authenticate', (req, res) => {
         };
         request(ListSharedDEOption, function (error, response) {
           if (error) throw new Error(error);
-
           xml2jsParser.parseString(response.body, function (err, result) {
-            //console.log('Shared DE Result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
             SourceListSharedDEResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
           });
-
-
-
           for (var key in SourceListSharedDEResult) {
             if (SourceListSharedDEResult[key].IsSendable[0] == "true") {
               SharedDEListMap[SourceListSharedDEResult[key].CustomerKey] = {
@@ -1284,7 +1257,6 @@ app.post('/Authenticate', (req, res) => {
               };
             }
           }
-          //console.log('SharedDEListMap : ' + JSON.stringify(SharedDEListMap));
           resolve(SharedDEListMap);
         });
       });
@@ -1294,7 +1266,6 @@ app.post('/Authenticate', (req, res) => {
   async function getSourceSharedDEFieldsAndData() {
     return new Promise(async function (resolve, reject) {
       authTokenForBothSFDC();
-
       var ShareDEFieldsBody = '<?xml version="1.0" encoding="UTF-8"?>' +
         '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
         '<s:Header>' +
@@ -1326,7 +1297,6 @@ app.post('/Authenticate', (req, res) => {
         '<Properties>Scale</Properties>' +
         '<Filter xsi:type="SimpleFilterPart">' +
         '<Property>DataExtension.CustomerKey</Property>';
-
       var tempcheck = true;
       for (var key in SharedDEListMap) {
         if (SharedDEListMap.size == 1) {
@@ -1352,8 +1322,6 @@ app.post('/Authenticate', (req, res) => {
         '</RetrieveRequestMsg>' +
         '</s:Body>' +
         '</s:Envelope>';
-
-      //console.log('ShareDEFieldsBody : ' + ShareDEFieldsBody);
       var SharedDEFieldOption = {
         'method': 'POST',
         'url': SourceSoapURL + 'Service.asmx',
@@ -1363,18 +1331,13 @@ app.post('/Authenticate', (req, res) => {
           'Authorization': 'Bearer ' + SourceAccessToken
         },
         body: ShareDEFieldsBody
-
       };
       request(SharedDEFieldOption, async function (error, response) {
         if (error) throw new Error(error);
-
         SourceSharedDEFieldsResult = response.body;
-
         xml2jsParser.parseString(SourceSharedDEFieldsResult, function (err, result) {
-          //console.log('mera field result : ' + JSON.stringify(result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results']));
           SourceSharedDEFieldsResult = result['soap:Envelope']['soap:Body'][0]['RetrieveResponseMsg'][0]['Results'];
         });
-
         for (var key in SourceSharedDEFieldsResult) {
           if (SourceSharedDEFieldsResult[key].DataExtension[0].CustomerKey[0] in SharedDEListMap) {
             if ("MaxLength" in SourceSharedDEFieldsResult[key] && "Scale" in SourceSharedDEFieldsResult[key]) {
@@ -1423,15 +1386,9 @@ app.post('/Authenticate', (req, res) => {
             }
           }
         }
-
-        //console.log('settled Field : ' + JSON.stringify(SharedDEListMap));
-
-
         for (var key in SharedDEListMap) {
           await getSharedDERecordCount(key);
         }
-        //console.log('SharedDEListMap : ' + JSON.stringify(SharedDEListMap));
-
         resolve(SharedDEListMap);
       });
     })
